@@ -7,11 +7,10 @@ The code here powers a Django/PostgreSQL website Nymology, where users can parti
 
 http://nymology.org
 
-CONTRIBUTORS AND NEW ACTIVITIES WELCOME!!! Add bugs, improvements and new activity ideas on our wiki:
+CONTRIBUTORS AND NEW ACTIVITIES WELCOME!!! Please add bugs, improvements and new activity ideas on our wiki:
 
 http://polynyms.com/doku.php?id=bugs
 
-
-Thanks,
+Thank you,
 
 verkoder & gooch
