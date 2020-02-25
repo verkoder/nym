@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Edit Tale{% endblock %}
+
+{% block mid %}<h2>
+{% if msg %}{{ msg }}{% elif txt %}Pick a template for your Tale
+{% else %}Spin a Tale with {{ fabl.length }} Topic{% if fabl.length != 1 %}s{% endif %}!
+{% endif %}</h2>
+{% endblock %}
+
+{% block content %}
+<form action="/tale/add/" method="POST">{% csrf_token %}
+<table width="90%" align="center">
+    <tr>
+        <td align="center" valign="top" width="50%"><b>Your template:</b><br><br>{{ fabl.qode }}</td>
+        <td bgcolor="#EFEFEF" width="25%"><h4 align="center">Pick a Fable:<br>
+            <SELECT NAME="fabl_id" SIZE="12">
+            {% for f in fabls %}
+              <option VALUE="{{ f.id }}" {% if f.id == fabl.id %}selected{% endif %}>{{ f.name }} | {{ f.length }} &times; {{ f.width }}
+            {% endfor %}
+            </SELECT></h4></td>
+        <td bgcolor="#DEDEDE" width="25%"><h4 align="center">
+            Try another Fable &mdash; or use selected:<br>
+            <input type="submit" value="T R Y" name="_try"> &nbsp; &nbsp;
+            <input type="submit" value="U S E" name="_use"></h4>
+            <h5 align="right">To enter via text:
+            <input type="submit" value="T E X T" name="_text"></h5></td>
+  </tr>
+</table>
+<input name="length" type="hidden" value="{{ fabl.length }}">
+<input name="fabl_id" type="hidden" value="{{ fabl.id }}">
+</form>
+{% endblock %}

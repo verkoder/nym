@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Edit Story{% endblock %}
+
+{% block mid %}<h2>
+{% if spun %}<h2>Your Story is being told!</h2>
+{% else %}Build a Story from Topic/Phrase frames</h2>{% endif %}
+{% endblock %}
+{% block right %}<font size="+1"><b>Story-Pushers:</b></font>
+<h4>Menu-based: &raquo;&raquo; Frames &laquo;&laquo;<br>
+    Text-based: <a href="/add/storyb">&rarr; Pairs &rarr;</a><br>
+    <a href="/add/storyc">&rarr; Matched Lists &rarr;</a></h4>
+{% endblock %}
+{% block content %}
+<form action="/story/add/" method="POST">
+{% csrf_token %}
+<table width="100%">
+  <tr>
+      <td align="center"><b>Your Story:</b></td>
+      <td colspan="2" align="center" bgcolor="#EFEFEF"><b>Add "-" from each list for a line break</b></td><td></td>
+  </tr>
+  <tr>
+	<td width="60%" align="center" valign="top">
+	{% include 'bits/trace_story.html' with spun=spun trace=trace %}
+    </td>
+    <td bgcolor="#EFEFEF" valign="top" align="center">
+      <h4>Pick Topic:<br>
+      <SELECT NAME="quad_id" SIZE="24">
+	  {% for q in quads %}
+        <option VALUE="{{ q.id }}"{% if q.id == quad_id %} selected{% endif %} />{{ q.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+    <td width="20%" bgcolor="#CFCFCF" valign="top" align="center">
+      <h4>Pick Phrase:<br>
+      <SELECT NAME="phra_id" SIZE="24">
+	  {% for ph in phras %}
+        <option VALUE="{{ ph.id }}"{% if ph.id == phra_id %} selected{% endif %} />{{ ph.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+    <td width="20%" valign="top" colspan="2"><br><h4 align="center">Pick Topic / Phrase and<br>
+        <input type="submit" value="T R Y" name="_try" />
+        <input type="submit" value="A D D" name="_add" /></h4>
+        <h4 align="center"><input type="checkbox" name="trace"{% if trace == "on" %} checked{% endif %}>Trace</h4><hr>
+    <h4 align="center">{% if quad_ids %}Ready to save?<br><input type="submit" value="N E X T" name="_save" />{% endif %}<br><br>
+    <a href="/story/add/">Restart!</a></h4>
+    </td>
+  </tr>
+  <tr>
+      <td align="center" bgcolor="#EFEFEF" colspan="3"><b>Added Topic/Phrase Pairs:</b><br>{% autoescape off %}{{ txt }}{% endautoescape %}</td>
+  </tr>
+</table>
+<input name="quad_ids" type="hidden" value="{{ quad_ids }}">
+<input name="phra_ids" type="hidden" value="{{ phra_ids }}">
+</form>
+{% endblock %}

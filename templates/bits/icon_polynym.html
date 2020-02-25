@@ -1,0 +1,7 @@
+<div class="icontain_{{ thing.mode }}">
+  <img class="clip{{ thing.depth }}" src="http://mood.scottyvercoe.com/static/img/lighter_sm.jpg">
+  <div class="icenter">
+    <h3><i>{% for dimension in thing.nyms %}{% if dimension %}<br>{{ dimension }}{% endif %}{% endfor %}</i></h3>
+  </div>
+</div>
+<h2>{{ thing.depth }} {{ thing.mode }}s of {{ thing.name }}</h2>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}PolyPuzzle Winners{% endblock %}
+
+{% block mid %}
+<h1 align="center">THE HALL OF POLYFAME</h1>
+{% endblock %}
+
+{% block right %}
+<b>{% if msg %}{{ msg }}{% else %}Hit back on your browser or<br>&rarr; <a href="/polypuzl">START A NEW GAME</a>&rarr;</b>{% endif %}
+{% endblock %}
+
+{% block content %}
+<table align="center" cellpadding="12">
+<tr>
+  <td valign="top">
+    <h2 align="center">HIGH SCORES</h2>
+    <table align="center" cellspacing="0" cellpadding="8">
+      <tr>
+        <th bgcolor="#CFCFCF"><span class="code">Rank</span></th>
+        <th bgcolor="#CFCFCF"><span class="code">Score</span></th>
+        <th bgcolor="#CFCFCF"><span class="code">Player</span></th>
+      </tr>
+      {% for x,win in hi %}
+      <tr>
+          <td bgcolor="#EDEDED"><span class="code">{{ forloop.counter }}</span></td>
+          <td bgcolor="#EDEDED"><span class="code">{{ x }}</span></td>
+          <td bgcolor="#EDEDED"><span class="code"><a href="/user/{{ win }}">{{ win }}</a></span></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </td>
+  <td valign="top">
+    <h2 align="center">BADASSES</h2>
+    <table align="center" cellspacing="0" cellpadding="8">
+      <tr>
+        <th bgcolor="#CFCFCF"><span class="code">Rank</span></th>
+        <th bgcolor="#CFCFCF"><span class="code">Badassness*</span></th>
+        <th bgcolor="#CFCFCF"><span class="code">Player</span></th>
+      </tr>
+      {% for x,win in fx %}
+      <tr>
+          <td bgcolor="#EDEDED"><span class="code">{{ forloop.counter }}</span></td>
+          <td bgcolor="#EDEDED"><span class="code">{{ x }}</span></td>
+          <td bgcolor="#EDEDED"><span class="code"><a href="/user/{{ win }}">{{ win }}</a></span></td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br><span class="lil">*Badassness = points / round</span>
+  </td>
+</tr>
+</table>
+{% endblock %}

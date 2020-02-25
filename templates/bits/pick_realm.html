@@ -1,0 +1,16 @@
+<SELECT NAME="realm">
+    <option disabled selected value> << realm >> </option>
+    <option value="Psychological"{% if form.realm.value == 'Psychological' %} selected{% endif %}>Psychological</option>
+    <option value="Physical"{% if form.realm.value == 'Physical' %} selected{% endif %}>Physical</option>
+    <option value="Spatial"{% if form.realm.value == 'Spatial' %} selected{% endif %}>Spatial</option>
+    <option value="Temporal"{% if form.realm.value == 'Temporal' %} selected{% endif %}>Temporal</option>
+    <option value="Emotional"{% if form.realm.value == 'Emotional' %} selected{% endif %}>Emotional</option>
+    <option value="Social"{% if form.realm.value == 'Social' %} selected{% endif %}>Social</option>
+    <option value="Dominion"{% if form.realm.value == 'Dominion' %} selected{% endif %}>Dominion</option>
+    <option value="Metabolic"{% if form.realm.value == 'Metabolic' %} selected{% endif %}>Metabolic</option>
+    <option value="Valence"{% if form.realm.value == 'Valence' %} selected{% endif %}>Valence</option>
+    <option value="Volitional"{% if form.realm.value == 'Volitional' %} selected{% endif %}>Volitional</option>
+    <option value="Energy"{% if form.realm.value == 'Energy' %} selected{% endif %}>Energy</option>
+    <option value="Perceptual"{% if form.realm.value == 'Perceptual' %} selected{% endif %}>Perceptual</option>
+    <option value="Embodied"{% if form.realm.value == 'Embodied' %} selected{% endif %}>Embodied</option>
+</SELECT><br>

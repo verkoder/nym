@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Unionyms{% endblock %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+{% block mid %}<h2>
+{% if msg %}{{ msg }}
+{% else %}
+    Polynym Union:
+    <table>
+        <tr align="center">
+            <td>$$\sum_x^{ {{ poly_ids|length }} } \{P_x\}$$
+            </td>
+            <td>
+{% ifequal total utotal %}
+    $$\to |{{ total }}| \leftarrow$$
+{% else %}
+    $$\to |{{ total }}| \supseteq |{{ utotal }}| \leftarrow$$
+{% endifequal %}
+            </td><td> <span style="position: relative; bottom: -11px;">$$\bigcup_{x={{ poly_ids|length }} }\{P_x\}$$</span>
+            </td>
+        </tr>
+    </table></h2>
+{% endif %}
+{% endblock %}
+{% block right %}
+<table>
+    <tr>
+        <td align="right"><form action="/union/" method="POST">
+            {% csrf_token %}
+            <b><a href="/union">Refresh</a> for random picks or choose and <input type="submit" value="S E E" /></b></td>
+        <td align="right">
+            <span class="lil">Use Ctrl- or Cmd-click to select multiple</span>
+            <SELECT NAME="poly_id" MULTIPLE SIZE="12">
+            {% for p in polys %}
+              <option VALUE="{{ p.id }}" {% if p.id in poly_ids %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:18 }}
+              {% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}{% autoescape off %}
+<div align="center">{% if drop_dep %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
+<b>Depths:</b>{% if drop_dep %} &nbsp; <span class="lil">&searr; {{ drop_dep|floatformat:2 }}%</span>{% endif %}<br>
+{{ deps|join:" | " }}<hr>{% if drop_area %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
+<b>Areas:</b>{% if drop_area %} &nbsp; <span class="lil">&searr; {{ drop_area|floatformat:2 }}%</span>{% endif %}<br>
+{{ areas|join:" | " }}<hr>{% if drop_src %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
+<b>Sources:</b>{% if drop_src %} &nbsp; <span class="lil">&searr; {{ drop_src|floatformat:2 }}%</span>{% endif %}<br>
+{{ sources|join:" | " }}<hr>{% if drop_top %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
+<b>Topics:</b>{% if drop_top %} &nbsp; <span class="lil">&searr; {{ drop_top|floatformat:2 }}%</span>{% endif %}<br>
+{{ nams|join:" | " }}<hr>{% if drop_dim %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
+<b>Dimensions:</b>{% if drop_dim %} &nbsp; <span class="lil">&searr; {{ drop_dim|floatformat:2 }}%</span>{% endif %}<br>
+{{ terms|join:" | " }}</div>{% endautoescape %}
+{% endblock %}

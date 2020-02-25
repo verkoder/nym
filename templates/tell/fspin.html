@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Spin a Tale{% endblock %}
+
+{% block mid %}
+<h2>{% if msg %}{{ msg }}{% elif spun %}Spinning a Tale..{% else %}Spin a Tale!</h2>
+{% endif %}
+{% endblock %}
+
+{% block right %}{% if qode %}
+<b><sub>Q</sub>Text =</b> <span class="lil">{{ fabl.qode }}<br></span><b><sub>target</sub>Q</b> =
+<span class="lil">{ {% for q in got_quads %}{{ q.name }}{% if not forloop.last %}, {% endif %}{% endfor %} }</span>
+{% endif %}{% endblock %}
+
+{% block content %}
+{% if spun %}
+{% if trace %}
+<table align="center">
+    <tr>
+        <td valign="top" width="70%">{{ spun }}</td>
+        <td>{% include 'bits/trace_tale.html' with quads=got_quads %}</td>
+    </tr>
+</table>
+{% else %}{{ spun|linebreaks }}
+{% endif %}
+{% endif %}
+<form action="/fspin/" method="POST">{% csrf_token %}
+<h3 align="center">Choose below and <input type="submit" value="T E L L" /> or <a href="/fspin">spin by chance</a></h3>
+<table align="center" cellspacing="0" cellpadding="4">
+  <tr>
+	<th></th>
+    <th bgcolor="#CFCFCF"><h3>Pick a Fable:</h3></th>
+    <th bgcolor="#EFEFEF"><h3>Pick Topics:</h3><span class="lil">Use Ctrl- or Cmd-click to select multiple</span></th>
+  </tr>
+  <tr>
+	<td width="80"></td>
+	<td bgcolor="EFEFEF" align="center" valign="top" height="290px" width="200px">
+	<SELECT NAME="fabl_id" MULTIPLE SIZE="20">
+    {% for f in fabls %}
+      <OPTION VALUE="{{ f.id }}"
+	  {% if f.id == fabl.id %}selected {% endif %}
+	  />{{ f.name|truncatechars:25 }} | Pick {{ f.length }} Topics >>
+      {% endfor %}
+    </SELECT>
+	</td>
+	{% if quads %}
+    <td bgcolor="#CFCFCF" align="center" valign="top" height="290px" width="200px">
+      <SELECT NAME="quad_id" MULTIPLE SIZE="20">
+	  {% for q in quads %}
+		<OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>{{ q.name }}{% if q.src %}|{{ q.src|truncatechars:25 }}{% endif %}
+	  {% endfor %}
+	  </SELECT>
+	</td>
+	<td bgcolor="#FFFFFF" valign="top"> &nbsp;
+	  <h4><input type="checkbox" name="rev"{% if rev == "on" %} checked{% endif %}>Reverse</h4>
+	  <h4><input type="checkbox" name="trace"{% if trace == "on" %} checked{% endif %}>Trace</h4>
+    </td>
+	{% endif %}
+  </tr>
+</table>
+</form>
+{% endblock %}

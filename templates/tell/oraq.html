@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Spin Fortune{% endblock %}
+
+{% block mid %}
+<h2>{% if msg %}{{ msg }}{% elif spun %}Spinning your fortune..{% else %}Spin your Fortune!</h2>
+{% endif %}
+{% endblock %}
+
+{% block right %}{% if qode %}
+<b><sub>Q</sub>Text =</b> <span class="lil">{{ fort.qode }}<br></span><b><sub>source</sub>Q &rarr; <sub>target</sub>Q</b><br>
+<span class="lil">{ {% for x in exes %}{{ x }}{% if not forloop.last %}, {% endif %}{% endfor %} } &rarr;
+ { {% for phrase,q,t in spun %}{{ q.name }}{% if not forloop.last %}, {% endif %}{% endfor %} }</span>
+{% endif %}{% endblock %}
+
+{% block content %}
+{% if spun %}{% autoescape off %}
+	{% if trace %}
+	<table cellpadding="0" cellspacing="4">
+		{% for phrase,q,t in spun %}
+		{% if phrase %}<tr>
+			<td bgcolor="#FFFFFF"><b>+q{{ forloop.counter }}</b>= {{ phrase }}</td>
+			<td bgcolor="#EFEFEF"><table width="100%" cellspacing="0" cellpadding="0">
+			  <tr>
+			    <td bgcolor="#FFFFFF" align="center" width="33%"><b>E = {{ q.e }}</b></td>
+			    <td width="33%">&nbsp;</td>
+			    <td bgcolor="#FFFFFF" align="center" width="33%"><b>O = {{ q.o }}</b></td>
+			  </tr>
+			  <tr>
+			    <td>&nbsp;</td>
+			    <td bgcolor="#FFFFFF" align="center"><b>N = {{ q.name }}</b></td>
+			    <td>&nbsp;</td>
+			  <tr>
+			    <td bgcolor="#FFFFFF" align="center"><b>S = {{ q.s }}</b></td>
+			    <td>&nbsp;</td>
+			    <td bgcolor="#FFFFFF" align="center"><b>R = {{ q.r }}</b></td>
+			  </tr>
+			</table>
+		  </td>
+		</tr>
+		<tr>
+			<td colspan="2"><hr></td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+	</table>
+	{% else %}
+	{% for phrase,q,t in spun %}
+		{% if forloop.last %}{{ phrase }}<br />{% endif %}
+	{% endfor %}
+	<br /><b>&mdash; Qode Strodamus</b>
+	{% endif %}{% endautoescape %}
+{% endif %}
+<form action="/oraq/" method="POST">{% csrf_token %}
+<h3 align="center">Choose below and <input type="submit" value="T E L L" /> or <a href="/oraq">spin by chance</a></h3>
+<table align="center" cellspacing="0" cellpadding="4">
+  <tr>
+	<th></th>
+    <th bgcolor="#CFCFCF"><h3>Pick a Fortune:</h3></th>
+    <th bgcolor="#EFEFEF"><h3>Pick Topics:</h3><span class="lil">Use Ctrl- or Cmd-click to select multiple</span></th>
+  </tr>
+  <tr>
+	<td width="80"></td>
+	<td bgcolor="#EFEFEF" align="center" valign="top" height="290px" width="200px">
+	<SELECT NAME="fort_id" MULTIPLE SIZE="20">
+    {% for f in forts %}
+      <OPTION VALUE="{{ f.id }}"
+	  {% if f.id == fort.id %}selected {% endif %}
+	  />{{ f.body|truncatechars:25 }} | Pick {{ f.depth }} Topics >>
+      {% endfor %}
+    </SELECT>
+	</td>
+    <td bgcolor="#CFCFCF" align="center" valign="top" height="290px" width="200px">
+      <SELECT NAME="quad_id" MULTIPLE SIZE="20">
+	  {% for q in quads %}
+		<OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>{{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+	  {% endfor %}
+	  </SELECT>
+	</td>
+	<td bgcolor="#FFFFFF" valign="top"> &nbsp;
+	  <h4><input type="checkbox" name="rev"{% if rev == "on" %} checked{% endif %}>Reverse</h4>
+	  <h4><input type="checkbox" name="trace"{% if trace == "on" %} checked{% endif %}>Trace</h4>
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock %}

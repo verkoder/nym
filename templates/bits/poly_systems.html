@@ -1,0 +1,21 @@
+<table border="0" cellspacing="0" cellpadding="4" align="center">
+    <tr bgcolor="#6F6F6F">
+    {% for col in ttl %}
+        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ col }}</span></td>
+    {% endfor %}
+    </tr>
+    <tr bgcolor="{% cycle '#EFEFEF' '#DFDFDF'%}">
+    {% for polys in poly_dict %}
+        <td valign="top"><b>
+            {% for poly in polys %}
+                <a href="/polynym/{{ poly.pk }}">{{ poly.name }}</a><br>
+            {% endfor %}</b>
+        </td>
+    {% endfor %}
+    </tr>
+    <tr>
+    {% for col in ttl %}
+        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ col }}</span></td>
+    {% endfor %}
+    </tr>
+</table>

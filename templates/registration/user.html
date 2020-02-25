@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}User{% endblock %}
+
+{% block mid %}<h2>
+{% if msg %}{{ msg }}{% else %}
+<img src="http://mood.scottyvercoe.com/static/img/badges/badge{{ earn.2 }}.png"><br>
+{{ usr }}<br><span class="lil">{{ earn.0 }}</span>
+{% endif %}
+{% endblock %}
+
+{% block right %}
+<table width="100%" cellpadding="4">
+    <tr>
+        <td align="center">User:<br><span class="code"><b>{{ usr }}</b></span></td>
+        <td align="center">Points:<br><span class="code"><b>{{ grand }}</b></span></td>
+        <td align="center">Status:<br><span class="code"><b>{{ earn.0 }}</b></span></td>
+    </tr>
+</table>
+<h3>{{ earn.1 }} points to reach the next status!</h3>
+{% endblock %}
+
+{% block content %}
+<table width="100%" cellpadding="6">
+    <tr>
+        <td width="20%" valign="top"><h3>Total Points Won: {{ total_wins }}</h3>
+            {% if wins.puz.0 %}<b>PolyPuzzle</b><br>{{ wins.puz.0.score }} points in {{ wins.puz.0.round }} rounds<br><br>{% endif %}
+            {% if wins.sec.0 %}<b>QuizZection</b><br>{{ wins.sec.0.score }} points in {{ wins.sec.0.round }} rounds<br><br>{% endif %}
+        </td>
+        <td width="35%" valign="top"><h3>Total Nyms Entered: {{ total_nyms }}</h3>
+            {% for obj,li in nyms %}
+                {% if li %}<b>{{ obj }}</b><br>{{ li|join:', ' }}<br><br>{% endif %}
+            {% endfor %}
+        </td>
+        <td width="35%" valign="top"><h3>Total Votes Cast: {{ total_votes }}</h3>
+            {% for obj,li in votes %}
+                {% if li %}<b>{{ obj }}</b><br>{{ li|join:', ' }}<br><br>{% endif %}
+            {% endfor %}
+        </td>
+        <td width="10%" align="right" valign="top"><h3>See other users:</h3>
+            {% for u in usrs %}<a href="/user/{{ u.username }}">{{ u.username }}</a><br>
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+{% endblock %}

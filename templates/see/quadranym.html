@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Nymology: Quadranym View{% endblock %}
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}{% if thing.epos == 'VB' and thing.rpos == 'VB' and thing.opos == 'NN' and thing.spos == 'NN' %} Conjugal{% endif %} Quadranym:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="right">
+            <b>Choose and <input type="submit" value="S E E" /></b></td>
+        <td>
+            <SELECT NAME="pk" MULTIPLE SIZE="12">
+            {% for q in things %}
+              <option VALUE="{{ q.id }}" {% ifequal q.id thing.id %}selected{% endifequal %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="#EFEFEF" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="#EFEFEF" align="left" valign="top" width="20%">
+        {% include 'bits/common.html' with obj=thing com='quadranym' %}
+    </td>
+	<td bgcolor="#BBBBBB" align="left" valign="middle" width="80%">
+        <table width="100%" cellpadding="4">
+          <tr>
+            <td bgcolor="#FFFFFF" align="center" width="33%"><h3>E = {{ thing.e }}</h3>
+            {% if thing.epos %}<b>POS:<b> {{ thing.epos }}<br>{% endif %}</td>
+            <td width="33%">&nbsp;</td>
+            <td bgcolor="#FFFFFF" align="center" width="33%"><h3>O = {{ thing.o }}</h3>
+            {% if thing.opos %}<b>POS:<b> {{ thing.opos }}<br>{% endif %}</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td bgcolor="#FFFFFF" align="center"><h3>N = {{ thing.name }}</h3>
+             {% if thing.pos %}<b>POS:<b> {{ thing.pos }}<br />{% endif %}</td>
+            <td>&nbsp;</td>
+          <tr>
+            <td bgcolor="#FFFFFF" align="center"><h3>S = {{ thing.s }}</h3>
+            {% if thing.spos %}<b>POS:<b> {{ thing.spos }}<br>{% endif %}</td>
+            <td>&nbsp;</td>
+            <td bgcolor="#FFFFFF" align="center"><H3>R = {{ thing.r }}</h3>
+            {% if thing.rpos %}<b>POS:<b> {{ thing.rpos }}<br>{% endif %}</td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+  <tr>
+      <td colspan="2" bgcolor="#EFEFEF" align="right"><b><a href="/queue/">Request a Quadranym</a></b></td>
+  </tr>
+</table>
+{% endblock %}

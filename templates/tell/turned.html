@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}TurnR{% endblock %}
+
+{% block mid %}{% if msg %}{{ msg }}{% else %}
+Flip Topics through free text<br>enqode with a set of topics and deqode with another{% endif %}</h2>
+{% endblock %}
+
+{% block content %}
+<form action="/turned/" method="POST">{% csrf_token %}
+<table width="80%">
+  <tr>
+	<td colspan=2 align="center"><b>Enter some text to mangle:</b><br />
+	<textarea name="txt" cols=80 rows=12>{{ txt }}</textarea><br /><br />
+	<h3>Select the same number of topics from each list and <input type="submit" value="T U R N" /></h3></td>
+  </tr>
+  <tr>
+    <td bgcolor="#BBBBBB" valign="top" align="center" width="220">
+      <h4>Initial Topic(s):<br />
+      <SELECT NAME="q1_id" MULTIPLE SIZE="12">
+	  {% for q in qs %}
+        <option VALUE="{{ q.id }}"
+		{% for q1 in q1s %}
+			{% ifequal q.id q1.id %} selected{% endifequal %}
+		{% endfor %}
+		/>{{ q.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+    <td bgcolor="#DEDEDE" valign="top" align="center" width="220">
+      <h4>Resulting Topic(s):<br />
+      <SELECT NAME="q2_id" MULTIPLE SIZE="12">
+	  {% for q in qs %}
+        <option VALUE="{{ q.id }}"
+		{% for q2 in q2s %}
+			{% ifequal q.id q2.id %} selected{% endifequal %}
+		{% endfor %}
+		/>{{ q.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock %}

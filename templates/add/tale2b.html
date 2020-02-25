@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Edit Tale{% endblock %}
+
+{% block mid %}<h2>
+{% if msg %}{{ msg }}{% elif spun %}<h2>Spinning your Tale!</h2>
+{% else %}Spin a Tale with {{ fabl.length }} Topic{% if fabl.length != 1 %}s{% endif %}!</h2>
+{% endif %}
+{% endblock %}
+{% block right %}<h3>
+Using {{ fabl.length }}-Topic Fable:<br>&laquo; {{ fabl.name }} &raquo;
+</h3>
+{% endblock %}
+
+{% block content %}
+<form action="/add/tale2b/" method="POST">{% csrf_token %}
+
+<table width="90%" align="center">
+  <tr>
+	<td bgcolor="#EFEFEF" align="center" valign="top">
+    <h3>&darr; List <span class="huge">{{ fabl.length }}</span> Topic{% if fabl.length != 1 %}s{% endif %} for current Fable &darr;<br>
+	<textarea name="quad_txt" cols=80 rows=8>{{ quad_txt }}</textarea><br>&uarr; as a comma-separated list &uarr;</h3>
+	</td>
+    <td bgcolor="#CFCFCF" valign="top" align="center">
+      <h4>Available Topics:<br />
+      <SELECT SIZE="12">
+	  {% for q in quads %}
+        <option>{{ q.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+    <td valign="top" align="center">
+        <h4 align="center">Write your Tale and<br><input type="submit" value="S P I N" name="_tell"></h4>
+        <h4><input type="checkbox" name="trace"{% if trace == "on" %} checked{% endif %}>Trace</h4>
+        <h4 align="center">{% if spun %}Ready to save?<br><input type="submit" value="N E X T" name="_save">{% endif %}</h4><hr>
+        <h4 align="center"><a href="/add/tale">Restart!</a></h4>
+    </td>
+  </tr>
+  <tr>
+      <td colspan="2"><br>
+          {% include 'bits/trace_tale.html' with quads=tale_quads spun=spun trace=trace %}
+      </td>
+  </tr>
+</table>
+<input name="length" type="hidden" value="{{ tale_quads|length }}">
+<input name="fabl_id" type="hidden" value="{{ fabl.id }}">
+</form>
+<br>
+{% endblock %}

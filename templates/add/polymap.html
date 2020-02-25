@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Edit Polymap{% endblock %}
+
+{% block mid %}{% if msg %}{{ msg }}{% else %}<h3>Think you can relate...</h3><h2>
+{{ p1.depth }} {% if p1.mode %}{{ p1.mode }}{% else %}part{% endif %}s of {{ p1.name }} to
+{{ p2.depth }} {% if p2.mode %}{{ p2.mode }}{% else %}part{% endif %}s of {{ p2.name }}?</h2>
+<h5>Build this Polymap or choose another&rarr;</h5>{% endif %}
+{% endblock%}
+{% block right %}
+<form action="/add/polymap2/" method="POST">
+{% csrf_token %}
+<table align="center" cellpadding="6">
+  <tr>
+  	<td colspan="2" align="center">
+		<b><a href="/polymap/add/">Refresh</a> for random picks or choose two, then <input type="submit" value="N E X T"/></b>
+	</td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <SELECT NAME="p1_id">
+	  {% for p in polys %}
+        <OPTION value="{{ p.id }}" {% if p.id == p1.id %}SELECTED{% endif %}/>{{ p.depth }} | {{ p.name }}
+      {% endfor %}
+	  </SELECT>
+    </td>
+    <td valign="top">
+      <SELECT NAME="p2_id">
+	  {% for p in polys %}
+        <OPTION value="{{ p.id }}" {% if p.id == p2.id %}SELECTED{% endif %}/>{{ p.depth }} | {{ p.name }}
+      {% endfor %}
+	  </SELECT>
+    </td>
+  </tr>
+</table><b>(matching depths not required)</b>
+</form>
+{% endblock %}
+{% block content %}
+
+{% if p1 %}
+<table align="center" bgcolor="#EFEFEF" cellpadding="8" cellspacing="0">
+  <tr>
+	<td><h2 align="right">{% if p1.src %}{{ p1.src }}
+						{% else %}Anonymous{% endif %}</h2></td>
+	<td width="20" bgcolor="#DEDEDE"><h2 align="center">vs.</h2></td>
+	<td><h2 align="left">{% if p2.src %}{{ p2.src }}
+						{% else %}Anonymous{% endif %}</h2></td>
+  </tr>
+  <tr>
+	<td align="right"><b>{{ p1.depth }} {% if p1.mode %}{{ p1.mode }}{% else %}part{% endif %}s of {{ p1.name }}</b></td>
+	<td width="20" bgcolor="#BBBBBB" align="center"><b>:idea:</b></td>
+	<td align="left"><b>{{ p2.depth }} {% if p2.mode %}{{ p2.mode }}{% else %}part{% endif %}s of {{ p2.name }}</b></td>
+  </tr>
+  <tr>
+    <td width="45%" align="right" valign="middle"><i><b>
+{% for p in p1.nyms %}
+	{% if p and not forloop.last %}
+	{{ p }}<br>
+	{% else %}{% if p %}{{ p }}
+	{% endif %}{% endif %}
+{% endfor %}
+    </b></i></td>
+	<td bgcolor="#DEDEDE" align="center" valign="middle"><b>&lrarr;<br>relations<br>to build<br>&lrarr;<b>
+	</td>
+	<td width="45%" align="left" valign="middle"><i><b>
+{% for p in p2.nyms %}
+	{% if p and not forloop.last %}
+	{{ p }}<br>
+	{% else %}{% if p %}{{ p }}
+	{% endif %}{% endif %}
+{% endfor %}
+	</b></i></td>
+  </tr>
+  <tr>
+  	<td><h3 align="right">{{ p1.area }}</h3></td>
+	<td bgcolor="#BBBBBB"><h4 align="center">:area:</h4></td>
+	<td><h3 align="left">{{ p2.area }}</h3></td>
+  </tr>
+  <tr>
+	<td><h3 align="right">{{ p1.user }}</h3></td>
+	<td bgcolor="#DEDEDE"><h4 align="center">:by:</h4></td>
+	<td><h3 align="left">{{ p2.user }}</h3></td>
+  </tr>
+  <tr>
+    <td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|truncatechars:25 }}</a></td>
+    <td bgcolor="#BBBBBB"><h4 align="center">:URL:</h4></td>
+    <td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|truncatechars:25 }}</a></td>
+  </tr>
+</table>
+{% endif %}
+
+{% endblock %}

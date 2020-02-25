@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Fable{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Fable Template:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="right">
+            <b>Choose and <input type="submit" value="S E E" /></b></td>
+        <td>
+            <SELECT NAME="pk" MULTIPLE SIZE="12">
+            {% for f in things %}
+              <option VALUE="{{ f.id }}" {% if f.id == thing.id %}selected{% endif %}/>{{ f.width }} |
+                             {{ f.name|truncatechars:25 }}{% if f.src %} | {{ f.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="#BBBBBB" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="#EFEFEF" align="left" valign="top" width="20%">
+        {% include 'bits/common.html' %}
+    </td>
+	<td bgcolor="#BBBBBB" align="left" valign="middle" width="70%">
+        <table width="100%" cellpadding="4">
+          <tr>
+            <td bgcolor="#FFFFFF" nowrap> &nbsp; &nbsp; </td>
+            <td bgcolor="#FFFFFF" align="center" width="66%"><h3>{{ thing.name|title }}</h3>{{ thing.qode|linebreaks }}<br></td>
+            <td bgcolor="#EFEFEF" align="center" width="33%"><h2>Subs: {{ thing.subs }}</h2></td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+   <tr>
+       <td bgcolor="#EFEFEF" colspan="2"><br></td>
+   </tr>
+</table>
+{% endblock %}

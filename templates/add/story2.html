@@ -1,0 +1,19 @@
+{% extends "add/_new.html" %}
+{% block title %}Edit Story{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Label your Story!{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="/save_story/" method="POST">
+{% csrf_token %} Enter below, then <input type="submit" value="S A V E"/>
+{% endblock %}
+
+{% block addy %}
+<b>Title:</b> <input type="text" name="name" size="60" value="Untitled"><br><br>
+<b>Length:</b> {{ spun|length }}<br>
+<b>Spun Story:</b>{% for s,q,p in spun %}<br>{{ s|striptags }}{% endfor %}<br><br>
+<b>Topics & Phrases:</b><br>{% autoescape off %}{{ txt }}{% endautoescape %}<br>
+<input name="quad_ids" type="hidden" value="{{ quad_ids }}">
+<input name="phra_ids" type="hidden" value="{{ phra_ids }}">
+<input name="length" type="hidden" value="{{ spun|length }}">
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}TurnR{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{msg}}{% else %}
+Topic-Turner<br>enqode with one set of topics, deqode with another{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="/turnr/" method="POST">{% csrf_token %}
+<h3 align="center">Select the same number of topics from each list and <input type="submit" value="T U R N" /></h3>
+<h5 align="center">Use Ctrl- or Cmd-click to select multiple</h5>
+{% endblock %}
+
+{% block content %}
+<table width="90%" align="center">
+  <tr>
+    <td width="25%" bgcolor="DFDFDF" valign="top" align="center" width="220">
+      <h4>Initial Topic(s):<br />
+      <SELECT NAME="q1_id" MULTIPLE SIZE="16">
+	  {% for q in quads %}
+        <option VALUE="{{ q.id }}"{% if q.id in q1_ids %} selected{% endif %}>{{ q.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+	<td width="50%" bgcolor="EFEFEF" align="center"><b>Enter text to mangle:</b><br>
+        <textarea name="txt" cols=60 rows=12>{% if txt %}{{ txt }}{% endif %}</textarea>
+    </td>
+    <td width="25%" bgcolor="DFDFDF" valign="top" align="center" width="220">
+      <h4>Resulting Topic(s):<br />
+      <SELECT NAME="q2_id" MULTIPLE SIZE="16">
+	  {% for q in quads %}
+        <option VALUE="{{ q.id }}"{% if q.id in q2_ids %} selected{% endif %}>{{ q.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock %}

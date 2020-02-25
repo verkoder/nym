@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<link rel="stylesheet" type="text/css" href="http://mood.scottyvercoe.com/static/spin/style.css">
+<link rel="shortcut icon" type="image/png" href="http://mood.scottyvercoe.com/static/spin/favicon.ico"/>
+<title>Nymology :: {% block title %}Idea Set Theory{% endblock %}</title>
+{% block script %}
+{% endblock %}
+</head>
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="FFFFFF">
+  <tr>
+	<td bgcolor="#CFCFCF" nowrap>
+		<span class="navbar"><font size="+2"><a href="/" style="width:138px;"><img src="http://mood.scottyvercoe.com/static/img/favlogo.png"/><b>Nymology</b></a></font>
+    &nbsp; <a href="/polynym/n/2" class="tooltip-bottom" data-tooltip="See 2-nyms: Dyads"><font size="+2">&ovbar;</a>
+    <a href="/polynym/n/3" class="tooltip-bottom" data-tooltip="See 3-nyms: Triads">&xdtri;</a>
+    <a href="/polynym/n/4" class="tooltip-bottom" data-tooltip="See 4-nyms: Tetrads">&fltns;</a></font>&nbsp;
+        <b><a href="http://polynyms.com/doku.php?id=nymology">info</a></b></span></td>
+    <td bgcolor="#CFCFCF"><span class="tiny">
+{% if user.is_authenticated %}
+User: <a href="{% url 'spin:user_detail' user.username %}">{{ user.username }}</a><br>
+<a href="/accounts/logout">Logout</a>
+{% else %}
+User: --<br><a href="/accounts/login">Login</a>
+{% endif %}</span>
+	</td>
+	<td bgcolor="#9F9F9F" align="center" width="33%">
+		<span class="navbar"><font size="+2" color="FFFFFF"><i>Idea Set Theory</i></font></span>
+	</td>
+  <tr>
+	<td class="tip" width="18%" bgcolor="#EFEFEF" align="left">
+
+{% block bar %}
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td colspan="4" class="tip" nowrap bgcolor="#DFDFDF"><span class="navbar">&ThinSpace;<b><a
+                   href="/plot" class="tooltip-right" data-tooltip="Plot Polynyms">&bigwedge;</a>
+                <a href="/polynyms/" class="tooltip-right" data-tooltip="Sort Polynyms">&target;</a>
+                <a href="/polynyms/sort/" class="tooltip-right" data-tooltip="Edit Polynyms">&check;</a>
+                <a href="/polytile" class="tooltip-right" data-tooltip="PolyTile">&plusb;</a>
+                <a href="/polymath" class="tooltip-above" data-tooltip="Compare Polynyms">&bot;</a>
+                <a href="/p/find/" class="tooltip-above" data-tooltip="Find Polynym dimension">?</a>
+                <a href="/polynym/add/" class="tooltip-above" data-tooltip="Add Polynym">+</a><a
+                   href="/polynym" style="width:72px;" class="tooltip-above" data-tooltip="See Polynym">Polynym</a><a
+                   href="/union" class="tooltip-above" data-tooltip="See Unionym">&cup;</a>
+                <a href="/section" class="tooltip-above" data-tooltip="See Sectionym">&cap;</a>&nbsp;<a
+                   href="/polyset/add/" class="tooltip-above" data-tooltip="Add Polynym set">+</a><a
+                   href="/polyset" style="width:39px;" class="tooltip-above" data-tooltip="See Polynym Set">Pset</a>
+                <a href="/polymap/add/" class="tooltip-above" data-tooltip="Add Polymap">+</a><a
+                   href="/polymap" class="tooltip-above" data-tooltip="See Polymap">Pmap</a></b>
+
+         <br>&ThinSpace;<b><a href="/plot" class="tooltip-right" data-tooltip="Plot Quadranyms">&bigwedge;</a>
+                <a href="/quadranyms/" class="tooltip-right" data-tooltip="Sort Quadranyms">&target;</a>
+                <a href="/quadranyms/sort/" class="tooltip-right" data-tooltip="Edit Quadranyms">&check;</a>
+                <a href="/hyperq/" class="tooltip-right" data-tooltip="HyperQ">&plusb;</a>
+                    &bot;
+                <a href="/q/find/" class="tooltip-bottom" data-tooltip="Find Quadranym dimension">?</a>
+                <a href="/quadranym/add/conjugal" class="tooltip-bottom" data-tooltip="Add Quadranym">+</a><a
+                   href="/quadranym" style="width:93px;px;" class="tooltip-bottom" data-tooltip="See Quadranym">Quadranym</a>&nbsp;<a
+                   href="/quadraset/add/" class="tooltip-bottom" data-tooltip="Add Quadranym set">+</a><a
+                   href="/quadraset" style="width:39px;" class="tooltip-bottom" data-tooltip="See Quadranym Set">Qset</a>
+                <a href="/vectornym/add/" class="tooltip-bottom" data-tooltip="Add Vectornym">+</a><a
+                   href="/vectornym" class="tooltip-bottom" data-tooltip="See Vectornym">Pvect</a></b>
+            </td>
+
+        <tr><td class="tip" nowrap><span class="tiny">&darr; User Content &darr;</span><br>
+                <span class="navbar">
+             <b><a href="/story/add/" class="tooltip-right" data-tooltip="Add Story">+</a><a
+                   href="/story" style="width:48px;" class="tooltip-right" data-tooltip="See Story">Story</a>&boxHD;
+            <br><a href="/tale/add/" class="tooltip-right" data-tooltip="Add Tale">+</a><a
+                   href="/tale" style="width:48px;" class="tooltip-right" data-tooltip="See Tale">Tale</a></b>&boxVH;</span><br>
+                    <span class="tiny">&nbsp;&darr; Verse &darr; &nbsp;&swArr;&dArr;&seArr;</span>
+                <br><span class="navbar"><b>
+                <a href="/qspin" class="tooltip-right" data-tooltip="Spin a Phrase">EzVerse</a><br>
+                <a href="/fspin" style="width:34px;" class="tooltip-right" data-tooltip="Spin a Tale">Tale</a><a
+                   href="/mspin" style="width:36px;" class="tooltip-right" data-tooltip="Spin Phrases">Spin</a></b></span>
+            </td>
+
+            <td class="tip" nowrap><span class="tiny">&darr; Templates &darr; &seArr;&dArr;&swArr;</span><br>
+                <span class="navbar">
+             <b><a href="/phrase/add/" class="tooltip-bottom" data-tooltip="Add Phrase">+</a><a
+                   href="/phrase" style="width:56px;" class="tooltip-bottom" data-tooltip="See Phrase">Phrase</a>&boxVL;
+            <br><a href="/fable/add/" class="tooltip-bottom" data-tooltip="Add Fable">+</a><a
+                   href="/fable" style="width:56px;" class="tooltip-bottom" data-tooltip="See Fable">Fable</a>&boxUL;<br>
+                <span class="tiny"> &nbsp; &nbsp; &nbsp; &darr; <b>Flip</b> &darr;</span><br>
+                    <span class="navbar">
+                <a href="/oraq" class="tooltip-bottom" data-tooltip="Ask the OraQueue...">ora&Qopf;</a> <a
+                   href="/turnr" class="tooltip-bottom" data-tooltip="TexTurner mangler">tu&YAcy;&Icy;<sub>*</sub></a><br>
+                   &nbsp;<a href="/unquote" class="tooltip-bottom" data-tooltip="Flip Famous Quotes">unQuote!</a></b>
+            </span>
+            </td>
+
+            <td class="tip" nowrap>
+                <span class="tiny"> &nbsp;&darr; Guess &darr;</span><br>
+                <span class="navbar" nowrap><b>
+                <a href="/emo" class="tooltip-bottom" data-tooltip="Feel the Mood">Emo</a></b>!<b><a href="/polykins" class="tooltip-bottom" style="width:36px;" data-tooltip="Feel the Polynym">nym</a>
+            <br><a href="/qontext" style="width:68px;" class="tooltip-bottom" data-tooltip="Dynamical Context">Qontext</a>
+            <br><a href="/apolysis" style="width:68px;" class="tooltip-bottom" data-tooltip="Unionym-Search URLs">aPolysis</a>
+            </td>
+
+            <td class="tip" nowrap>
+                <span class="tiny"> &nbsp;&nbsp; &darr; Games &darr;</span><br>
+                    <span class="navbar">
+            <b><a href="/quizzection" class="tooltip-bottom" data-tooltip="Guess Sectionym dimension">Qui&Zopf;ection</a>
+            <br><a href="/polypuzl" class="tooltip-bottom" data-tooltip="Guess Polynym dimension">PolyPuzzle</a>
+            <br><a href="/fmk" class="tooltip-bottom" data-tooltip="Let nyms decide...">F.MarryKill</i></a></b></span>
+            </td>
+        </tr>
+    </table><span style="font-size:9px"><b>* Work-in-progress</b></span>
+{% endblock %}
+    </td>
+    <td align="center">
+{% block mid %}
+{% endblock %}
+    </td>
+	<td bgcolor="EFEFEF" align="center">
+{% block right %}
+{% endblock %}
+    </td>
+  </tr>
+</table>
+<hr>
+<div class="norm">
+{% block content %}
+{% endblock %}<hr><span class="teeny">[<a href="/admin">admin</a>]</span><br>
+</div><div style="position: fixed; bottom: 0; right: 0; font-family: sans-serif; font-size: 12px; background-color: #CFCFCF;">
+updated 2-1-2020 &copy; 2020 Nymology</div>
+</body></html>

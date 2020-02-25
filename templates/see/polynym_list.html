@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+{% block title %}Polynyms{% endblock %}
+
+{% block mid %}
+<h2>Polynym Data</h2>
+<h4>click column to sort</h4>
+{% endblock %}
+
+{% block right %}
+<form action="/add/polynym" value="A D D"><input type="submit" value="A D D"></form>
+{% endblock %}
+
+{% block content %}
+{% render_table object_list %}
+{% endblock %}

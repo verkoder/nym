@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Polynym Dimension{% endblock %}
+
+{% block script%}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Polynym Dimension:<br>
+    $$P_{ {{ wordr }} }=\{\  {{ d }}\ \}$$
+{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="/p/find/{{ w|slugify }}" method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="right">
+          <table>
+            <tr>
+                <td><b><a href="/p/find/">Refresh</a> for a random pick or choose and <input type="submit" value="S E E" /></b>
+              </td><td>
+              <SELECT NAME="word" MULTIPLE SIZE="12">
+        	  {% for w in words %}
+                <OPTION VALUE="{{ w }}" {% if w == word %}selected {% endif %}/>{{ w }}
+              {% endfor %}
+        	  </SELECT>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table border="0" cellspacing="0" cellpadding="2" align="center">
+<colgroup>
+    <col span="13">
+    <col class="outlined">
+</colgroup>
+{% for row in rows %}
+    <tr>
+        {% for dimension,colr in row %}
+        <td bgcolor="{{ colr }}"><span class="navbar"><font size="+1" color="FFFFFF">
+            <a href="/p/find/{{ dimension|slugify }}" style="color: #FFFFFF;">{{ dimension }}</a>
+        </span></td>
+        {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+<b>Polynyms:</b><br>
+{% for p in got_polys %}
+{{ p.depth }} | <a href="/p/{{ p.name|slugify }}">{{ p.name|truncatechars:25 }}</a>{% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}<br>
+{% endfor %}
+{% endblock %}

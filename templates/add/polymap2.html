@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Edit Polymap{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% endif %}</h2>
+<form action="/save_polymap/" method="POST">{% csrf_token %}
+<h3>Choose below, then <input type="submit" value="S A V E"/></h3>
+{% endblock %}
+{% block right %}
+More about <b><a href="http://conceptnet.io" target="_blank">ConceptNet</a></b> relations
+{% endblock %}
+{% block content %}
+<table align="center" bgcolor="#EFEFEF" cellpadding="4" cellspacing="0">
+  <tr>
+	<td width="45%" align="right">
+		<h2>{{ p1.depth }} {{ p1.mode }}s of {{ p1.name }}</h2>
+	</td>
+	<td width="20" align="center" bgcolor="#DEDEDE">
+			<label for="name">Polymap name:</label><br>
+			<input type="text" name="name"/><br></td>
+	</td>
+	<td width="45%">
+		<h2>{{ p2.depth }} {{ p2.mode }}s of {{ p2.name }}</h2>
+	</td>
+  </tr>
+
+{% for i in rng %}
+  <tr>
+	<td align="right" valign="top">
+    	<SELECT NAME="pa{{ forloop.counter }}">
+		{% for p in p1.nyms %}
+			{% if p %}
+				{% if i >= p1.depth and forloop.first %}<option disabled selected value> << choose dimension >> </option>{% endif %}
+				<OPTION VALUE="{{ p }}"{% if forloop.counter == forloop.parentloop.counter %} SELECTED{% endif %}>{{ p }}
+			{% endif %}
+		{% endfor %}</SELECT>
+    </td>
+	<td bgcolor="#BBBBBB" align="center" valign="top">
+		<SELECT NAME="r{{ forloop.counter }}">{% for rel in rels %}<OPTION VALUE="{{ rel }}">{{ rel }}{% endfor %}</SELECT>
+	</td>
+	<td align="left" valign="top">
+		<SELECT NAME="pb{{ forloop.counter }}">
+		{% for p in p2.nyms %}
+			{% if p %}
+				{% if i >= p2.depth and forloop.first %}<option disabled selected value> << choose dimension >> </option>{% endif %}
+				<OPTION VALUE="{{ p }}"{% if forloop.counter == forloop.parentloop.counter %} SELECTED{% endif %}>{{ p }}
+			{% endif %}
+		{% endfor %}</SELECT>
+	</td>
+  </tr>
+{% endfor %}
+
+  <tr>
+	<td><h2 align="right">{% if p1.src %}{{ p1.src }}{% else %}Anonymous{% endif %}</h2></td>
+	<td width="20" bgcolor="#DEDEDE" align="center">
+				<label for="src">Source:</label><br>
+				<input type="text" name="src"/><br>
+	<td>
+		<h2 align="left">{% if p2.src %}{{ p2.src }}{% else %}Anonymous{% endif %}</h2></td>
+  </tr>
+  <tr>
+  	<td>
+		<h3 align="right">{% if p1.area %}{{ p1.area }}{% else %}General{% endif %}</h3>
+	</td>
+	<td bgcolor="#BBBBBB" align="center">
+		<label for="area">Area:</label><br>
+		<input type="text" name="area"/><br>
+	</td>
+	<td>
+		<h3 align="left">{% if p2.area %}{{ p2.area }}{% else %}General{% endif %}</h3>
+	</td>
+  </tr>
+
+  <tr>
+	<td>
+		<h3 align="right">{{ p1.user.username }}</h3>
+	</td>
+	<td bgcolor="#DEDEDE" align="center">
+		By:<br><b>{{ user.username }}</b>
+	</td>
+	<td>
+		<h3 align="left">{{ p2.user.username }}</h3>
+	</td>
+  </tr>
+
+  <tr>
+  	<td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|truncatechars:25 }}</a></td>
+	<td bgcolor="#BBBBBB" align="center">
+		<label for="wiki">URL:</label><br>
+		<input type="text" name="wiki"/><br>
+	</td>
+	<td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|truncatechars:25 }}</a></td>
+  </tr>
+  <tr>
+  	<td align="center" colspan="3"><h3>Choose above, then <input type="submit" value="S A V E"/></h3></td>
+  </tr>
+</table>
+{% endblock %}

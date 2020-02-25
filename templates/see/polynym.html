@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Polynym{% endblock %}
+{% block mid %}<h2>{% if msg %}Polynym {{ msg }}!{% else %}Polynym:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="center">
+            <b>Choose and <input type="submit" value="S E E" /></b></td>
+        <td>
+            <SELECT NAME="pk" MULTIPLE SIZE="12">
+            {% for p in things %}
+              <option VALUE="{{ p.id }}"
+                {% ifequal p.id thing.id %}selected{% endifequal %}/>
+                                  {{ p.depth }} | {{ p.name|truncatechars:25 }}
+                {% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}
+                {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="BBBBBB" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="EFEFEF" align="left" valign="top" width="20%">
+        {% include 'bits/common.html' %}
+    </td>
+	<td bgcolor="DEDEDE" align="center" valign="middle" width="60%">
+        {% include 'bits/icon_polynym.html' %}
+    </td>
+    <td bgcolor="EFEFEF" width="20%" align="right" valign="top"><b>Mode = <font color="darkseagreen">type</font>
+         <font color="lightblue">part</font> <font color="peru">step</font><br>Depth = Shape</b>
+    </td>
+  </tr>
+   <tr>
+       <td bgcolor="#EFEFEF" colspan="3"><br></td>
+   </tr>
+</table>
+{% endblock %}

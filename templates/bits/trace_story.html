@@ -1,0 +1,43 @@
+{% if spun %}{% autoescape off %}
+{% if trace %}
+<table cellpadding="0" cellspacing="4">
+
+	{% for phrase,q,t in spun %}
+	{% if t.name != "-" and q.name != "-" %}<tr>
+		<td bgcolor="#FFFFFF">{{ phrase }}</td>
+		<td bgcolor="#EFEFEF"><table width="100%" cellspacing="0" cellpadding="0">
+		  <tr>
+		    <td bgcolor="#FFFFFF" align="center" width="33%"><b>E = {{ q.e }}</b></td>
+		    <td width="33%">&nbsp;</td>
+		    <td bgcolor="#FFFFFF" align="center" width="33%"><b>O = {{ q.o }}</b></td>
+		  </tr>
+		  <tr>
+		    <td>&nbsp;</td>
+		    <td bgcolor="#FFFFFF" align="center"><b>N = {{ q.name }}</b></td>
+		    <td>&nbsp;</td>
+		  <tr>
+		    <td bgcolor="#FFFFFF" align="center"><b>S = {{ q.s }}</b></td>
+		    <td>&nbsp;</td>
+		    <td bgcolor="#FFFFFF" align="center"><b>R = {{ q.r }}</b></td>
+		  </tr>
+		</table>
+		<table width="100%" bgcolor="#FFFFFF">
+		    <tr>
+				<td align="left" valign="bottom"><span class="lil">{{ t.name }}</span></td>
+		        <td align="center" valign="bottom"><span class="lil">{{ t.qode }}</span></td>
+		        <td align="right" valign="bottom"><span class="lil">{{ t.subs }}=</span></td>
+		        <td align="right" valign="bottom"><span class="lil">{{ t.width }}</span></td>
+		    </tr>
+		</table></td>
+	</tr>
+	{% endif %}
+	{% if not forloop.last %}<tr>
+		<td colspan="2"><hr></td>
+	</tr>{% endif %}
+	{% endfor %}
+</table>
+{% else %}<h3 align="center">{{ thing.name|title }}</h3>
+{% for phrase,q,t in spun %}
+	{{ phrase|striptags }}<br>
+{% endfor %}
+{% endif %}{% endautoescape %}{% endif %}

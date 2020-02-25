@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}EZ Spin{% endblock %}
+
+{% block mid %}
+{% if msg %}{{ msg }}{% elif spun %}<h2>Spun Tale:</h2><b>&laquo;</b> {{ spun }} <b>&raquo;</b>
+{% else %}<h2>Spin a Topic through a Phrase.</h2>
+{% endif %}
+{% endblock %}
+
+{% block right %}
+{% if quad %}
+{% include 'bits/quad.html' %}
+<table>
+    <tr>
+        <td valign="bottom"><span class="lil">{{ phra.qode }}</span></td>
+        <td valign="bottom"><span class="lil">{{ phra.name }}</span></td>
+        <td valign="bottom"><span class="lil">{{ phra.subs }}:{{ phra.width }}</span></td>
+    </tr>
+</table>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<form action="/qspin/" method="POST">{% csrf_token %}
+<h3 align="center">Choose below and <input type="submit" value="S P I N"/></h3>
+<table align="center" cellspacing="0" cellpadding="4">
+  <tr>
+    <th bgcolor="#CFCFCF"><h3>Pick a Topic:</h3></th>
+    <th bgcolor="#EFEFEF"><h3>Pick a Phrase:</h3></th>
+  </tr>
+  <tr>
+    <td bgcolor="#EFEFEF" valign="top" width="120"><span class="its">
+      {% for q in quads %}
+        <input type="radio" name="quad_id" id="q{{ forloop.counter }}" value="{{ q.id }}" />
+        <label for="q{{ forloop.counter }}" nowrap>{{ q.name }}</label>
+		{% if not forloop.last %}<br />{% endif %}
+	  {% endfor %}</span>
+    </td>
+	<td bgcolor="#CFCFCF" valign="top" width="120"><span class="its">
+    {% for ph in phras %}
+      <input type="radio" name="phra_id" id="ph{{ forloop.counter }}" value="{{ ph.id }}" />
+      <label for="ph{{ forloop.counter }}" nowrap>{{ ph.name }}</label>
+		{% if not forloop.last %}<br />{% endif %}
+    {% endfor %}</span>
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "add/_new.html" %}
+{% block title %}Edit Quadranym{% endblock %}
+
+{% block mid %}<h2>{% if form.errors %}{{ form.errors.name|striptags }}{% else %}Work that {{ kind }} Quadranym!{% endif %}</h2>{% endblock %}
+
+{% block right%}
+<h4><a href="/quadranym/add/{% if kind == 'conjugal' %}freeform">&rarr;Add Freeform{% else %}conjugal">&rarr;Add Conjugal{% endif %} Quadranym instead&rarr;</a></h4>
+<form method="POST">{% csrf_token %}
+<h3>Enter below, then <input type="submit" value="S A V E"/><br><br>
+or <a href="/quadranym{% if pk %}/{{ pk }}{% endif %}">CANCEL</a></h3>
+{% endblock %}
+
+{% block addy %}
+<table width="100%" cellpadding="4">
+  <tr>
+    <td bgcolor="#FFFFFF" align="center" width="33%">
+      <h3>{{ form.e.label_tag }}<br>
+      {% if kind != 'conjugal' %}{{ form.e }}<br><br>{{ form.epos }}
+      {% else %}to {{ form.e }}<br><br>verb root<input name="epos" type="hidden" value="VB">{% endif %}</h3>
+    </td>
+    <td width="33%">&nbsp;</td>
+    <td bgcolor="#FFFFFF" align="center" width="33%"><h3>{{ form.o.label_tag }}<br>{{ form.o }}<br><br>
+      {% if kind != 'conjugal' %}{{ form.opos }}
+      {% else %}singular noun /phrase<input name="opos" type="hidden" value="NN">{% endif %}</h3>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td bgcolor="#EFEFEF" align="center" nowrap><h2>Topic:<br>{{ form.name }}<br>
+    <span class="tiny">enter topic or click for requests</span></h2>{{ form.pos }}
+    </td>
+    <td>&nbsp;</td>
+  <tr>
+    <td bgcolor="#FFFFFF" align="center"><h3>{{ form.s.label_tag }}<br>{{ form.s }}<br><br>
+      {% if kind != 'conjugal' %}{{ form.spos }}
+      {% else %}singular noun /phrase<input name="spos" type="hidden" value="NN">{% endif %}</h3>
+    </td>
+    <td align="center" valign="top"></td>
+    <td bgcolor="#FFFFFF" align="center"><h3>{{ form.r.label_tag }}<br>
+      {% if kind != 'conjugal' %}{{ form.r }}<br><br>{{ form.rpos }}
+      {% else %}to {{ form.r }}<br><br>verb root<input name="rpos" type="hidden" value="VB">{% endif %}</h3>
+    </td>
+  </tr>
+</table>
+{% endblock %}

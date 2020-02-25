@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Vectornym{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Vectornym:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="/vectornym/" method="POST">{% csrf_token %}
+<table width="100%">
+    <tr>
+        <td align="center">
+            <b>Choose and <input type="submit" value="S E E" /></b><br>
+        <td>
+            <SELECT NAME="pk" MULTIPLE SIZE="12">
+            {% for v in things %}
+              <option VALUE="{{ v.id }}" {% if v.id == thing.id %}selected{% endif %}/>{{ v.length }} | {{ v.name|truncatechars:35 }}{% if v.src %} | {{ v.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="#BBBBBB" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="EFEFEF" align="left" valign="top" width="20%">
+        {% include 'bits/common.html' %}
+    </td>
+	<td bgcolor="DEDEDE" align="left" valign="middle" width="80%">
+    <h3 align="center">{{ thing.name|title }}</h3><hr style="width:{{ thing.length }}0%">
+    <table align="center" cellpadding="4">
+        <tr valign="top">
+        {% for p in thing.polys %}
+            <td align="center"><span class="full">{{ p.name }}<br><span class="huge">{% if not forloop.last %}&rarr;{% else %}&uarr;</span>{% endif %}</span></td>
+        {% endfor %}
+        </tr>
+        <tr valign="top">
+        {% for p in thing.nyms %}
+            <td bgcolor="{% cycle '#FFFFFF' '#EFEFEF' %}"><span class="code">{{ p|join:'<br>'}}</span></td>
+        {% endfor %}
+        </tr>
+        <tr valign="top">
+        {% for p in thing.polys %}
+            <td bgcolor="#CFCFCF" align="center"><span class="code">{{ p.depth }}<br>{{ p.mode }}</td>
+        {% endfor %}
+        <tr valign="top">
+        {% for p in thing.polys %}
+            <td><span class="code">
+                {% if p.area %}{{ p.area|truncatechars:25 }}<br>{% endif %}
+                {% if p.src %}{{ p.src|truncatechars:25 }}{% endif %}
+            </span></td>
+        {% endfor %}
+        </tr>
+
+    </table>
+    <hr style="width:{{ thing.length }}0%">
+    </td>
+  </tr>
+    <tr>
+        <td bgcolor="#EFEFEF" colspan="2"><br></td>
+    </tr>
+</table>
+{% endblock %}

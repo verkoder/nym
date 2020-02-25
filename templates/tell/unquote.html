@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}unQuote{% endblock %}
+
+{% block mid %}
+<h2>{% if msg %}{{ msg }}{% else %}unQuote!{% endif %}</h2>
+{% autoescape off %}{{ spun }}<br><b>&mdash; {{ quot.src }}</b>{% endautoescape %}
+{% endblock %}
+
+{% block right %}
+{% if quad %}
+{% include 'bits/quad.html' with quad=quad %}
+<table>
+    <tr>
+        <td valign="bottom"><span class="lil">{{ quot.qode }}</span></td>
+        <td valign="bottom"><span class="lil">{{ quot.subs }}:{{ quot.width }}</span></td>
+    </tr>
+</table>
+Enqoded Topic: <b>{{ quot.quadranym.name }}</b>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<form action="/unquote/" method="POST">
+{% csrf_token %}
+<h3 align="center">Choose below and <input type="submit" value="S P I N" /> or <a href="/unquote">spin by chance</a></h3>
+<table align="center" cellspacing="0" cellpadding="4">
+  <tr>
+    <th bgcolor="#CFCFCF"><h3>Pick a Quote:</h3></th>
+    <th bgcolor="#EFEFEF"><h3>Pick a Topic:</h3>
+  </tr>
+  <tr>
+	<td bgcolor="#EFEFEF" align="center" valign="top" height="290px" width="200px">
+	<SELECT NAME="quot_id" MULTIPLE SIZE="20">
+    {% for qo in quots %}
+      <OPTION VALUE="{{ qo.id }}"
+	  {% if qo.id == quot.id %}selected {% endif %}
+	  />{{ qo.width }} | {{ qo.subs }} | {{ qo.src|truncatechars:25 }}
+      {% endfor %}
+    </SELECT>
+    <br><br><span class="lil">Quotes courtesy of <b><a href="https://www.quotes.net" target="_blank">Quotes.net</a></b></span>
+	</td>
+    <td bgcolor="#CFCFCF" align="center" valign="top" height="290px" width="200px">
+      <SELECT NAME="quad_id" MULTIPLE SIZE="20">
+	  {% for q in quads %}
+		<OPTION VALUE="{{ q.id }}"{% if q.id == quad.id %} selected{% endif %}/>{{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+	  {% endfor %}
+	  </SELECT>
+	</td>
+  </tr>
+</table>
+</form>
+{% endblock %}

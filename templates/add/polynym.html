@@ -1,0 +1,32 @@
+{% extends "add/_new.html" %}
+{% block title %}Edit Polynym{% endblock %}
+
+{% block mid %}<h2>{% if form.errors %}{{ form.errors }}{% else %}Work that Polynym!{% endif %}</h2>{% endblock %}
+
+{% block right%}
+<form method="POST" class="post-form">{% csrf_token %}
+<h3>Enter below, then <input type="submit" value="S A V E"/><br><br>
+or <a href="/polynym{% if pk %}/{{ pk }}{% endif %}">CANCEL</a></h3>
+{% endblock %}
+{% block addy %}
+<table width="100%" cellpadding="4">
+  <tr>
+    <td bgcolor="#EFEFEF" align="center" width="66%"><h2>Each is a {{ form.mode }} of<br>{{ form.name }}</h2>
+    </td>
+    <td bgcolor="#FFFFFF" align="center" width="33%">
+        1. {{ form.p1 }}<br>
+        2. {{ form.p2 }}<br>
+        3. {{ form.p3 }}<br>
+        4. {{ form.p4 }}<br>
+        5. {{ form.p5 }}<br>
+        6. {{ form.p6 }}<br>
+        7. {{ form.p7 }}<br>
+        8. {{ form.p8 }}<br>
+        9. {{ form.p9 }}<br>
+       10. {{ form.p10 }}<br>
+       11. {{ form.p11 }}<br>
+       12. {{ form.p12 }}<br>
+    </td>
+  </tr>
+</table>
+{% endblock %}

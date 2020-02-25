@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Sectionyms{% endblock %}
+
+{% block script%}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Polynym Intersection:</h2>
+    <h3>P<sub>{{ a.name }}</sub> &cap; P<sub>{{ b.name }}</sub> &rarr; { {{ ab|join:", " }} }
+    $$P^{ {{ a.depth }} }\ \cap\ P^{ {{ b.depth }} } \to | {{ ab|length }} |$$</h3>
+{% endif %}{% endblock %}
+{% block right %}
+<table>
+    <tr>
+        <td align="right"><form action="/section/" method="POST">
+            {% csrf_token %}
+            <b><a href="/section">Refresh</a> for a random pick or choose and <input type="submit" value="S E E" /></b><br><br>
+            <input type="checkbox" name="supr"{% if supr == "on" %} checked{% endif %}>Supernym<br><br>
+            <span class="lil">TOTAL S{% if supr == "on" %}uper{% else %}ectio{% endif %}nyms: {{ abs|length }}</span>
+        </td>
+        <td>
+            <SELECT NAME="ab_id" MULTIPLE SIZE="12">
+            {% for id,a,ab,b in abs %}
+              <option VALUE="{{ id }}" {% if abid == id %}selected{% endif %}/>{{ a.depth }} | {{ a.name|truncatechars:18 }} &xcap; {{ b.depth }} | {{ b.name|truncatechars:18 }}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}
+<table width="100%" cellpadding="2" cellspacing="0" border="0">
+  <tr>
+      <td></td>
+      <td align="center" colspan="3"><h2>{{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of <a href="/p/id/{{ a.id }}">{{ a.name }}</a> &darr;</h2></td>
+      <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td bgcolor="FFFFFF" align="center"> </td>
+    <td bgcolor="DEDEDE" align="center"><h3><i><b>{% for pt in n %}{% if pt %}{{ pt }}<br>{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="FFFFFF" align="right" colspan="2"></td>
+  </tr>
+  <tr>
+    <td><h2>{{ b.depth }} {% if b.mode %}{{ b.mode }}{% else %}part{% endif %}s of <a href="/p/id/{{ b.id }}">{{ b.name }}</a><br>&rarr;</h2></td>
+    <td bgcolor="DEDEDE" align="center" width="28%"><h3><i><b>{% for pt in w %}{% if pt %}{{ pt }}<br>{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="CFCFCF" align="center" width="28%"><h3><i><b>{% for pt in ab %}{% if pt %}{{ pt }}<br>{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="DEDEDE" align="center" width="28%"><h3><i><b>{% for pt in e %}{% if pt %}{{ pt }}<br>{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="FFFFFF" width="16%"><h2>{{ b.depth }} {% if b.mode %}{{ b.mode }}{% else %}part{% endif %}s of <a href="/p/id/{{ b.id }}">{{ b.name }}</a><br>&larr;</h2></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td bgcolor="FFFFFF" align="center"><h2></h2></td>
+    <td bgcolor="DEDEDE" align="center"><h3><i><b>{% for pt in s %}{% if pt %}{{ pt }}<br />{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="FFFFFF" align="center"></td>
+    <td bgcolor="FFFFFF">
+            {% if b.src %}<b>Source:</b> {{ b.src }}<br>{% endif %}
+            {% if b.area %}<b>Area:</b> {{ b.area }}<br>{% endif %}</td>
+            {% if b.user %}<b>By:</b> {{ b.user }}<br>{% endif %}
+  </tr>
+  <tr>
+    <td></td>
+    <td bgcolor="FFFFFF" align="center"></td>
+    <td bgcolor="FFFFFF" align="center" valign="top"><h2 align="center">{{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of <a href="/p/id/{{ a.id }}">{{ a.name }}</a> &uarr;</h2></td>
+    <td bgcolor="FFFFFF" align="left" valign="top" colspan="2">
+        {% if b.wiki %}<h5 align="right"><b>URL:</b> <a href="{{ b.wiki }}">{{ b.wiki }}</a></h5>{% endif %}
+        {% if a.src %}<b>Source:</b> {{ a.src }}<br>{% endif %}
+        {% if a.area %}<b>Area:</b> {{ a.area }}<br>{% endif %}
+        {% if a.user %}<b>By:</b> {{ a.user }}<br>{% endif %}
+        {% if a.wiki %}<h5 align="left"><b>URL:</b> <a href="{{ a.wiki }}">{{ a.wiki }}</a></h5>{% endif %}</td>
+  </tr>
+</table>
+{% endblock %}

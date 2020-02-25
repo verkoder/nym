@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}PolyPuzzle{% endblock %}
+
+{% block mid %}
+<div class="container"><img src="http://mood.scottyvercoe.com/static/img/polypuzl.png" style="width:65%; background-color:plum;"></div>
+<h2>{% if msg %}{{ msg }}{% else %}Find the Missing Nym!{% endif %}</h2>
+{% endblock %}
+
+{% block right %}
+<form action="/polypuzl/" method="POST">{% csrf_token %}
+<table border="0" cellspacing="0" cellpadding="4" width="90%">
+    <tr>
+        <td align="left" valign="top" bgcolor="#DEDEDE" nowrap><span class="num"><b>YOUR SCORE:</b> {{ at }} points<br>
+                            <b>ROUND[{{ nu }}]:</b> {{ poly.depth }} points</span></td>
+        <td align="left" valign="top" bgcolor="#DEDEDE" nowrap>
+            <span class="num"><b>TOP SCORE TO BEAT:</b><br>{% for s in w %}{{ s }} &nbsp;{% endfor %}</span>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <b>Enter below and<br><input type="submit" value="G U E S S" name="_guess" /></b>
+        </td>
+        <td align="center" valign="middle"><br><b>{% if user.is_authenticated %}
+            <input type="submit" value="S A V E" name="_save" /><br>Player: {{ user.username }}
+            {% else %}<a href="/accounts/login">LOGIN</a> or <a href="/signup">SIGN UP</a> to save your score!{% endif %}
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="#BBBBBB" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="#DEDEDE" align="left" valign="top" width="20%">
+        {% if poly.src %}<b>Source:<b> {{ poly.src }}<br />{% endif %}
+        {% if poly.area %}<b>Area: {{ poly.area }}<br />{% endif %}
+    </td>
+	<td bgcolor="#BBBBBB" align="left" valign="middle" width="80%">
+        <table width="100%" cellpadding="4">
+          <tr>
+            <td bgcolor="#EFEFEF" align="center" width="66%"><h3><i><b>
+                {% for nym in poly.nyms %}
+                  {% if nym == clu %}
+                    <input type="text" name="guess" value="" size="28">
+                  {% else %}
+                    {{ nym }}
+                  {% endif %}<br />
+                {% endfor %}
+            </b></i></h3></td>
+            <td bgcolor="#FFFFFF" align="center" width="33%"><h2>{{ poly.depth }} {% if poly.mode %}{{ poly.mode }}{% else %}part{% endif %}s of {{ poly.name }}</h2></td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+  <tr>
+      <td colspan="2" bgcolor="#DEDEDE">{% if poly.wiki %}<b>URL:</b> <a href="{{ poly.wiki }}">{{ poly.wiki }}</a> <b>&larr;But no cheating!</b>{% endif %}</td>
+   </tr>
+   <tr>
+      <td colspan="2" bgcolor="#DEDEDE" align="right"><a href="/polyfame"><b>&rarr; See HIGH SCORES&rarr;</b></a></td>
+   </tr>
+</table>
+<input name="at" type="hidden" value="{{ at }}">
+<input name="nu" type="hidden" value="{{ nu }}">
+<input name="clu" type="hidden" value="{{ clu }}">
+<input name="sco" type="hidden" value="{{ poly.depth }}">
+</form>
+{% endblock %}

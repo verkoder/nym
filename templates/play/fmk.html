@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Fun/Marry/Kill{% endblock %}
+
+{% block mid %}{% if msg %}<h2>{{ msg }}</h2>{% else %}
+<div class="container"><img src="http://mood.scottyvercoe.com/static/img/fmk.png" style="background-color:Crimson;"></div>
+{% endif %}{% endblock %}
+
+{% block right %}
+<form action="/fmk/" method="POST">{% csrf_token %}
+<b>&swarr; Enter below and <input type="submit" value="S E E" /></b>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="#BBBBBB" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="#DEDEDE" align="left" valign="top" width="15%">
+
+    </td>
+	<td bgcolor="#BBBBBB" align="left" valign="middle" width="60%">
+        <table width="100%" cellpadding="8">
+          <tr>
+            <td bgcolor="#EFEFEF" align="center" width="40%"><h2>Enter three of anything:</h2>
+                <input type="text" name="word1" value="" size="28"><br>
+                <input type="text" name="word2" value="" size="28"><br>
+                <input type="text" name="word3" value="" size="28">
+                <br><b>&uarr; words or phrases &uarr;</b><br>
+            </td>
+            <td bgcolor="#DEDEDE" align="center" width="10%">
+                <table cellpadding="4">
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td nowrap><h3>Fun &rarr;</h3></td></tr>
+                    <tr><td nowrap><h3>Marry &rarr;</h3></td></tr>
+                    <tr><td nowrap><h3>Kill &rarr;</h3></td></tr>
+                </table>
+            </td>
+            <td bgcolor="#FFFFFF" align="left" width="30%">
+                {% if emos %}
+                <table cellpadding="4">
+                    <tr><td></td><td colspan="2"><b>&darr; Confidence</b></td></tr>
+                {% for mo,perc,siz,colr in emos %}
+                    <tr><td><h3>{{ mo }}</h3></td><td><b>{{ perc|floatformat }}%</b></td><td><div style="height: 18px; width: {{ siz }}px; background-color: {{ colr }};"></td>
+                {% endfor %}
+                </table>
+                {% else %}<h3 align="center">&mdash;no kinship&mdash;</h3>
+                {% endif %}
+            </td>
+            <td bgcolor="#FFFFFF" align="right" width="20%">
+                <table cellpadding="4"><tr>
+                    <td bgcolor="{{ emos.0.3 }}"><img src="http://mood.scottyvercoe.com/static/img/fmk_fun.png" alt="Fun"></td>
+                </tr>
+                <tr>
+                    <td bgcolor="{{ emos.1.3 }}"><img src="http://mood.scottyvercoe.com/static/img/fmk_marry.png" alt="Marry"></td>
+                </tr>
+                <tr>
+                    <td bgcolor="{{ emos.2.3 }}"><img src="http://mood.scottyvercoe.com/static/img/fmk_kill.png" alt="Kill"></td>
+                </tr>
+                </table>
+            </td>
+          </tr>
+          <tr>
+              <td colspan="4" bgcolor="#EFEFEF" align="center"><b>via <a href="http://conceptnet.io">ConceptNet</a> <i>relatedness</i></b></td>
+           </tr>
+        </table>
+    </td>
+    <td width="15%" bgcolor="#DEDEDE">&nbsp;</td>
+  </tr>
+  <tr>
+      <td colspan="3" bgcolor="#DEDEDE">{% if p.wiki %}<b>URL:</b> <a href="{{ p.wiki }}">{{ p.wiki }}</a>{% endif %}</td>
+   </tr>
+</table>
+</form>
+{% endblock %}

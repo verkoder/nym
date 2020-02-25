@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}aPolysis{% endblock %}
+
+{% block script%}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+{% block title %}Nymology: aPolysis{% endblock %}
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}aPolysis:</h2>
+<h3>$$\{ P_{ {{ poly_ids|length }} } \} \in url \to | {{ freq|length }} | $$</h3>
+{% endif %}
+{% endblock %}
+{% block right %}
+<form action="/apolysis/" method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="left">
+            <b>URL:</b> <input type="text" name="url" size="64" value="{{ url }}">
+            <b><a href="/apolysis">Refresh</a> for random or choose and <input type="submit" value="S E E" /></b></td>
+        <td>
+            <SELECT NAME="poly_id" MULTIPLE SIZE="12">
+            {% for p in polys %}
+              <option VALUE="{{ p.id }}" {% if p.id in poly_ids %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:18 }}{% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<div align="center"><h2>Element Frequencies in URL:</h2>
+<table cellpadding="2">
+{% for word,cnt in freq %}
+    <tr>
+        <td align="right"><b>{{ word }}</b></td>
+        <td align="right"><b>{{ cnt }}</b></td>
+        <td><div style="height: 18px; width: {{ cnt }}px; background-color: purple;"></td>
+    </tr>
+{% endfor %}
+</table>
+
+<hr>{% autoescape off %}
+<b>Depths:</b><br>{{ deps|join:" | " }}<hr>
+<b>Areas:</b><br>{{ areas|join:" | " }}<hr>
+<b>Sources:</b><br>{{ sources|join:" | " }}<hr>
+<b>Topics:</b><br>{{ nams|join:" | " }}<hr>
+<b>Elements:</b><br>{{ terms|join:" | " }}</div>
+{% endautoescape %}
+{% endblock %}

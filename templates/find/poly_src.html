@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Polynyms by Source{% endblock %}
+
+{% block mid %}
+{% if msg %}{{ msg }}{% else %}<h2>Polynyms{% if src != 'all' %} from {{ src|title }}{% endif %}</h2>
+<h4>TOTAL: {{ length }} Polynyms<br>{{ type }} Type
+{% if part %} &nbsp;|&nbsp; {{ part }} Part{% endif %}
+{% if step %} &nbsp;|&nbsp; {{ step }} Step{% endif %}{% endif %}
+{% endblock %}
+
+{% block right %}
+<table cellpadding="4">
+    <tr align="center">
+    {% for s in sources %}
+        <td><b><a href="/polynym/src/{{ s|slugify }}">{{ s }}</a><b></td>
+        {% if forloop.counter|divisibleby:3 %}</tr><tr align="center" bgcolor="{% cycle '#DFDFDF' '#EFEFEF' %}">{% endif %}
+    {% endfor %}
+    <td align="center"><b>&laquo; <a href="/polynym/add/">add</a> &raquo;</b></td></tr><tr>
+    <td align="center"><b>&laquo; <a href="/polynym/n/1">system</a> &raquo;</b></td>
+    <td align="center"><b>&laquo; <a href="/polynym/area/all">area</a> &raquo;</b></td>
+    <td align="center"><b>&laquo; <a href="/polynym/src/all">source</a> &raquo;</b></td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}
+{% include 'bits/poly_systems.html' %}
+{% endblock %}

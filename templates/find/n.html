@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}P{% if n != 1 %}{{ n }}: {{ ad }}{% else %}olynym{% endif %}s{% endblock %}
+
+{% block mid %}
+{% if msg %}{{ msg }}{% else %}<h2>P{% if n != 1 %}<sup>{{ n }}</sup>: {{ ad }}{% else %}olynym{% endif %}s</h2>
+<h4>TOTAL: {{ polys|length }} Polynyms<br>{{ type }} Type
+{% if part %} &nbsp;|&nbsp; {{ part }} Part{% endif %}
+{% if step %} &nbsp;|&nbsp; {{ step }} Step{% endif %}{% endif %}
+{% endblock %}
+
+{% block right %}
+<table cellpadding="4">
+    <tr align="center">
+    {% for sysad in ben.values %}{% if forloop.counter0 %}
+        <td><b><a href="/polynym/n/{{ forloop.counter }}">{{ forloop.counter }}: {{ sysad }}</a><b></td>
+        {% if forloop.counter0|divisibleby:3 %}</tr><tr align="center" bgcolor="{% cycle '#DFDFDF' '#EFEFEF' %}">{% endif %}
+    {% endif %}{% endfor %}
+    <td align="center"><b>&laquo; <a href="/polynym/add/">add</a> &raquo;</b></td></tr><tr>
+    <td align="center"><b>&laquo; <a href="/polynym/n/1">system</a> &raquo;</b></td>
+    <td align="center"><b>&laquo; <a href="/polynym/area/all">area</a> &raquo;</b></td>
+    <td align="center"><b>&laquo; <a href="/polynym/src/all">source</a> &raquo;</b></td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}
+{% if n == 1 %}
+{% include 'bits/poly_systems.html' with ttl=ttl poly_dict=poly_dict %}
+{% else %}
+<table border="0" cellspacing="0" cellpadding="2" align="center">
+    <tr bgcolor="#6F6F6F">
+    {% for t in ttl %}
+        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ t }}</span></td>
+    {% endfor %}
+    </tr>
+    {% for p in polys %}
+        <tr bgcolor="{% cycle '#EFEFEF' '#DFDFDF' %}">
+            <td><b><a href="/polynym/{{ p.id }}">{{ p.name }}</a></b></td>
+        {% for nym in p.nyms %}
+            <td>{{ nym }}</td>
+        {% endfor %}
+    {% endfor %}
+    </tr>
+    <tr>
+    {% for t in ttl %}
+        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ t }}</span></td>
+    {% endfor %}
+    </tr>
+</table>
+{% if n == 3 %}<br>For more Triads, see <b><a href="http://bookofthrees.com">Book of Threes</a></b>{% endif %}
+{% endif %}
+{% endblock %}

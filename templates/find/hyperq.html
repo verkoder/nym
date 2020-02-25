@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}HyperQuadranym{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}HyperQuadranym:<br />{{ q.name }}{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="/hyperq/" method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="right">
+            <b><a href="/hyperq">Refresh</a> for a random pick or choose and <input type="submit" value="S E E" /></b></td>
+        <td>
+            <SELECT NAME="quad_id" MULTIPLE SIZE="12">
+            {% for q in quads %}
+              <option VALUE="{{ q.id }}" {% ifequal q.id quad_id %}selected{% endifequal %}/>{{ q.name|truncatechars:25 }}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="#EFEFEF" cellpadding="6" cellspacing="0">
+  <tr>
+      <td bgcolor="{% if eq %}#9F9F9F{% else %}#CFCFCF{% endif %}" width="30%"align="center" valign="middle">
+        <table cellpadding="4">
+          <tr>{% if eq %}
+            <td bgcolor="#FFFFFF" align="center" width="33%"><b>E = {{ eq.e }}</b></td><td></td>
+            <td bgcolor="#FFFFFF" align="center" width="33%"><b>O = {{ eq.o }}</b></td>
+          </tr><tr><td></td><td bgcolor="#FFFFFF" align="center"><b>N = <a href="/hyperq/{{ eq.name|slugify }}">{{ eq.name }}</a></b></td><td></td>
+          <tr><td bgcolor="#FFFFFF" align="center"><b>S = {{ eq.s }}</b></td><td></td>
+            <td bgcolor="#FFFFFF" align="center"><b>R = {{ eq.r }}</b></td>
+            {% else %}
+            <td bgcolor="#FFFFFF" width="33%">&nbsp;</td><td></td>
+            <td bgcolor="#FFFFFF" width="33%">&nbsp;</td>
+          </tr><tr><td></td><td bgcolor="#FFFFFF" align="center"><b>N = {{ quad.e }}</b></td><td></td>
+          <tr><td bgcolor="#FFFFFF" align="center">&nbsp;</td><td></td>
+            <td bgcolor="#FFFFFF" align="center">&nbsp;</td>
+            {% endif %}
+          </tr>
+        </table>
+      </td>
+      <td align="center"><span class="huge">&lrarr;</span></td>
+      <td bgcolor="{% if oq %}9F9F9F{% else %}CFCFCF{% endif %}" align="center" valign="middle">
+        <table cellpadding="4">
+          <tr>{% if oq %}
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>E = {{ oq.e }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>O = {{ oq.o }}</b></td>
+          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = <a href="/hyperq/{{ oq.name|slugify }}">{{ oq.name }}</a></b></td><td></td>
+          <tr><td bgcolor="FFFFFF" align="center"><b>S = {{ oq.s }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center"><b>R = {{ oq.r }}</b></td>
+            {% else %}
+            <td bgcolor="FFFFFF" width="33%">&nbsp;</td><td></td>
+            <td bgcolor="FFFFFF" width="33%">&nbsp;</td>
+          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = {{ quad.o }}</b></td><td></td>
+          <tr><td bgcolor="FFFFFF"></td>&nbsp;<td></td>
+            <td bgcolor="FFFFFF">&nbsp;</td>
+            {% endif %}
+          </tr>
+        </table>
+      </td>
+  </tr>
+  <tr>
+    <td align="center"><span class="huge">&duarr;</span></td>
+	<td bgcolor="9F9F9F" align="center" valign="middle">
+        <table cellpadding="4">
+          <tr>
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>E = {{ quad.e }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>O = {{ quad.o }}</b></td>
+          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = {{ quad.name }}</b></td><td></td>
+          <tr><td bgcolor="FFFFFF" align="center"><b>S = {{ quad.s }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center"><b>R = {{ quad.r }}</b></td>
+          </tr>
+        </table>
+    </td>
+    <td align="center"><span class="huge">&duarr;</span></td>
+  </tr>
+    <tr>
+        <td bgcolor="{% if sq %}9F9F9F{% else %}CFCFCF{% endif %}" align="center" valign="middle">
+        <table cellpadding="4">
+          <tr>{% if sq %}
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>E = {{ sq.e }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>O = {{ sq.o }}</b></td>
+          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = <a href="/hyperq/{{ sq.name|slugify }}">{{ sq.name }}</a></b></td><td></td>
+          <tr><td bgcolor="FFFFFF" align="center"><b>S = {{ sq.s }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center"><b>R = {{ sq.r }}</b></td>
+            {% else %}
+            <td bgcolor="FFFFFF" width="33%">&nbsp;</td><td></td>
+            <td bgcolor="FFFFFF" width="33%">&nbsp;</td>
+          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = {{ quad.s }}</b></td><td></td>
+          <tr><td bgcolor="FFFFFF">&nbsp;</td><td></td>
+            <td bgcolor="FFFFFF">&nbsp;</td>
+            {% endif %}
+          </tr>
+        </table>
+        </td>
+        <td align="center"><span class="huge">&lrarr;</span></td>
+        <td bgcolor="{% if rq %}9F9F9F{% else %}CFCFCF{% endif %}" align="center" valign="middle">
+        <table cellpadding="4">
+          <tr>{% if rq %}
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>E = {{ rq.e }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center" width="33%"><b>O = {{ rq.o }}</b></td>
+          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = <a href="/hyperq/{{ rq.name|slugify }}">{{ rq.name }}</a></b></td><td></td>
+          <tr><td bgcolor="FFFFFF" align="center"><b>S = {{ rq.s }}</b></td><td></td>
+            <td bgcolor="FFFFFF" align="center"><b>R = {{ rq.r }}</b></td>
+            {% else %}
+            <td bgcolor="FFFFFF" width="33%">&nbsp;</td><td></td>
+            <td bgcolor="FFFFFF" width="33%">&nbsp;</td>
+          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = {{ quad.r }}</b></td><td></td>
+          <tr><td bgcolor="FFFFFF">&nbsp;</td><td></td>
+            <td bgcolor="FFFFFF">&nbsp;</td>
+            {% endif %}
+          </tr>
+        </table>
+        </td>
+    </tr>
+</table>
+{% if quad.src %}<b>Source:</b> {{ quad.src }}<br />{% endif %}
+{% if quad.user %}<b>By:</b> {{ quad.user }}<br />{% endif %}
+{% if quad.pos %}<b>Part-of-Speech:</b> {{ quad.pos }}<br />{% endif %}
+{% if quad.area %}<b>Area:</b> {{ quad.area }}<br />{% endif %}
+{% if quad.wiki %}<a href="{{ quad.wiki }}">{{ quad.wiki }}</a>{% endif %}
+{% endblock %}

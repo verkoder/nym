@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Story{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Story:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="/story/" method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="right">
+            <b>Choose and <input type="submit" value="S E E" /></b><br>
+        <h4><input type="checkbox" name="trace"{% if trace == "on" %} checked{% endif %}>Trace</h4></td>
+        <td>
+            <SELECT NAME="pk" MULTIPLE SIZE="12">
+            {% for s in things %}
+              <option VALUE="{{ s.id }}" {% if s.id == thing.id %}selected{% endif %}/>{{ s.length }} | {{ s.name|truncatechars:25 }}{% if s.src %} | {{ s.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center" bgcolor="BBBBBB" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="#EFEFEF" align="left" valign="top" width="20%">
+        {% include 'bits/common.html' %}
+    </td>
+	<td bgcolor="#FFFFFF" align="left" valign="middle" width="80%">
+        {% include 'bits/trace_story.html' with spun=thing.tell_trace %}
+    </td>
+  </tr>
+  <tr>
+      <td bgcolor="#EFEFEF" colspan="2"><br></td>
+  </tr>
+</table>
+{% endblock %}

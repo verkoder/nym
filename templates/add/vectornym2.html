@@ -1,0 +1,41 @@
+{% extends "add/_new.html" %}
+{% block title %}Edit Vectornym{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Label your Vectornym!{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="/save_vectornym/" method="POST">
+{% csrf_token %} Enter below, then <input type="submit" value="S A V E"/>
+{% endblock %}
+
+{% block addy %}
+<b>Title:</b> <input type="text" name="name" size="60" value="Untitled"><br><br>
+<b>Length:</b> {{ length }}<br>
+<b>Width:</b> {{ width }}<br>
+<b>Depth:</b> {{ depth }}<br>
+<b>Vectornym:</b>
+<table align="center" cellpadding="4">
+    <tr valign="top">
+    {% for name,vex in spun %}
+        <td align="center"><span class="full">{{ name }}<br>{% if not forloop.last %}&rarr;{% else %}&uarr;{% endif %}</span></td>
+    {% endfor %}
+    </tr>
+    <tr valign"top>
+    {% for name,vex in spun %}
+        <td><span class="code">{{ vex|join:'<br>' }}</span></td>
+    {% endfor %}
+    </tr>
+</table>
+<input name="length" type="hidden" value="{{ length }}">
+<input name="width" type="hidden" value="{{ width }}">
+<input name="depth" type="hidden" value="{{ depth }}">
+<input name="v1" type="hidden" value="{{ v1 }}">
+<input name="v2" type="hidden" value="{{ v2 }}">
+<input name="v3" type="hidden" value="{{ v3 }}">
+<input name="v4" type="hidden" value="{{ v4 }}">
+<input name="v5" type="hidden" value="{{ v5 }}">
+<input name="v6" type="hidden" value="{{ v6 }}">
+<input name="v7" type="hidden" value="{{ v7 }}">
+<input name="v8" type="hidden" value="{{ v8 }}">
+<input name="v9" type="hidden" value="{{ v9 }}">
+{% endblock %}

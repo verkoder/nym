@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}Polynym Idea Set Mathematics{% endblock %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}PolyMath:<br>
+    $$ {{ p1.named }}\ \bot\ {{ p2.named }} $$
+</h2>{% endif %}
+{% endblock%}
+{% block right %}
+<form action="/polymath/" method="POST">{% csrf_token %}
+<table align="center" cellpadding="6">
+  <tr>
+  	<td colspan="2" align="center">
+		<b><a href="/polymath">Refresh</a> for random picks or choose two, then <input type="submit" value="S E E"/></b>
+	</td>
+  </tr>
+  <tr>
+    <td align="left">
+      <b>A =</b><SELECT NAME="p1_id">
+	  {% for p in polys %}
+        <OPTION value="{{ p.id }}" {% if p.id == p1.id %}SELECTED{% endif %}/>{{ p.depth }} | {{ p.name }}
+      {% endfor %}
+	  </SELECT>
+    </td>
+    <td>
+      <b>B =</b><SELECT NAME="p2_id">
+	  {% for p in polys %}
+        <OPTION value="{{ p.id }}" {% if p.id == p2.id %}SELECTED{% endif %}/>{{ p.depth }} | {{ p.name }}
+      {% endfor %}
+	  </SELECT>
+    </td>
+  </tr>
+</table>
+</form>
+{% endblock %}
+{% block content %}
+
+{% if p1 %}
+<table width="100%">
+<tr>
+    <td style="vertical-align: top;">
+<table align="center" bgcolor="#EFEFEF" cellpadding="8" cellspacing="0">
+  <tr>
+	<td><h2 align="right">{% if p1.src %}{{ p1.src }}
+						{% else %}Anonymous{% endif %}</h2></td>
+	<td width="20" bgcolor="#DEDEDE"><h2 align="center">vs.</h2></td>
+	<td><h2 align="left">{% if p2.src %}{{ p2.src }}
+						{% else %}Anonymous{% endif %}</h2></td>
+  </tr>
+  <tr>
+	<td align="right"><b>{{ p1.depth }} {% if p1.mode %}{{ p1.mode }}{% else %}part{% endif %}s of {{ p1.name }}</b></td>
+	<td width="20" bgcolor="#BBBBBB" align="center"><b>:idea:</b></td>
+	<td align="left"><b>{{ p2.depth }} {% if p2.mode %}{{ p2.mode }}{% else %}part{% endif %}s of {{ p2.name }}</b></td>
+  </tr>
+  <tr>
+    <td width="45%" align="right" style="vertical-align: middle;"><i><b>
+{% for p in anyms %}
+	{% if p and not forloop.last %}
+	{{ p }}<br>
+	{% else %}{% if p %}{{ p }}
+	{% endif %}{% endif %}
+{% endfor %}
+    </b></i></td>
+	<td bgcolor="#DEDEDE" align="center" style="vertical-align: middle;"><b>:dimensions:<b>
+	</td>
+	<td width="45%" align="left" style="vertical-align: middle;"><i><b>
+{% for p in bnyms %}
+	{% if p and not forloop.last %}
+	{{ p }}<br>
+	{% else %}{% if p %}{{ p }}
+	{% endif %}{% endif %}
+{% endfor %}
+	</b></i></td>
+  </tr>
+  <tr>
+  	<td><h3 align="right">{{ p1.area }}</h3></td>
+	<td bgcolor="#BBBBBB"><h4 align="center">:area:</h4></td>
+	<td><h3 align="left">{{ p2.area }}</h3></td>
+  </tr>
+  <tr>
+	<td><h3 align="right">{{ p1.user }}</h3></td>
+	<td bgcolor="#DEDEDE"><h4 align="center">:by:</h4></td>
+	<td><h3 align="left">{{ p2.user }}</h3></td>
+  </tr>
+  <tr>
+    <td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|truncatechars:25 }}</a></td>
+    <td bgcolor="#BBBBBB"><h4 align="center">:URL:</h4></td>
+    <td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|truncatechars:25 }}</a></td>
+  </tr>
+</table>
+    </td>
+<td width="75%">
+<table border="0" cellspacing="0">
+    <tr bgcolor="#DFDFDF">
+        <td width="20%"><b>Equality:</b></td>
+        <td width="20%">$$A {% if equal %}={% else %}\neq{% endif %} B$$</td>
+        <td width="60%"><b>A is {% if not asub %}not {% endif %}equal to B</b></td>
+    </tr>
+    <tr bgcolor="#EFEFEF">
+        <td width="20%"><b>Subset:</b></td>
+        <td width="20%">$$A {% if asub %}\subseteq{% else %}\not\subseteq{% endif %} B$$</td>
+        <td width="60%"><b>A is {% if not asub %}not {% endif %}a subset of or equal to B</b></td>
+    </tr>
+    <tr bgcolor="#DFDFDF">
+        <td><b>Superset:</b></td>
+        <td>$$A {% if asup %}\supseteq{% else %}\not\supseteq{% endif %} B$$</td>
+        <td><b>A is {% if not asup %}not {% endif %}a superset of or equal to B</b></td>
+    </tr>
+    <tr bgcolor="#EFEFEF">
+        <td><b>Intersection:</b></td>
+        <td>$$A \cap B =$$</td>
+        <td><b>{ {{ section|join:", " }} }</b></td>
+    </tr>
+    <tr bgcolor="#DFDFDF">
+        <td><b>Union:</b></td>
+        <td>$$A \cup B =$$</td>
+        <td><b>{ {{ union|join:", " }} }</b></td>
+    </tr>
+    <tr bgcolor="#EFEFEF">
+        <td><b>Symmetric Difference:</b></td>
+        <td>$$A \ominus B =$$</td>
+        <td><b>{ {{ symdif|join:", " }} }</b></td>
+    </tr>
+    <tr bgcolor="#DFDFDF">
+        <td><b>Difference:</b></td>
+        <td>$$A - B =$$</td>
+        <td><b>{ {{ a_b|join:", " }} }</b></td>
+    </tr>
+    <tr bgcolor="#EFEFEF">
+        <td><b>Difference:</b></td>
+        <td>$$B - A =$$</td>
+        <td><b>{ {{ b_a|join:", " }} }</b></td>
+    </tr>
+    <tr bgcolor="#DFDFDF">
+        <td style="vertical-align: top;"><b>Cartesian Product:</b></td>
+        <td style="vertical-align: top;">$$A \times B =$$</td>
+        <td><b>{ {{ prod|join:",<br>" }} }</b></td>
+    </tr>
+</table>
+</td>
+</tr>
+</table>
+{% endif %}
+{% endblock %}

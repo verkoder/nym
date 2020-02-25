@@ -1,0 +1,38 @@
+<table width="100%">
+    <tr>
+        <td>
+            {% if thing.length %}<b>Length:</b> {{ thing.length }}<br>{% endif %}
+            {% if thing.width %}<b>Width:</b> {{ thing.width }}<br>{% endif %}
+            {% if thing.depth %}<b>Depth:</b> {{ thing.depth }}<br>{% endif %}
+            {% if thing.mode %}<b>Mode:</b> {{ thing.mode }}<br>{% endif %}
+            {% if thing.src %}<b>Source:</b> {{ thing.src }}<br>{% endif %}
+            {% if thing.area %}<b>Area:</b> {{ thing.area }}<br>{% endif %}
+            {% if thing.realm %}<b>Realm:</b> {{ thing.realm }}<br>{% endif %}
+            {% if thing.user %}<b>By:</b> <a href="/user/{{ thing.user }}">{{ thing.user }}</a><br>{% endif %}
+        </td>
+{% if thing.whois %}
+        <td align="center">
+            <h2><a href="/{{ thing.whois }}/add/">Add</a><br>
+            {% if thing.whois == 'polynym' or thing.whois == 'quadranym' or thing.whois == 'quadraset' or thing.whois == 'polyset' or thing.whois == 'phrase' or thing.whois == 'fable' %}
+                <a href="/{{ thing.whois }}/update/{{ thing.pk }}">Edit</a><br>
+            {% endif %}
+            <a href="/{{ thing.whois }}/delete/{{ thing.pk }}">Delete</a>
+        </h2>
+        </td>
+    </tr>
+</table>
+<br>
+<table align="center" cellpadding="6" width="200px" nowrap>
+    <tr bgcolor="#DEDEDE">
+        <td align="right" width="60%" nowrap><span class="code"><font size="+1"><b>Upvotes: {{ thing.votes.count }}</b></font></span></td>
+        <td align="center" width="40%" nowrap><span class="code"><b>
+            <a class="tooltip-right" data-tooltip="Cast" href="/{{ thing.whois }}/{{ thing.pk }}/vote/u/"><font size="+3">&uHar;</font></a><br>
+            <a class="tooltip-right" data-tooltip="Cancel" href="/{{ thing.whois }}/{{ thing.pk }}/vote/d/">&boxtimes;</a></b><br>
+            {% load motags %}
+            <font size="-1"><b>{% voted_on request.user.pk thing %}</b></font>
+            </span>
+        </td>
+{% endif %}
+    </tr>
+</table>
+{% if thing.wiki %}<br><b>URL:</b><br><a href="{{ thing.wiki }}">{{ thing.wiki }}</a>{% endif %}

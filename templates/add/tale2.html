@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Edit Tale{% endblock %}
+
+{% block mid %}<h2>{{ msg }}</h2>{% endblock %}
+{% block right %}<h3>Using {{ fabl.length }}-Topic Fable:<br>&laquo; {{ fabl.name }} &raquo;</h3>{% endblock %}
+{% block content %}
+<form action="/add/tale2/" method="POST">
+{% csrf_token %}
+<table width="100%">
+  <tr>
+      <td align="center"><b>Your Tale:</b></td>
+      <td align="center" bgcolor="#EFEFEF"><b>Pick a Topic:</b></td>
+      <td></td>
+  </tr>
+  <tr>
+	<td align="center" valign="top">
+	{% include 'bits/trace_tale.html' with quads=tale_quads spun=spun trace=trace %}
+    </td>
+    <td width="20%" bgcolor="#EFEFEF" valign="top" align="center">
+      <SELECT NAME="quad_id" SIZE="24">
+	  {% for q in quads %}
+        <option VALUE="{{ q.id }}"{% if q.id == quad_id %} selected{% endif %} />{{ q.name }}
+	  {% endfor %}
+	  </SELECT>
+    </td>
+
+    <td width="20%" valign="top"><br><h4 align="center">Pick Topic and:<br>
+        <input type="submit" value="T R Y" name="_try" /> &nbsp;
+        <input type="submit" value="A D D" name="_add" /></h4>
+        <h4 align="center"><input type="checkbox" name="trace"{% if trace == 'on' %} checked{% endif %}>Trace</h4><hr>
+        <h4 align="center"><a href="/tale/add/">Restart!</a></h4>
+    </td>
+  </tr>
+  <tr>
+      <td align="center" bgcolor="#EFEFEF" colspan="2"><b>Added Topics:</b><br>
+          {% for top in tops %} &nbsp; {{ top }}<br>
+          {% endfor %}
+      </td>
+  </tr>
+</table>
+<input name="quad_ids" type="hidden" value="{{ quad_ids }}">
+<input name="fabl_id" type="hidden" value="{{ fabl.id }}">
+</form>
+{% endblock %}

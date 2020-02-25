@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Edit Story{% endblock %}
+
+{% block mid %}<h2>
+{% if msg %}{{ msg }}{% elif spun %}<h2>Your Story is being told!</h2>
+{% else %}Build a Story from Topic/Phrase pairs</h2>
+{% endif %}
+{% endblock %}
+{% block right %}<font size="+1"><b>Story-Pushers:</b></font>
+<h4>Menu-based: <a href="/story/add/">&rarr; Frames &rarr;</a><br>
+    Text-based: &raquo;&raquo; Pairs &laquo;&laquo;<br>
+    <a href="/add/storyc">&rarr; Matched Lists &rarr;</a></h4>
+{% endblock %}
+{% block content %}
+<form action="/add/storyb/" method="POST">
+{% csrf_token %}
+<table width="80%">
+  <tr>
+    <td bgcolor="#CFCFCF" valign="top" align="center">
+      <h4>Available Topics:<br />
+      <SELECT SIZE="16">
+	  {% for q in quads %}
+        <option>{{ q.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+	<td bgcolor="#EFEFEF" align="center"><br><b>Topic/Phrase Pairs:</b><br>
+	<textarea name="txt" cols=40 rows=22>{{ txt }}</textarea><br><br>
+    <b>&uarr; Comma-separated pairs, separated by newlines &uarr;</b><br>
+    Use two newlines to separate sections<br><br>
+	</td>
+    <td bgcolor="#CFCFCF" valign="top" align="center">
+      <h4>Available Phrases:<br />
+      <SELECT SIZE="16">
+	  {% for ph in phras %}
+        <option>{{ ph.name }}
+	  {% endfor %}
+	  </SELECT></h4>
+    </td>
+    <td valign="top"><br><h4 align="center">Write your Story and<br><input type="submit" value="T E L L" name="_tell" /></h4>
+        <h4><input type="checkbox" name="trace"{% if trace == "on" %} checked{% endif %}>Trace</h4><br>
+    <h4 align="center">{% if spun %}Ready to save?<br><input type="submit" value="N E X T" name="_save" />{% else %}<br>{% endif %}</h4>
+    </td>
+  </tr>
+</table>
+{% include 'bits/trace_story.html' with spun=spun trace=trace %}
+</form>
+{% endblock %}

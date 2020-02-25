@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Qontext{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}</h2>{% else %}Qontext</h2>
+<b>{{ q3.name }} &lrarr; {{ q2.name }} &lrarr; {{ q1.name }}</b>{% endif %}
+{% endblock %}
+{% block right %}
+<table>
+    <tr>
+        <td align="right"><form action="/qontext/" method="POST">
+            {% csrf_token %}
+            <b><a href="/qontext">Refresh</a> for a random pick or choose and <input type="submit" value="S E E" /></b></td>
+        <td>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<table width="100%" align="center" bgcolor="EFEFEF" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="DEDEDE" align="left" valign="top" width="20%"><br>
+        <span style="color:purple;"><b>Layer 1:</b></span><br>
+        <SELECT NAME="q3_id" MULTIPLE SIZE="12">
+        {% for q in quads %}
+          <option VALUE="{{ q.id }}" {% if q.id == q3.id %}selected{% endif %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+        {% endfor %}
+        </SELECT><hr>
+        <span style="color:orange;"><b>Layer 2:</b></span>
+        <SELECT NAME="q2_id" MULTIPLE SIZE="12">
+        {% for q in quads %}
+          <option VALUE="{{ q.id }}" {% if q.id == q2.id %}selected{% endif %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+        {% endfor %}
+        </SELECT><hr>
+        <span style="color:green;"><b>Layer 3:</b></span><br>
+        <SELECT NAME="q1_id" MULTIPLE SIZE="12">
+        {% for q in quads %}
+          <option VALUE="{{ q.id }}" {% if q.id == q1.id %}selected{% endif %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+        {% endfor %}
+        </SELECT>
+    </td>
+	<td bgcolor="BBBBBB" align="center" valign="middle" width="80%">
+        <div class="qontainer">
+            <img src="http://mood.scottyvercoe.com/static/img/qontext.png" style="width:100%;">
+            <div class="q1n">{{ q1.name }}</div>
+            <div class="q1e">{{ q1.e }}</div>
+            <div class="q1r">{{ q1.r }}</div>
+            <div class="q1o">{{ q1.o }}</div>
+            <div class="q1s">{{ q1.s }}</div>
+            <div class="q2n">{{ q2.name }}</div>
+            <div class="q2e">{{ q2.e }}</div>
+            <div class="q2r">{{ q2.r }}</div>
+            <div class="q2o">{{ q2.o }}</div>
+            <div class="q2s">{{ q2.s }}</div>
+            <div class="q3n">{{ q3.name }}</div>
+            <div class="q3e">{{ q3.e }}</div>
+            <div class="q3r">{{ q3.r }}</div>
+            <div class="q3o">{{ q3.o }}</div>
+            <div class="q3s">{{ q3.s }}</div>
+        </div>
+    </td>
+  </tr>
+  <tr>
+      <td bgcolor="DEDEDE">{% if q2.wiki %}<a href="{{ q2.wiki }}">{{ q2.wiki }}</a>{% endif %}</td>
+      <td bgcolor="DEDEDE" align="right"></td>
+  </tr>
+</table>
+{% endblock %}

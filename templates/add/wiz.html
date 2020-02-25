@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ wizard.form.instance.whois|title }}:
+{{ wizard.steps.step1 }}/{{ wizard.steps.count }}{% endblock %}
+
+{% block mid %}
+<h2>Edit {{ wizard.form.instance.whois|title }}:<br>
+Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h2>
+{% endblock %}
+{% block content %}
+<form method="POST">{% csrf_token %}
+<table align="center">
+    <tr>
+        <td width="80%">
+              <table>
+              {{ wizard.management_form }}
+              {% if wizard.form.forms %}
+                {{ wizard.form.management_form }}
+                {% for form in wizard.form.forms %}
+                  {{ form }}
+                {% endfor %}
+              {% else %}
+                {{ wizard.form }}
+              {% endif %}
+              </table>
+        </td>
+        <td width="10%">
+              {% if wizard.steps.prev %}
+              <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}"><< back << </button>
+              {% endif %}
+        </td>
+        <td width="10%">
+              <input type="submit" value="G O"/>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}

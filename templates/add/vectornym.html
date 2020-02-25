@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Edit Vectornym{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}<h2>Build a Vectornym!</h2><h4>Pick 2 - 9 Topics starting in top left.</h4>{% endif %}</h2>{% endblock %}
+{% block right%}
+<form action="/vectornym/add/" method="POST">{% csrf_token %}
+<h4 align="center">Ready your Vectornym and<br><input type="submit" value="A I M" name='_save' /></h4>
+{% endblock %}
+
+{% block content %}
+<table width="100%" cellpadding="4">
+  <tr>
+    <td bgcolor="#DEDEDE"><SELECT NAME="v1" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v1.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
+    <td bgcolor="#EFEFEF"><SELECT NAME="v2" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v2.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
+    <td bgcolor="#DEDEDE"><SELECT NAME="v3" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v3.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
+  </tr>
+  <tr align="center">
+    <td bgcolor="#EFEFEF"><span class="huge">&rarr;</span><SELECT NAME="v4" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v4.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
+    <td bgcolor="#DEDEDE"><span class="huge">&rarr;</span><SELECT NAME="v5" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v5.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
+    <td bgcolor="#EFEFEF"><span class="huge">&rarr;</span><SELECT NAME="v6" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v6.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
+  </tr>
+  <tr align="right">
+    <td bgcolor="#DEDEDE"><span class="huge">&rarr;</span><SELECT NAME="v7" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v7.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT></td>
+    <td bgcolor="#EFEFEF"><span class="huge">&rarr;</span><SELECT NAME="v8" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v8.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT></td>
+    <td bgcolor="#DEDEDE"><span class="huge">&rarr;</span><SELECT NAME="v9" MULTIPLE SIZE="12">{% for p in polys %}
+        <option VALUE="{{ p.id }}" {% if p.id == v9.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+    {% endfor %}</SELECT></td>
+  </tr>
+</table>
+</form>
+{% endblock %}

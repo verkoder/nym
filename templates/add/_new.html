@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+<table width="100%" align="center" bgcolor="BBBBBB" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="#DEDEDE" align="right" valign="top">
+        <b>Source:</b><br><input list="sources" name="src"{% if form.src.value or thing.src %} value="{{ form.src.value }}{{ thing.src }}"{% endif %}>
+          <datalist id="sources">
+            <option value="Ancient Greeks">
+            <option value="Hannah Arendt">
+            <option value="Aristotle">
+            <option value="John G. Bennett">
+            <option value="Simone de Beauvoir">
+            <option value="The Bible">
+            <option value="Buddha">
+            <option value="Leonardo da Vinci">
+            <option value="Charles Dickens">
+            <option value="Paul Ekman">
+            <option value="Sigmund Freud">
+            <option value="Erich Fromm">
+            <option value="Galileo">
+            <option value="G.W.F. Hegel">
+            <option value="Kate Hevner">
+            <option value="Howard Gardner">
+            <option value="Hippocrates">
+            <option value="Hypatia">
+            <option value="I Ching">
+            <option value="Jainism">
+            <option value="Carl Jung">
+            <option value="Kabbalah">
+            <option value="George Lakoff">
+            <option value="Gregor Mendel">
+            <option value="Marvin Minsky">
+            <option value="Mohammed">
+            <option value="Isaac Newton">
+            <option value="Charles Peirce">
+            <option value="Plato">
+            <option value="Pope Gregory the Great">
+            <option value="Bertrand Russell">
+            <option value="Sappho of Lesbos">
+            <option value="William Shakespeare">
+            <option value="Vandana Shiva">
+            <option value="Socrates">
+            <option value="US Constitution">
+            <option value="Alfred North Whitehead">
+            <option value="Wu Xing">
+          </datalist><br><span class="tiny">type or click for options</span><br><br>
+        <b>Area:</b><br><input list="areas" name="area"{% if form.area.value or thing.src %} value="{{ form.area.value }}{{ thing.src }}"{% endif%}>
+          <datalist id="areas">
+            <option value="AI">
+            <option value="Anatomy">
+            <option value="Anthropology">
+            <option value="Archaeology">
+            <option value="Art">
+            <option value="Astrology">
+            <option value="Astronomy">
+            <option value="Biology">
+            <option value="Captology">
+            <option value="Chemistry">
+            <option value="Cognitive Science">
+            <option value="Commonsense">
+            <option value="Cosmology">
+            <option value="Ecology">
+            <option value="Economics">
+            <option value="Education">
+            <option value="History">
+            <option value="Linguistics">
+            <option value="Literature">
+            <option value="Mathematics">
+            <option value="Media">
+            <option value="Medicine">
+            <option value="Metaphysics">
+            <option value="Music">
+            <option value="Neurology">
+            <option value="Numerology">
+            <option value="Numeronomy">
+            <option value="Nymology">
+            <option value="Ontology">
+            <option value="Orgonomy">
+            <option value="Philosophy">
+            <option value="Physics">
+            <option value="Politics">
+            <option value="Psychology">
+            <option value="Semiotics">
+            <option value="Sociology">
+            <option value="Storytelling">
+            <option value="Theology">
+          </datalist><br><span class="tiny">type or click for options</span><br><br>
+          {% if form.realm or spun %}{% include 'bits/pick_realm.html' %}{% endif %}
+    </td>
+    <td bgcolor="#BBBBBB" align="left" valign="top" width="80%">
+{% block addy %}
+
+{% endblock %}
+    </td>
+  </tr>
+  <tr>
+      <td colspan="2" bgcolor="#DEDEDE"><br><b>URL:</b>{% if form %}{{ form.wiki }}{% else %}
+          <input type="text" name="wiki" size="96">{% endif %}<br>
+          <span class="tiny">wikipedia or other info link</span><br></td>
+  </tr>
+  {% if qseen %}
+  <tr bgcolor="#FFFFFF"><td align="right" colspan="2"><span class="code"><b><a href="/queue">Request a Quadranym</a></b><br>
+      <b>Completed Requests:</b>
+      {% for word in qseen %}{{ word }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      </span>
+  </td></tr>{% endif %}
+</table>
+</form>
+{% endblock %}

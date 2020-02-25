@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Plot Data{% endblock %}
+
+{% block script%}<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{% if typ == 'src_rng' or typ == 'area_rng' or typ == 'realm_rng' or typ == 'polar' %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+{% elif typ == 'wordcloud' %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/wordcloud.js"></script>
+{% elif typ == 'sectionym' %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/sankey.js"></script>
+<script src="https://code.highcharts.com/modules/dependency-wheel.js"></script>
+{% elif typ == 'sectionet' %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/networkgraph.js"></script>
+<!--{% elif typ == 'tilemap' %}
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/modules/tilemap.js"></script>-->
+{% else %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+{% endif %}
+<!--
+<script src="https://code.highcharts.com/modules/debugger.js"></script>-->
+{% endblock %}
+
+{% block mid %}
+<h2 align="center">{% if err %}{{ err }}{% else %}Plotting Nymology Data{% endif %}</h2>
+<form action="/plot/" method="POST">{% csrf_token %}
+{% endblock %}
+
+{% block right %}
+
+<b>Distributions:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="area_dist"{% if typ == "area_dist" %} checked{% endif %}>Area</label>
+<label style="white-space: nowrap;"><input type="radio" name="typ" value="src_dist"{% if typ == "src_dist" %} checked{% endif %}>Source</label>
+<label style="white-space: nowrap;"><input type="radio" name="typ" value="realm_dist"{% if typ == "realm_dist" %} checked{% endif %}>Realm</label>
+<label style="white-space: nowrap;"><input type="radio" name="typ" value="mode_dist"{% if typ == "mode_dist" %} checked{% endif %}>Mode</label><br>
+<b>Polynym Depths:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="area_rng"{% if typ == "area_rng" %} checked{% endif %}>Area</label>
+<label style="white-space: nowrap;"><input type="radio" name="typ" value="src_rng"{% if typ == "src_rng" %} checked{% endif %}>Source</label>
+<label style="white-space: nowrap;"><input type="radio" name="typ" value="mode_deps"{% if typ == "mode_deps" %} checked{% endif %}>Mode</label><br>
+<!--<b>Polynymic Table:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="tilemap"{% if typ == "tilemap" %} checked{% endif %}>Tile Map</label><br>-->
+<b>Sectionyms:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="sectionet"{% if typ == "sectionet" %} checked{% endif %}>Graph</label>
+<label style="white-space: nowrap;"><input type="radio" name="typ" value="sectionym"{% if typ == "sectionym" %} checked{% endif %}>Wheel</label><br>
+<b>Dimensions:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="wordcloud"{% if typ == "wordcloud" %} checked{% endif %}>Word cloud</label>
+<label style="white-space: nowrap;"><input type="radio" name="typ" value="polar"{% if typ == "polar" %} checked{% endif %}>Polar</label><br>
+
+Select chart and <input type="submit" value="P L O T" /><br><span class="lil">Move cursor over the chart to highlight</span>
+
+
+{% endblock %}
+
+{% block content %}
+<table width="100%" align="center"><tr><td align="center">
+<figure class="highcharts-figure">
+<div id="container" data-url="{% url 'spin:plot_'|add:ob|add:'_'|add:typ %}"></div></figure>
+<script>
+$.ajax({
+  url: $("#container").attr("data-url"),
+  dataType: 'json',
+  success: function (data) {
+    Highcharts.chart("container", data);
+  }
+});
+</script>
+</td><td align="left" valign="top" nowrap>
+{% if typ == "area_dist" or typ == "src_dist" %}
+<input type="radio" name="ob" value="tale"{% if ob == "tale" %} checked{% endif %}>Tale<br>
+<input type="radio" name="ob" value="fabl"{% if ob == "fabl" %} checked{% endif %}>Fable<br>
+<input type="radio" name="ob" value="stor"{% if ob == "stor" %} checked{% endif %}>Story<br>
+<input type="radio" name="ob" value="phra"{% if ob == "phra" %} checked{% endif %}>Phrase<br>
+<input type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %}>Quadranym<br>
+<input type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %}>Polynym<br>
+<input type="radio" name="ob" value="pmap"{% if ob == "pmap" %} checked{% endif %}>Polymap
+{% elif typ == "wordcloud" %}
+<input type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %}>Quadranym<br>
+<input type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %}>Polynym<br>
+<input type="radio" name="ob" value="phra"{% if ob == "phra" %} checked{% endif %}>Phrase<br>
+<input type="radio" name="ob" value="fabl"{% if ob == "fabl" %} checked{% endif %}>Fable
+{% elif typ == "sectionet" %}
+<input type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %}>Quadra-Sectionyms<br>
+<input type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %}>Poly-Sectionyms
+{% endif %}
+</td><td>&nbsp;</td></tr></table>
+</form>
+{% endblock %}

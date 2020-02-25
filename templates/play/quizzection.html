@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}QuizZection{% endblock %}
+
+{% block mid %}
+<div class="container"><img src="http://mood.scottyvercoe.com/static/img/quizzection.png" style="width:90%; background-color:purple;"></div>
+<h2>{% if msg %}{{ msg }}{% else %}Find the Missing Nym!{% endif %}</h2>
+{% endblock %}
+
+{% block right %}
+<form action="/quizzection/" method="POST">{% csrf_token %}
+<table border="0" cellspacing="0" cellpadding="4" width="90%">
+    <tr>
+        <td align="left" valign="top" bgcolor="#DEDEDE"><span class="num"><b>YOUR SCORE:</b> {{ at }} points<br>
+                            <b>ROUND[{{ nu }}]:</b> {{ a.depth|add:b.depth }} points</span></td>
+        <td align="left" valign="top" bgcolor="#DEDEDE">
+            <span class="num"><b>TOP SCORE TO BEAT:</b><br>{% for s in wi %}{{ s }} &nbsp;{% endfor %}</span>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <b>Enter below and<br><input type="submit" value="G U E S S" name="_guess" /></b>
+        </td>
+        <td align="center" valign="middle"><br><b>{% if user.is_authenticated %}
+            <input type="submit" value="S A V E" name="_save" /><br>Player: {{ user.username }}
+            {% else %}<a href="/accounts/login">LOGIN</a> or <a href="/signup">SIGN UP</a> to save your score!{% endif %}
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}
+<table width="100%" cellpadding="2" cellspacing="0" border="0">
+  <tr>
+      <td></td>
+      <td align="center" colspan="3"><h2>{{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of {{ a.name }} &darr;</h2></td>
+      <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td bgcolor="#FFFFFF" align="center"> </td>
+    <td bgcolor="#DEDEDE" align="center"><h3><i><b>{% for pt in n %}{% if pt %}{{ pt }}<br />{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="#FFFFFF" align="right" colspan="2"></td>
+  </tr>
+  <tr>
+    <td><h2>{{ b.depth }} {% if b.mode %}{{ b.mode }}{% else %}part{% endif %}s of {{ b.name }}<br>&rarr;</h2></td>
+    <td bgcolor="#DEDEDE" align="center" width="28%"><h3><i><b>{% for pt in w %}{% if pt %}{{ pt }}<br>{% endif %}{% endfor %}</b></i></h3></td>
+
+    <td bgcolor="#CFCFCF" align="center" width="28%"><h3><i><b>
+                {% for pt in ab %}
+                  {% if pt == clu %}
+                    <input type="text" name="guess" value="" size="28">
+                  {% else %}
+                    {{ pt }}
+                  {% endif %}<br />
+                {% endfor %}</b></i></h3>
+    </td>
+    <td bgcolor="#DEDEDE" align="center" width="28%"><h3><i><b>{% for pt in e %}{% if pt %}{{ pt }}<br>{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="#FFFFFF" width="16%"><h2>{{ b.depth }} {% if b.mode %}{{ b.mode }}{% else %}part{% endif %}s of {{ b.name }}<br>&larr;</h2></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td bgcolor="#FFFFFF" align="center"><h2></h2></td>
+    <td bgcolor="#DEDEDE" align="center"><h3><i><b>{% for pt in s %}{% if pt %}{{ pt }}<br />{% endif %}{% endfor %}</b></i></h3></td>
+    <td bgcolor="#FFFFFF" align="center"></td>
+    <td bgcolor="#FFFFFF">
+            {% if b.src %}<b>Source:</b> {{ b.src }}<br>{% endif %}
+            {% if b.area %}<b>Area:</b> {{ b.area }}<br>{% endif %}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td bgcolor="#FFFFFF" align="center"></td>
+    <td bgcolor="#FFFFFF" align="center" valign="top"><h2 align="center">{{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of {{ a.name }} &uarr;</h2></td>
+    <td bgcolor="#FFFFFF" align="left" valign="top" colspan="2">
+        {% if b.wiki %}<h5 align="right"><b>URL:</b> <a href="{{ b.wiki }}">{{ b.wiki }}</a><br>&nbsp; &uarr; But no cheating! &uarr;</h5>{% endif %}
+        {% if a.src %}<b>Source:</b> {{ a.src }}<br>{% endif %}
+        {% if a.area %}<b>Area:</b> {{ a.area }}<br>{% endif %}
+        {% if a.wiki %}<h5 align="left"><b>URL:</b> <a href="{{ a.wiki }}">{{ a.wiki }}</a><br>&uarr; But no cheating! &uarr;</h5>
+        {% endif %}</td>
+  </tr>
+  <tr>
+      <td align="right" valign="bottom" colspan="5"><a href="/quizfame"><b>&rarr; See HIGH SCORES&rarr;</b></a></td>
+  </tr>
+</table>
+
+<input name="at" type="hidden" value="{{ at }}">
+<input name="nu" type="hidden" value="{{ nu }}">
+<input name="clu" type="hidden" value="{{ clu }}">
+<input name="sco" type="hidden" value="{{ a.depth|add:b.depth }}">
+</form>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}PolyTile{% endblock %}
+
+{% block script%}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}PolyTile:
+    $$\sum_{ row=1 }^{ {{ rows|length }} }\textstyle \sum_{col=1}^{ {{ rows.0|length }} } \{\ P^{ {{ poly.depth }} {% if named == "on" %}+name{% endif %} }_{ {{ poly.named }} }\ \}$$
+{% endif %}</h2>{% endblock %}
+{% block right %}
+<form action="/polytile/" method="POST">{% csrf_token %}
+<table>
+    <tr>
+        <td align="right">
+          <table>
+            <tr>
+                <td><b><a href="/polytile">Refresh</a> for a random pick or choose and <input type="submit" value="S E E" /></b><br>
+                  <table width="100%">
+                      <tr>
+                          <td width="50%" align="center"><b>Width:</b><br><SELECT NAME="wdt" MULTIPLE SIZE="4">
+                      	    <OPTION VALUE="dep" {% if wdt == "dep" %}selected {% endif %}/>P
+                      	    <OPTION VALUE="15" {% if wdt == "15" %}selected {% endif %}/>15
+                            <OPTION VALUE="20" {% if wdt == "20" %}selected {% endif %}/>20
+                            <OPTION VALUE="25" {% if wdt == "25" %}selected {% endif %}/>25
+                           </SELECT>
+                          </td>
+                          <td align="center"><b>Height:</b><br><SELECT NAME="hgt" MULTIPLE SIZE="4">
+                  	        <OPTION VALUE="dep" {% if hgt == "dep" %}selected {% endif %}/>P
+                      	    <OPTION VALUE="15" {% if hgt == "15" %}selected {% endif %}/>15
+                            <OPTION VALUE="25" {% if hgt == "25" %}selected {% endif %}/>25
+                            <OPTION VALUE="50" {% if hgt == "50" %}selected {% endif %}/>50
+                           </SELECT>
+                          </td></tr><tr>
+                          <td colspan="2" align="center">
+                          <input type="checkbox" name="named"{% if named == "on" %} checked{% endif %}>Include name</td>
+                      </tr>
+                  </table>
+                </td>
+              <td>
+              <SELECT NAME="poly_id" MULTIPLE SIZE="12">
+        	  {% for p in polys %}
+                <OPTION VALUE="{{ p.id }}" {% if p.id == poly.id %}selected {% endif %}/>{{ p.name }}
+        	  {% endfor %}
+        	  </SELECT>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+</form>
+{% endblock %}
+
+{% block content %}
+<table border="0" cellspacing="0" cellpadding="2" align="center">
+{% for row in rows %}
+    <tr>
+        {% for dim,colr in row %}
+            <td bgcolor="{{ colr }}"><span class="navbar"><font size="+1" color="#FFFFFF">{{ dim }}</font></span></td>
+        {% endfor %}
+    </tr>
+{% endfor %}
+</table><b>Polynym:</b><br>
+{{ poly.depth }} | <a href="/p/{{ poly.name|slugify }}">{{ poly.name|truncatechars:25 }}</a>{% if poly.area %} | {{ poly.area|truncatechars:25 }}{% endif %}{% if poly.src %} | {{ poly.src|truncatechars:25 }}{% endif %}
+{% endblock %}

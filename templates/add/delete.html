@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Confirm Delete{% endblock %}
+
+{% block mid %}
+<h2>Really delete {{ object.whois|title }}?</h2>
+{% endblock %}
+
+{% block right %}
+<img src="http://mood.scottyvercoe.com/static/img/emo/Paul Ekman_6_afraid.png">
+{% endblock %}
+{% block content %}
+<form method="POST">{% csrf_token %}
+<table align="center" cellpadding="4" width="100%">
+    <tr>
+        <td width="30%" align="left">
+            {% if object.length %}<b>Length:</b> {{ object.length }}<br>{% endif %}
+            {% if object.width %}<b>Width:</b> {{ object.width }}<br>{% endif %}
+            {% if object.depth %}<b>Depth:</b> {{ object.depth }}<br>{% endif %}
+            {% if object.src %}<b>Source:</b> {{ object.src }}<br>{% endif %}
+            {% if object.area %}<b>Area:</b> {{ object.area }}<br>{% endif %}
+            {% if object.realm %}<b>Realm:</b> {{ object.realm }}<br>{% endif %}
+            {% if object.user %}<b>By:</b> <a href="/user/{{ object.user }}">{{ object.user }}</a><br>{% endif %}
+        </td>
+        <td width="30%" valign="top" align="center">
+            <h2>Deleting:<br>{{ object.name }}</h2></td>
+        <td width="40%"><input type="submit" value="D E L E T E" /><br>
+        <h3>or <a href="/{{ object.whois }}/{{ object.pk }}">CANCEL</a></h3></td>
+    </tr>
+</table>
+</form>
+{% endblock %}

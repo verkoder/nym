@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block mid%}<h3 align="center">
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <form action="/accounts/logout"><input type="submit" value="LOG OUT"></form>
+{% else %}Welcome to Nymology!
+  <form action="/accounts/login"><input type="submit" value="LOG IN"></form><br>
+  New user? Signup <a href="/signup">HERE</a>
+{% endif %}</h3>
+{% endblock %}
+
+{% block right %}{% load motags %}
+<table cellpadding="4" cellspacing="0">
+	<tr>
+		<th><b>Data</b></th>
+		<th bgcolor="#CFCFCF"><b>Top Areas</b></th>
+		<th><b>Top Sources</b></th>
+		<th bgcolor="#CFCFCF"><b>Top Authors</b></th>
+		<th><b>Top Scores</b></th>
+	</tr>
+	<tr>
+		<td valign="top" nowrap><span class="num">{% autoescape off %}
+			{{ polys|rjust:"4"|nbsp }} <a href="/polynym">Polynyms</a><br>
+			{{ quads|rjust:"4"|nbsp }} <a href="/quadranym">Quadranyms</a><br>
+			{{ stors|rjust:"4"|nbsp }} <a href="/story">Stories</a><br>
+			{{ tales|rjust:"4"|nbsp }} <a href="/tale">Tales</a><br>
+			{{ phras|rjust:"4"|nbsp }} <a href="/phrase">Phrases</a><br>
+			{{ fabls|rjust:"4"|nbsp }} <a href="/fable">Fables</a><br>
+			{{ pmaps|rjust:"4"|nbsp }} <a href="/polymap">Polymaps</a></span>
+		</td>
+		<td valign="top" nowrap bgcolor="#CFCFCF"><span class="num">
+			{% for num,ar in areas %}{{ num|rjust:"4"|nbsp }} <a href="/polynym/area/{{ ar }}">{{ ar }}</a>{% if not forloop.last %}<br>
+            {% endif %}{% endfor %}</span>
+		</td>
+		<td valign="top" nowrap><span class="num">
+			{% for num,sr in sources %}{{ num|rjust:"4"|nbsp }} <a href="/polynym/src/{{ sr|slugify }}">{{ sr }}</a>{% if not forloop.last %}<br>
+                {% endif %}{% endfor %}</span>
+		</td>
+		<td valign="top" nowrap bgcolor="#CFCFCF"><span class="num">
+			{% for num,by in users %}{{ num|rjust:"4"|nbsp }} <a href="/user/{{ by }}">{{ by }}</a>{% if not forloop.last %}<br>
+                {% endif %}{% endfor %}</span>
+		</td>
+		<td valign="top" nowrap><span class="num">
+			{% for num,by in wins %}{{ num|rjust:"4"|nbsp }} <a href="/user/{{ by }}">{{ by }}</a>{% if not forloop.last %}<br>
+                {% endif %}{% endfor %}</span>{% endautoescape %}
+		</td>
+	</tr>
+</table>
+{% endblock %}
+
+{% block content %}
+<table width="100%" cellpadding="6">
+    <tr>
+        <td width="60%" align="center" valign="top">
+            <h1 align="center">Nymology Games</h1>
+            <table width="100%" align="center" cellpadding="6">
+            	<tr>
+            		<td bgcolor="#9F9F9F" align="center">
+            			<a href="/polypuzl"><div class="container"><img src="http://mood.scottyvercoe.com/static/img/polypuzl.png" style="width:100%; background-color:plum;"></div></a>
+            		</td><td>&nbsp;</td>
+            		<td bgcolor="#9F9F9F" align="center">
+            			<a href="/fmk"><div class="container"><img src="http://mood.scottyvercoe.com/static/img/fmk.png" style="width:100%; background-color:crimson;"></div></a>
+            		</td>
+            	</tr>
+            	<tr>
+            		<td bgcolor="#EDEDED"><h2 align="center"><a href="/polypuzl">PLAY</a>&nbsp; | &nbsp;<a href="/polyfame">HIGH SCORES</a></h2>
+            		</td><td></td>
+            		<td bgcolor="#EDEDED"><h2 align="center"><a href="/fmk">PLAY</a></h2>
+            			</td>
+            	</tr>
+                <tr>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+            		<td bgcolor="#9F9F9F" align="center" colspan="3">
+            			<a href="/quizzection"><div class="container"><img src="http://mood.scottyvercoe.com/static/img/quizzection.png" style="width:100%; background-color:purple;"></div></a>
+            	    </td>
+                </tr>
+                <tr>
+            		<td colspan="3" bgcolor="#EDEDED"><h2 align="center"><a href="/quizzection">PLAY</a>&nbsp; | &nbsp;<a href="/quizfame">HIGH SCORES</a></h2>
+            		</td>
+                </tr>
+            </table>
+        </td>
+        <td width="40%" valign="top">
+            <h2 align="center">Trending User Content</h2>
+            <table>
+                <tr>
+                    <td colspan="2" align="center" valign="top"><a href="/tale/{{ top_tale.pk }}"><b>Top Tale</a> for {% now "F j" %}<sup>{% now "S" %}</sup> {% now "Y" %}</b>
+                        <p>{{ top_tale.tell }}<br>
+                         <a href="/tale/{{ top_tale.pk }}"><i>&laquo;{{ top_tale.name|title }}</a>
+                             &raquo; by <a href="/user/{{ top_tale.user.username }}">{{ top_stor.user.username }}</a></i>
+                        </p><hr style="width:30%"><br>
+                    <a href="/story/{{ top_stor.pk }}"><b>Today's Top Story</b></a>
+                        <p>{% for line in top_stor.tell %}{{ line.0 }}<br>{% endfor %}
+                         <a href="/story/{{ top_stor.pk }}"><i>&laquo;{{ top_stor.name|title }}</a>
+                             &raquo; by <a href="/user/{{ top_stor.user.username }}">{{ top_stor.user.username }}</a></i>
+                        </p><hr style="width:30%"></td>
+                </tr>
+                <tr>
+                    <td align="center"><h4>Trending <a href="/p">Polynyms</a></h4>
+                    {% for p in top_poly %}
+                        <a href="/polynym/{{ p.pk }}">{{ p.depth }} &times; {{ p.name }}</a><br>
+                    {% endfor%}</td>
+                    <td align="center"><h4>Trending <a href="/q">Quadranyms</a></h4>
+                    {% for q in top_quad %}
+                        <a href="/quadranym/{{ q.pk }}">{{ q.name }}</a><br>
+                    {% endfor %}</td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>
+{% endblock %}

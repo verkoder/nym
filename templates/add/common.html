@@ -1,0 +1,30 @@
+{% extends "add/_new.html" %}
+{% block title %}Edit {{ form.instance.whois|title }}{% endblock %}
+
+{% block mid %}<h2>{% if form.errors %}{{ form.errors.value|striptags }}
+{% else %}Work that {{ form.instance.whois|title }}!{% endif %}</h2>{% endblock %}
+
+{% block right%}
+<form method="POST">{% csrf_token %}
+<h3>Enter below, then <input type="submit" value="S A V E"/><br><br>
+or <a href="/{{ form.instance.whois }}{% if pk %}/{{ pk }}{% endif %}">CANCEL</a></h3>
+{% endblock %}
+
+{% block addy %}
+<b>{{ form.name.label_tag }}</b><br>{{ form.name }}<br><br>
+
+{% if form.qode %}<b>{{ form.qode.label_tag }}</b><br>{{ form.qode }}<br>{% endif %}
+
+{% if form.instance.whois == 'phrase' %}
+    <span class="code"><b>Valid Single-Q Qode:</b><br>&nbsp; q1[n, e, r, o, s]_[ADJ, NN, NNS, VB, VBD, VBG, VBN]<br>
+    <b>Examples:</b><br>&nbsp; I q1e. &nbsp; You q1r_VB. &nbsp; We like q1s_NNS.</span>
+{% elif form.instance.whois == 'fable' %}
+    <span class="code"><b>Valid Multi-Q Qode:</b><br>&nbsp; q[number][n, e, r, o, s]_[ADJ, NN, NNS, VB, VBD, VBG, VBN]<br>
+    <b>Examples:</b><br>&nbsp; I q1e. &nbsp; You q2r_VB. &nbsp; We like q5s_NNS.</span>
+{% endif %}
+
+{% if form.quadranyms %}<b>{{ form.quadranyms.label_tag }}</b><br>{{ form.quadranyms }}<br>{% endif %}
+
+{% if form.polynyms %}<b>{{ form.polynyms.label_tag }}</b><br>{{ form.polynyms }}<br>{% endif %}
+
+{% endblock %}
