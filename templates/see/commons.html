@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Quadranyms{% endblock %}
+
+{% block mid %}
+<h2>All {{ table.data.0.whois|title }}s</h2>
+<h4>click column name to sort</h4>
+<h4>click row icons to &check; edit or &timesb; delete</h4>
+{% endblock %}
+
+{% block right %}
+<form action="/{{ table.data.0.whois }}/add/" value="A D D">{% csrf_token %}<input type="submit" value="A D D"></form>
+{% endblock %}
+
+{% block content %}
+{% load render_table from django_tables2 %}
+
+{% render_table table %}
+{% endblock %}
