@@ -140,9 +140,9 @@ class Common(VoteModel, models.Model):
 
     name = models.CharField(max_length=128) # COMMON FIELDS
     user = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING, blank=True, null=True)
-    src = models.CharField(max_length=128, blank=True)
+    src = models.CharField(max_length=128, blank=True, verbose_name='source')
     area = models.CharField(max_length=32, blank=True)
-    wiki = models.CharField(max_length=128, blank=True)
+    wiki = models.CharField(max_length=128, blank=True, verbose_name='info link')
 
     class Meta:
         abstract = True
@@ -211,15 +211,15 @@ class Polynym(Common):
 class Quadranym(Common):
     'Quadranym class: sensibility model node'
 
-    e = models.CharField(max_length=128)
-    r = models.CharField(max_length=128)
-    o = models.CharField(max_length=128)
-    s = models.CharField(max_length=128)
-    pos = models.CharField(max_length=8, blank=True)
-    epos = models.CharField(max_length=8, blank=True)
-    rpos = models.CharField(max_length=8, blank=True)
-    opos = models.CharField(max_length=8, blank=True)
-    spos = models.CharField(max_length=8, blank=True)
+    e = models.CharField(max_length=128, verbose_name='expansion')
+    r = models.CharField(max_length=128, verbose_name='reduction')
+    o = models.CharField(max_length=128, verbose_name='objective')
+    s = models.CharField(max_length=128, verbose_name='subjective')
+    pos = models.CharField(max_length=8, blank=True, verbose_name='POS')
+    epos = models.CharField(max_length=8, blank=True, verbose_name='/e')
+    rpos = models.CharField(max_length=8, blank=True, verbose_name='/r')
+    opos = models.CharField(max_length=8, blank=True, verbose_name='/o')
+    spos = models.CharField(max_length=8, blank=True, verbose_name='/s')
     realm = models.CharField(max_length=32, blank=True)
 
     def enqode(self, text, number=1, flag=False):

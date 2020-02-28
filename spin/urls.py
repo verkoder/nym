@@ -19,8 +19,7 @@ urlpatterns = [
     path('polynym/area/<slug:area>',    views.PolynymDetail.as_view(), name='polynym_detail'), # area
     path('polynym/src/<slug:src>',      views.PolynymDetail.as_view(), name='polynym_detail'), # src
     path('polynym/n/<int:n>',           views.PolynymDetail.as_view(), name='polynym_detail'), # N-nyms
-    path('polynyms/',                   views.PolynymList.as_view(),   name='polynym_list'),   # list
-    path('polynyms/sort/',              views.PolynymTable.as_view(),  name='polynym_sort'),   # sort
+    path('polynyms/',                   views.PolynymTabler.as_view(),name='polynyms'),       # sort
 
     path('quadranym/',                  views.QuadranymDetail.as_view(), name='quadranym_detail'), # QUADRANYM
     path('quadranym/<int:pk>/',         views.QuadranymDetail.as_view(), name='quadranym_detail'),
@@ -28,8 +27,7 @@ urlpatterns = [
     path('quadranym/delete/<int:pk>',   views.QuadranymDelete.as_view(), name='quadranym_delete'),
     path('quadranym/add/',              views.QuadranymCreate.as_view(), name='quadranym_create'),
     path('quadranym/add/<str:kind>',    views.QuadranymCreate.as_view(), name='quadranym_create'),
-    path('quadranyms/',                 views.QuadranymList.as_view(),   name='quadranym_list'),   # list
-    path('quadranyms/sort/',            views.QuadranymTable.as_view(),  name='quadranym_sort'),   # sort
+    path('quadranyms/',                 views.QuadranymTabler.as_view(),name='quadranyms'),       # sort
 
     path('phrase/',                     views.PhraseDetail.as_view(), name='phrase_detail'), # PHRASE
     path('phrase/<int:pk>',             views.PhraseDetail.as_view(), name='phrase_detail'),

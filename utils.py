@@ -34,12 +34,13 @@ manually add P: ~fmk, mood/Ekman6, moodset/ etc.
 
 IMPORT NYMOLOGY.org DATA >> LOCAL:
 >  bash wipe.sh
-HOST>  python3.7 manage.py dumpdata --exclude=contenttypes --exclude=auth.Permission > dump.json
+HOST>  python3.7 manage.py dumpdata --exclude=contenttypes --exclude=auth.Permission --exclude=admin.logentry > dump.json
 >  scp scotty@web615.webfaction.com:/home/scotty/webapps/dj/nym/dump.json .
 >  py manage.py makemigrations
 >  py manage.py migrate --run-syncdb
 >  open json and delete all admin.logentry entries!
 >  py manage.py loaddata dump.json
+
  ___________________________________________________________
              pos_dict{ word_list[ nymdict{} ] }
 |___Expressions___| Poly |____________Quadranyms____________|

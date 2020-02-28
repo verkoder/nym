@@ -9,7 +9,7 @@ ENGLISH = spacy.load('en_core_web_sm') # SMALL WORD-VECTORBASE
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '##################################################'
+SECRET_KEY = 'n*-e1tg4+o!=63w6^_(a*m$-r&=73-q3z3bxc4hpful47gc&34'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,7 +45,7 @@ ROOT_URLCONF = 'nym.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/nymproject/nym/templates/'], # SERVER
+        'DIRS': ['/Users/scotty/Documents/nym/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,7 +86,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 
-STATIC_ROOT = '/home/static/' # SERVER
+STATIC_ROOT = '/Users/scotty/Documents/nymdox/static/spin/' # SERVER
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

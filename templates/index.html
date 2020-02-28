@@ -99,11 +99,11 @@
                         </p><hr style="width:30%"></td>
                 </tr>
                 <tr>
-                    <td align="center"><h4>Trending <a href="/p">Polynyms</a></h4>
+                    <td align="center"><h4>Trending <a href="/polynym/">Polynyms</a></h4>
                     {% for p in top_poly %}
                         <a href="/polynym/{{ p.pk }}">{{ p.depth }} &times; {{ p.name }}</a><br>
                     {% endfor%}</td>
-                    <td align="center"><h4>Trending <a href="/q">Quadranyms</a></h4>
+                    <td align="center"><h4>Trending <a href="/quadranym/">Quadranyms</a></h4>
                     {% for q in top_quad %}
                         <a href="/quadranym/{{ q.pk }}">{{ q.name }}</a><br>
                     {% endfor %}</td>

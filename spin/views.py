@@ -9,6 +9,7 @@ from itertools import product
 from random import choice, sample
 from django.db.models import Q
 from django.urls import reverse_lazy
+from django_tables2 import SingleTableView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,6 +31,7 @@ from .do_charts import depth_rng, depth_modes, field_dist, nym_wheel, nym_graph,
 from .do_conceptnet import RELS, guess_mood, guess_fit
 from .forms import QuadranymForm, PolynymForm, FableForm, PhraseForm, \
                    QuadrasetForm, PolysetForm, QueueForm, reform
+from .tables import QuadranymTable, PolynymTable
 
 # COMMON CLASS LOOKUP
 COMMON = dict(
@@ -1196,25 +1198,16 @@ def plot_pmap_src_dist(request):
     return field_dist(Polymap.objects.all(), 'src')
 
 ################
-##### LIST #####
-class QuadranymList(ListView):
-    model = Quadranym
-    template_name = 'see/quadranym_list.html'
-    ordering = ['name']
-class PolynymList(ListView):
-    model = Polynym
-    template_name = 'see/polynym_list.html'
-    ordering = ['name']
-
-################
 ##### SORT #####
-class QuadranymTable(ListView):
+class QuadranymTabler(SingleTableView):
     model = Quadranym
-    template_name = 'see/quadranym_sort.html'
-class PolynymTable(ListView):
-    model = Polynym
-    template_name = 'see/polynym_sort.html'
+    table_class = QuadranymTable
+    template_name = 'see/commons.html'
 
+class PolynymTabler(SingleTableView):
+    model = Polynym
+    table_class = PolynymTable
+    template_name = 'see/commons.html'
 
 ##############################
 ########## DISABLED ##########
