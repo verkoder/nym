@@ -8,6 +8,7 @@ from .fields import ListTextWidget
 
 QODER = RegexValidator(regex=QN, message='Empty qode script!')
 
+# DATA CLEANERS
 def subs_width(data):
     subs = ''.join([x.group(2) for x in QN.finditer(data.get('qode', ''))]).upper()
     data['subs'] = subs
