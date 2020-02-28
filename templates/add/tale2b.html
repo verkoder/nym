@@ -37,7 +37,8 @@ Using {{ fabl.length }}-Topic Fable:<br>&laquo; {{ fabl.name }} &raquo;
   </tr>
   <tr>
       <td colspan="2"><br>
-          {% include 'bits/trace_tale.html' with quads=tale_quads spun=spun trace=trace %}
+          {% if not trace %}{% include 'bits/trace_tale.html' %}
+          {% else %}{% include 'bits/trace_story.html' %}{% endif %}
       </td>
   </tr>
 </table>

@@ -14,7 +14,8 @@
   </tr>
   <tr>
 	<td align="center" valign="top">
-	{% include 'bits/trace_tale.html' with quads=tale_quads spun=spun trace=trace %}
+          {% if not trace %}{% include 'bits/trace_tale.html' %}
+          {% else %}{% include 'bits/trace_story.html' %}{% endif %}
     </td>
     <td width="20%" bgcolor="#EFEFEF" valign="top" align="center">
       <SELECT NAME="quad_id" SIZE="24">
