@@ -18,9 +18,9 @@ from django.contrib.auth import get_user_model
 from vote.models import VoteModel
 
 #####>>> SPACY NLP ON/OFF SWITCH <<<#####
-#from .do_spacy import eat,retoke,inflect
-#NLP = True
-NLP = False
+from .do_spacy import eat,retoke,inflect
+NLP = True
+#NLP = False
 
 # qode regx groups 1=qid 2=quadrant _/^  3=postag
 QN = re.compile(r'q(\d+)(n|e|r|o|s)_?\^?([A-Z]+)?', re.I) # q1n_POS format
@@ -782,7 +782,7 @@ def alltop(field='user', lim=7):
             if not what:
                 continue
 
-            what = get_user_model().objects.get(pk=what) if not isinstance(what, str) else what # get username if user.pk
+            what = get_user_model().objects.get(pk=what) if not isinstance(what, str) else what
             if what not in crop:
                 crop[what] = score
             else:
@@ -806,13 +806,13 @@ def sections(commons, sup=None, thresh=0):
     sex = []
     used = {x.id:0 for x in commons}
     nyms = {x.id:set(x.nyms(named=True)) for x in commons} # dimension dict
-    combis = [(a, b, ab) for a, b, ab in [
+    comb = [(a, b, ab) for a, b, ab in [
         (a, b, tuple(nyms[a.id].intersection(nyms[b.id]))) for a, b in combinations(commons, 2)] if ab]
     nyms = {k:len(v)-1 for k, v in nyms.items()}
-    combis = [(a, b, ab) for a, b, ab in combis if len(ab) != nyms[a.id] and len(ab) != nyms[b.id]] if not sup else \
-             [(a, b, ab) for a, b, ab in combis if len(ab) == nyms[a.id] or len(ab) == nyms[b.id]]
+    comb = [(a, b, ab) for a, b, ab in comb if len(ab) != nyms[a.id] and len(ab) != nyms[b.id]] if not sup else \
+           [(a, b, ab) for a, b, ab in comb if len(ab) == nyms[a.id] or len(ab) == nyms[b.id]]
 
-    for a, b, ab in combis:
+    for a, b, ab in comb:
         sex.append((f'{a.id}_{b.id}', a, ab, b))
         used[a.id] += 1
         used[b.id] += 1
@@ -886,7 +886,7 @@ def poly_systems(polys):
     ttl = [f'{x}-nym' for x, y in poly_dict]
     part = len([p for p in polys if p.mode == 'part'])
     step = len([p for p in polys if p.mode == 'step'])
-    typ  = len([p for p in polys if p.mode == 'type'])
+    typ = len([p for p in polys if p.mode == 'type'])
     return ttl, [y for x, y in poly_dict], part, step, typ
 
 def findquad_table(word, qs):
