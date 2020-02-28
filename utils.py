@@ -14,18 +14,19 @@ CODE CHECK:
 pylint --load-plugins pylint_django spin/views.py > lint.txt
 
 LOCAL QUOTE CRAWL:
-> from utils import *
-> mine_quotes(99) # rate limit = 100/day
+dj> from utils import *
+dj> mine_quotes(100) # rate limit = 100/day
+dj> add_quotes()
 ..wait 24 hours..
 
 REVERT TO LEGACY DATA:
 >  bash wipe.sh
 >  bash revert.sh
->  djshell> from utils import *
->  djshell> nymbase()
+dj> from utils import *
+dj> nymbase()
 >  py manage.py migrate
->  djshell> dj_nymbase()
-f> djshell> dj_fortune() # --> then mine_fortunes()
+dj> dj_nymbase()
+dj> dj_fortune() # --> then mine_fortunes()
 manually add P: ~fmk, mood/Ekman6, moodset/ etc.
          add Q: -, ~Topic~, qode
          add Phrase: -
@@ -58,7 +59,7 @@ from django.core.exceptions import ValidationError
 from spin.models import Polynym, Polymap, Polyset, Quadranym, Quadraset, \
                     Fable, Phrase, Story, Storyline, Tale, Taleline, \
                     Fortune, Quote, Vectornym, Winner, \
-                    QN, enqodes, objectify, dimension_dict
+                    QN, enqodes, thingify, dimension_dict
 
 Q = re.compile(r'q(T|E|R|O|S)') # legacy qT
 QT = re.compile(r'(?i)q(\d)*?(T|E|R|O|S)') # legacy q1T
@@ -244,9 +245,17 @@ def mine_fortunes():
 def mine_quotes(span=2):
     'query Quotes.net API, pickle matches with 2+ Q codimensions'
 
-    i,o = pickle.load(open('_io.pkl', 'rb'))
-    batch = pickle.load(open('quotes.pkl', 'rb'))
-    dims = list(dimension_dict(objectify(Quadranym)).items())
+    try:
+        i,o = pickle.load(open('_io.pkl', 'rb')) # load batch span
+    except FileNotFoundError:
+        pickle.dump((0, 1), open('_io.pkl','wb'))
+
+    try:
+        batch = pickle.load(open('quotes.pkl', 'rb')) # load quote dict
+    except FileNotFoundError:
+        pickle.dump({}, open('quotes.pkl','wb'))
+
+    dims = list(dimension_dict(thingify(Quadranym)).items())
     print(f'{len(batch)} Quotes! {len(dims)} Q-dimensions! Slicing {i}:{o}')
 
     for word, quads in dims[i:o]:
@@ -265,12 +274,14 @@ def mine_quotes(span=2):
                 if sum(quad.freq(data['quote'])) > 1:
                     qode, subs = quad.enqode(data['quote'], flag=True)
                     if len(set(subs)) > 1: # 2+ unique dimensions!
-                        batch[qode] = dict(body=data['quote'],
-                                      qode=qode,
-                                      quadranym=quad.name,
-                                      src=data.get('author', ''),
-                                      subs=subs,
-                                      width=len(subs))
+                        src = data.get('author', '')
+                        if src != 'Musin Almat Zhumabekovich':
+                            batch[qode] = dict(body=data['quote'],
+                                          qode=qode,
+                                          quadranym=quad.pk,
+                                          src=src,
+                                          subs=subs,
+                                          width=len(subs))
 
     pickle.dump((o, o+span), open('_io.pkl', 'wb'))
     pickle.dump(batch, open('quotes.pkl', 'wb'))
@@ -279,14 +290,21 @@ def mine_quotes(span=2):
 def add_quotes():
     'add quotes from pickle'
 
-    batch = pickle.load(open('quotes.pkl', 'rb'))
-    print(f'Trying {len(batch)} quotes..')
-    qodes = [x.qode for x in Quote.objects.all()]
-    for bat in batch.values():
-        if bat['qode'] not in qodes:
-            quote = Quote(**bat)
-            quote.save()
+    qodes = [x.qode for x in Quote.objects.all()] # all quotes qode in db
+    print(f'{len(qodes)} Quotes in nymbase')
 
+    batch = pickle.load(open('quotes.pkl', 'rb')) # quotes dict keyed by qode
+    print(f'Trying {len(batch)} quotes..')
+
+    for bat in batch.values(): # add batch to Nymbase
+        if bat['qode'] not in qodes:
+            pk = bat.pop('quadranym')
+            quote = Quote(**bat)
+            quote.quadranym = Quadranym.objects.get(pk=pk)
+            quote.save()
+            print(quote)
+
+    print(f'Added {Quote.objects.count() - len(qodes)} quotes')
 
 ### CRAWL ######################################################################
 def add_wikis():
