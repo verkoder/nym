@@ -36,6 +36,23 @@ input:active[type=submit] {
     color: indigo;
     background-color: gold;
 }
+ul.pagination {
+    font-size: 24px;
+    font-family: monospace;
+    overflow: auto;
+    text-align: center;
+}
+li {
+    white-space: nowrap;
+    display: inline-block;
+}
+li.active a {
+    text-decoration: none;
+    pointer-events: none;
+    color: white;
+    background-color: gray;
+}
+
 .qontainer {
   position: relative;
   text-align: center;

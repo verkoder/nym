@@ -22,11 +22,13 @@ class CommonTable(tables.Table):
 class QuadranymTable(CommonTable):
     class Meta:
         model = Quadranym
+        attrs = {'class': 'commons'}
         fields = ('id', 'name', 'area', 'src', 'user', 'realm', 'e', 'r', 'o', 's',
                    'pos', 'epos', 'rpos', 'opos', 'spos', 'wiki')
 
 class PolynymTable(CommonTable):
     class Meta:
         model = Polynym
+        attrs = {'class': 'commons'}
         fields = ('id', 'name', 'area', 'src', 'user', 'mode', 'depth', 'p1', 'p2', 'p3',
                    'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'wiki')
