@@ -36,6 +36,11 @@ input:active[type=submit] {
     color: indigo;
     background-color: gold;
 }
+table.commons td {
+    font-size: 16px;
+    padding: 4px;
+}
+tr.even { background-color: #EFEFEF; }
 ul.pagination {
     font-size: 24px;
     font-family: monospace;
@@ -50,7 +55,7 @@ li.active a {
     text-decoration: none;
     pointer-events: none;
     color: white;
-    background-color: gray;
+    background-color: #9F9F9F;
 }
 
 .qontainer {
