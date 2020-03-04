@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Story{% endblock %}
 
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Story:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
@@ -13,7 +13,8 @@
         <td>
             <SELECT NAME="pk" MULTIPLE SIZE="12">
             {% for s in things %}
-              <option VALUE="{{ s.id }}" {% if s.id == thing.id %}selected{% endif %}/>{{ s.length }} | {{ s.name|truncatechars:25 }}{% if s.src %} | {{ s.src|truncatechars:25 }}{% endif %}
+              <option VALUE="{{ s.id }}" {% if s.id == thing.id %}selected{% endif %}/>
+              {{ s.length }} | {{ s.name|truncatechars:25 }}{% if s.src %} | {{ s.src|truncatechars:25 }}{% endif %}
             {% endfor %}
             </SELECT>
         </td>

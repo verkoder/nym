@@ -1,16 +1,18 @@
+#!/usr/bin/env python
+# encoding: utf-8
 '''
-do_spacy.py -- spaCy NLP tools with pyinflect
+do_spacy.py -- Nymology spaCy NLP tools with pyinflect
 '''
 from functools import wraps
 from string import punctuation
 from collections import Counter
 
-import pyinflect
+#import pyinflect
 from nym.settings import DOC # SERVER | DOC = spacy.tokens.doc.Doc
-from nym.settings import ENGLISH #    | ENGLISH = spacy.load('en_core_web_lg')
+from nym.settings import ENGLISH #    | ENGLISH = spacy.load('en_core_web_sm')
 
 # DECORATOR
-def sp(meth):
+def text_or_doc(meth):
     'allow methods to input free text or spaCy Doc'
 
     @wraps(meth)
@@ -20,8 +22,7 @@ def sp(meth):
         return meth(*args, **kwargs)
     return sp_meth
 
-#####################
-### SPACY METHODS ###
+### SPACY METHODS
 def qsim(q):
     'get similarity for all Q dimension pairs'
 
@@ -33,13 +34,13 @@ def sim(docs):
     docs = [eat(x) for x in docs]
     return [(x, [(y, x.similarity(y)) for y in docs]) for x in docs]
 
-@sp
+@text_or_doc
 def eat(doc):
     'digest text to spaCy doc'
 
     return doc
 
-@sp
+@text_or_doc
 def toke(doc):
     'tokenize input'
 
@@ -57,51 +58,50 @@ def retoke(tokes):
 
     return DOC(ENGLISH.vocab, words=tokes, spaces=spaces)
 
-@sp
+@text_or_doc
 def pos(doc):
     'tag part-of-speech'
 
     return [(x, x.pos_) for x in doc]
 
-@sp
+@text_or_doc
 def ner(doc):
     'get named entities'
 
     return [(x, x.label_) for x in doc.ents]
 
-@sp
+@text_or_doc
 def lemma(doc):
     'lemmatize text'
 
     return [(x, x.lemma_) for x in doc]
 
-@sp
+@text_or_doc
 def unstop(doc):
     'remove stopwords'
 
     return [x.text for x in doc if not x.is_stop and not x.is_punct]
 
-@sp
+@text_or_doc
 def chunks(doc):
     'get noun chunks'
 
     return [x.text for x in doc.noun_chunks]
 
-@sp
+@text_or_doc
 def tree(doc):
     'get dependency tree'
 
     return [(x.text, x.dep_, x.head.text, x.head.pos_, list(x.children)) for x in doc]
 
-@sp
+@text_or_doc
 def wordcount(doc):
     'calculate word frequency'
 
     freq = Counter(unstop(doc))
     return freq.most_common(4)
 
-#########################
-### PYINFLECT METHODS ###
+### PYINFLECT METHOD
 def inflect(doc, word, inflection):
     'modify a doc.word by inflection'
 

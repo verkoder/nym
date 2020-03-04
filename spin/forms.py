@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# encoding: utf-8
+'''
+forms.py -- Nymology database model forms
+'''
 from django import forms
 from django.shortcuts import redirect
 from django.core.validators import RegexValidator
@@ -38,8 +43,12 @@ def reform(form, fields=[], request=None):
 
     return redirect(f'/{thing.whois()}/{thing.pk}') # see edit
 
-##################
-### ROOT FORMS ###
+# ROOT FORMS
+class QueueForm(forms.ModelForm):
+    class Meta:
+        model = Queue
+        fields = ('name',)
+
 class NoForm(forms.ModelForm):
     class Meta:
         model = Common
@@ -55,8 +64,7 @@ class CommonForm(NoForm):
         model = Common
         fields = ('name', 'src', 'wiki', 'area') # + user
 
-####################
-### COMMON FORMS ###
+# COMMON FORMS
 class PhraseForm(CommonForm):
     qode = forms.CharField(label='Template Qode',
                            widget=forms.Textarea(attrs=dict(rows=14, cols=64)),
@@ -120,10 +128,3 @@ class QuadrasetForm(CommonForm):
         fields = CommonForm.Meta.fields + ('quadranyms',)
     def clean(self):
         return quadranym_length(super(QuadrasetForm, self).clean())
-
-#######################
-### SPECIAL CLASSES ###
-class QueueForm(forms.ModelForm):
-    class Meta:
-        model = Queue
-        fields = ('name',)

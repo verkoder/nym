@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Spin Fortune{% endblock %}
 
 {% block mid %}
@@ -63,16 +63,16 @@
 	<td bgcolor="#EFEFEF" align="center" valign="top" height="290px" width="200px">
 	<SELECT NAME="fort_id" MULTIPLE SIZE="20">
     {% for f in forts %}
-      <OPTION VALUE="{{ f.id }}"
-	  {% if f.id == fort.id %}selected {% endif %}
-	  />{{ f.body|truncatechars:25 }} | Pick {{ f.depth }} Topics >>
+      <OPTION VALUE="{{ f.id }}"{% if f.id == fort.id %}selected {% endif %}/>
+      {{ f.body|truncatechars:25 }} | Pick {{ f.depth }} Topics >>
       {% endfor %}
     </SELECT>
 	</td>
     <td bgcolor="#CFCFCF" align="center" valign="top" height="290px" width="200px">
       <SELECT NAME="quad_id" MULTIPLE SIZE="20">
 	  {% for q in quads %}
-		<OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>{{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+		<OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>
+        {{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
 	  {% endfor %}
 	  </SELECT>
 	</td>

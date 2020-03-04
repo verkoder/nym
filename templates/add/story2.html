@@ -1,11 +1,11 @@
-{% extends "add/_new.html" %}
+{% extends 'add/_new.html' %}
 {% block title %}Edit Story{% endblock %}
 
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Label your Story!{% endif %}</h2>{% endblock %}
 
 {% block right %}
-<form action="/save_story/" method="POST">
-{% csrf_token %} Enter below, then <input type="submit" value="S A V E"/>
+<form action="/save_story/" method="POST">{% csrf_token %}
+Enter below, then <input type="submit" value="S A V E"/>
 {% endblock %}
 
 {% block addy %}

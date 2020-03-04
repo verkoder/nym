@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Edit Story{% endblock %}
 
 {% block mid %}<h2>
@@ -6,14 +6,15 @@
 {% else %}Build a Story from Topic/Phrase pairs</h2>
 {% endif %}
 {% endblock %}
+
 {% block right %}<font size="+1"><b>Story-Pushers:</b></font>
 <h4>Menu-based: <a href="/story/add/">&rarr; Frames &rarr;</a><br>
     Text-based: &raquo;&raquo; Pairs &laquo;&laquo;<br>
     <a href="/add/storyc">&rarr; Matched Lists &rarr;</a></h4>
 {% endblock %}
+
 {% block content %}
-<form action="/add/storyb/" method="POST">
-{% csrf_token %}
+<form action="/add/storyb/" method="POST">{% csrf_token %}
 <table width="80%">
   <tr>
     <td bgcolor="#CFCFCF" valign="top" align="center">
@@ -43,6 +44,6 @@
     </td>
   </tr>
 </table>
-{% include 'bits/trace_story.html' with spun=spun trace=trace %}
+{% include 'bits/trace_story.html' %}
 </form>
 {% endblock %}

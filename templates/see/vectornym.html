@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Vectornym{% endblock %}
 
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Vectornym:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
@@ -12,7 +12,8 @@
         <td>
             <SELECT NAME="pk" MULTIPLE SIZE="12">
             {% for v in things %}
-              <option VALUE="{{ v.id }}" {% if v.id == thing.id %}selected{% endif %}/>{{ v.length }} | {{ v.name|truncatechars:35 }}{% if v.src %} | {{ v.src|truncatechars:25 }}{% endif %}
+              <option VALUE="{{ v.id }}" {% if v.id == thing.id %}selected{% endif %}/>
+              {{ v.length }} | {{ v.name|truncatechars:35 }}{% if v.src %} | {{ v.src|truncatechars:25 }}{% endif %}
             {% endfor %}
             </SELECT>
         </td>
@@ -32,7 +33,9 @@
     <table align="center" cellpadding="4">
         <tr valign="top">
         {% for p in thing.polys %}
-            <td align="center"><span class="full">{{ p.name }}<br><span class="huge">{% if not forloop.last %}&rarr;{% else %}&uarr;</span>{% endif %}</span></td>
+            <td align="center"><span class="full">{{ p.name }}
+                <br><span class="huge">{% if not forloop.last %}&rarr;{% else %}&uarr;</span>{% endif %}</span>
+            </td>
         {% endfor %}
         </tr>
         <tr valign="top">

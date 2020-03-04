@@ -1,5 +1,11 @@
+#!/usr/bin/env python
+# encoding: utf-8
+'''
+settings.py -- Nymology Django settings
+'''
 import os
 import spacy
+from .keys import DJANGO_SECRET#, NYMBASE_PASSWORD
 
 DOC = spacy.tokens.doc.Doc
 ENGLISH = spacy.load('en_core_web_sm') # SMALL WORD-VECTORBASE
@@ -9,7 +15,7 @@ ENGLISH = spacy.load('en_core_web_sm') # SMALL WORD-VECTORBASE
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n*-e1tg4+o!=63w6^_(a*m$-r&=73-q3z3bxc4hpful47gc&34'
+SECRET_KEY = DJANGO_SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -67,7 +73,7 @@ DATABASES = {
 #       'ENGINE': 'django.db.backends.postgresql_psycopg2', # SERVER
 #       'NAME': 'nymbase',
 #       'USER': 'nym',
-#       'PASSWORD': '#################',
+#       'PASSWORD': NYMBASE_PASSWORD,
 #       'HOST': '127.0.0.1',
 #       'PORT': '5432'
     }

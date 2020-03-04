@@ -1,7 +1,10 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Edit Vectornym{% endblock %}
 
-{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}<h2>Build a Vectornym!</h2><h4>Pick 2 - 9 Topics starting in top left.</h4>{% endif %}</h2>{% endblock %}
+{% block mid %}
+<h2>{% if msg %}{{ msg }}{% else %}Build a Vectornym!<br>Pick Topics starting in top left.{% endif %}</h2>
+{% endblock %}
+
 {% block right%}
 <form action="/vectornym/add/" method="POST">{% csrf_token %}
 <h4 align="center">Ready your Vectornym and<br><input type="submit" value="A I M" name='_save' /></h4>

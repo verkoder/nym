@@ -1,8 +1,8 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Polynym{% endblock %}
 {% block mid %}<h2>{% if msg %}Polynym {{ msg }}!{% else %}Polynym:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
 
-{% block right %}
+{% block right %}{% load motags %}
 <form method="POST">{% csrf_token %}
 <table>
     <tr>
@@ -37,8 +37,9 @@
          <font color="lightblue">part</font> <font color="peru">step</font><br>Depth = Shape</b>
     </td>
   </tr>
-   <tr>
-       <td bgcolor="#EFEFEF" colspan="3"><br></td>
-   </tr>
+  <tr>
+      <td colspan="3" bgcolor="#EFEFEF" align="left"><b>{% with sakes=thing.nyms|nymsake:"quadranym" %}
+          {% if sakes %}{{ sakes }}{% endif %}{% endwith %}</b></td>
+  </tr>
 </table>
 {% endblock %}

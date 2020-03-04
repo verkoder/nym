@@ -1,12 +1,14 @@
-{% extends "base.html" %}
-{% block title %}PolyPuzzle Winners{% endblock %}
+{% extends 'base.html' %}
+{% block title %}{{ app }} Winners{% endblock %}
 
 {% block mid %}
-<h1 align="center">THE HALL OF POLYFAME</h1>
+<h1 align="center">Legends of {{ app }}</h1>
 {% endblock %}
 
-{% block right %}
-<b>{% if msg %}{{ msg }}{% else %}Hit back on your browser or<br>&rarr; <a href="/polypuzl">START A NEW GAME</a>&rarr;</b>{% endif %}
+{% block right %}<h2>
+{% if msg %}{{ msg }}{% else %}
+Hit your browser's back button to continue or<br>&rarr; <a href="/{{ app.lower }}">START A NEW GAME</a>&rarr;
+{% endif %}</h2>
 {% endblock %}
 
 {% block content %}

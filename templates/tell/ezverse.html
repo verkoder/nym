@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}EZ Spin{% endblock %}
 
 {% block mid %}
@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="/qspin/" method="POST">{% csrf_token %}
+<form action="/ezverse/" method="POST">{% csrf_token %}
 <h3 align="center">Choose below and <input type="submit" value="S P I N"/></h3>
 <table align="center" cellspacing="0" cellpadding="4">
   <tr>
@@ -33,14 +33,14 @@
       {% for q in quads %}
         <input type="radio" name="quad_id" id="q{{ forloop.counter }}" value="{{ q.id }}" />
         <label for="q{{ forloop.counter }}" nowrap>{{ q.name }}</label>
-		{% if not forloop.last %}<br />{% endif %}
+		{% if not forloop.last %}<br>{% endif %}
 	  {% endfor %}</span>
     </td>
 	<td bgcolor="#CFCFCF" valign="top" width="120"><span class="its">
     {% for ph in phras %}
       <input type="radio" name="phra_id" id="ph{{ forloop.counter }}" value="{{ ph.id }}" />
       <label for="ph{{ forloop.counter }}" nowrap>{{ ph.name }}</label>
-		{% if not forloop.last %}<br />{% endif %}
+		{% if not forloop.last %}<br>{% endif %}
     {% endfor %}</span>
     </td>
   </tr>

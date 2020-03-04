@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Phrase{% endblock %}
 
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Phrase Template:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
@@ -31,8 +31,12 @@
 	<td bgcolor="#BBBBBB" align="left" valign="middle" width="70%">
         <table width="100%" cellpadding="4">
           <tr>
-            <td bgcolor="#FFFFFF" align="center" width="66%"><h3>{{ thing.name|title }}</h3>{{ thing.qode }}<br><br><br></td>
-            <td bgcolor="#EFEFEF" align="center" width="33%"><h2>Subs: {{ thing.subs }}</h2></td>
+            <td bgcolor="#FFFFFF" align="center" width="66%">
+                <h3>{{ thing.name|title }}</h3>{{ thing.qode }}<br><br><br>
+            </td>
+            <td bgcolor="#EFEFEF" align="center" width="33%">
+                <h2>Subs: {{ thing.subs }}</h2>
+            </td>
           </tr>
         </table>
     </td>

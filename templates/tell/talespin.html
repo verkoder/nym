@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Spin a Tale{% endblock %}
 
 {% block mid %}
@@ -23,8 +23,8 @@
 {% else %}{{ spun|linebreaks }}
 {% endif %}
 {% endif %}
-<form action="/fspin/" method="POST">{% csrf_token %}
-<h3 align="center">Choose below and <input type="submit" value="T E L L" /> or <a href="/fspin">spin by chance</a></h3>
+<form action="/talespin/" method="POST">{% csrf_token %}
+<h3 align="center">Choose below and <input type="submit" value="T E L L" /> or <a href="/talespin">spin by chance</a></h3>
 <table align="center" cellspacing="0" cellpadding="4">
   <tr>
 	<th></th>
@@ -36,9 +36,8 @@
 	<td bgcolor="EFEFEF" align="center" valign="top" height="290px" width="200px">
 	<SELECT NAME="fabl_id" MULTIPLE SIZE="20">
     {% for f in fabls %}
-      <OPTION VALUE="{{ f.id }}"
-	  {% if f.id == fabl.id %}selected {% endif %}
-	  />{{ f.name|truncatechars:25 }} | Pick {{ f.length }} Topics >>
+      <OPTION VALUE="{{ f.id }}"{% if f.id == fabl.id %}selected {% endif %}/>
+      {{ f.name|truncatechars:25 }} | Pick {{ f.length }} Topics >>
       {% endfor %}
     </SELECT>
 	</td>
@@ -46,7 +45,8 @@
     <td bgcolor="#CFCFCF" align="center" valign="top" height="290px" width="200px">
       <SELECT NAME="quad_id" MULTIPLE SIZE="20">
 	  {% for q in quads %}
-		<OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>{{ q.name }}{% if q.src %}|{{ q.src|truncatechars:25 }}{% endif %}
+		<OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>
+        {{ q.name }}{% if q.src %}|{{ q.src|truncatechars:25 }}{% endif %}
 	  {% endfor %}
 	  </SELECT>
 	</td>

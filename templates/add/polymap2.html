@@ -1,14 +1,16 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Edit Polymap{% endblock %}
 
 {% block mid %}<h2>{% if msg %}{{ msg }}{% endif %}</h2>
 <form action="/save_polymap/" method="POST">{% csrf_token %}
 <h3>Choose below, then <input type="submit" value="S A V E"/></h3>
 {% endblock %}
+
 {% block right %}
 More about <b><a href="http://conceptnet.io" target="_blank">ConceptNet</a></b> relations
 {% endblock %}
-{% block content %}
+
+{% block content %}{% load motags %}
 <table align="center" bgcolor="#EFEFEF" cellpadding="4" cellspacing="0">
   <tr>
 	<td width="45%" align="right">
@@ -29,7 +31,9 @@ More about <b><a href="http://conceptnet.io" target="_blank">ConceptNet</a></b> 
     	<SELECT NAME="pa{{ forloop.counter }}">
 		{% for p in p1.nyms %}
 			{% if p %}
-				{% if i >= p1.depth and forloop.first %}<option disabled selected value> << choose dimension >> </option>{% endif %}
+				{% if i >= p1.depth and forloop.first %}
+                    <option disabled selected value> << choose dimension >> </option>
+                {% endif %}
 				<OPTION VALUE="{{ p }}"{% if forloop.counter == forloop.parentloop.counter %} SELECTED{% endif %}>{{ p }}
 			{% endif %}
 		{% endfor %}</SELECT>
@@ -83,12 +87,12 @@ More about <b><a href="http://conceptnet.io" target="_blank">ConceptNet</a></b> 
   </tr>
 
   <tr>
-  	<td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|truncatechars:25 }}</a></td>
+  	<td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|wikurl }}</a></td>
 	<td bgcolor="#BBBBBB" align="center">
 		<label for="wiki">URL:</label><br>
 		<input type="text" name="wiki"/><br>
 	</td>
-	<td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|truncatechars:25 }}</a></td>
+	<td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|wikurl }}</a></td>
   </tr>
   <tr>
   	<td align="center" colspan="3"><h3>Choose above, then <input type="submit" value="S A V E"/></h3></td>

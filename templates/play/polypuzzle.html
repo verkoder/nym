@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}PolyPuzzle{% endblock %}
 
 {% block mid %}
@@ -6,8 +6,8 @@
 <h2>{% if msg %}{{ msg }}{% else %}Find the Missing Nym!{% endif %}</h2>
 {% endblock %}
 
-{% block right %}
-<form action="/polypuzl/" method="POST">{% csrf_token %}
+{% block right %}{% load motags %}
+<form action="/polypuzzle/" method="POST">{% csrf_token %}
 <table border="0" cellspacing="0" cellpadding="4" width="90%">
     <tr>
         <td align="left" valign="top" bgcolor="#DEDEDE" nowrap><span class="num"><b>YOUR SCORE:</b> {{ at }} points<br>
@@ -53,7 +53,9 @@
     </td>
   </tr>
   <tr>
-      <td colspan="2" bgcolor="#DEDEDE">{% if poly.wiki %}<b>URL:</b> <a href="{{ poly.wiki }}">{{ poly.wiki }}</a> <b>&larr;But no cheating!</b>{% endif %}</td>
+      <td colspan="2" bgcolor="#DEDEDE">{% if poly.wiki %}<h5>Info:<br>
+          <a href="{{ poly.wiki }}">{{ poly.wiki|wikurl }}</a>
+          <br>&uarr; But no cheating! &uarr;</h5>{% endif %}</td>
    </tr>
    <tr>
       <td colspan="2" bgcolor="#DEDEDE" align="right"><a href="/polyfame"><b>&rarr; See HIGH SCORES&rarr;</b></a></td>

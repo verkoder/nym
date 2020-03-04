@@ -1,28 +1,32 @@
-{% extends "base.html" %}
-{% block title %}unQuote{% endblock %}
+{% extends 'base.html' %}
+{% block title %}turnQuote{% endblock %}
 
 {% block mid %}
-<h2>{% if msg %}{{ msg }}{% else %}unQuote!{% endif %}</h2>
-{% autoescape off %}{{ spun }}<br><b>&mdash; {{ quot.src }}</b>{% endautoescape %}
+<h2>{% if msg %}{{ msg }}{% else %}turnQuote{% endif %}</h2>
+{% autoescape off %}
+{% if quot.quadranym.pk == quad.id %}{{ quot.body }}
+{% else %}{{ spun }}{% endif %}
+<br><b>&mdash; {{ quot.src }}</b>{% endautoescape %}
 {% endblock %}
 
 {% block right %}
 {% if quad %}
-{% include 'bits/quad.html' with quad=quad %}
+{% include 'bits/quad.html' %}
 <table>
     <tr>
         <td valign="bottom"><span class="lil">{{ quot.qode }}</span></td>
         <td valign="bottom"><span class="lil">{{ quot.subs }}:{{ quot.width }}</span></td>
     </tr>
 </table>
-Enqoded Topic: <b>{{ quot.quadranym.name }}</b>
+Enqoded Topic:
+<b>{{ quot.quadranym.name }}{% if quot.quadranym.src %} ({{ quot.quadranym.src }}){% endif %}</b>
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<form action="/unquote/" method="POST">
-{% csrf_token %}
-<h3 align="center">Choose below and <input type="submit" value="S P I N" /> or <a href="/unquote">spin by chance</a></h3>
+<form action="/turnquote/" method="POST">{% csrf_token %}
+<h3 align="center">Choose below and <input type="submit" value="S P I N" />
+    or <a href="/turnquote">spin by chance</a></h3>
 <table align="center" cellspacing="0" cellpadding="4">
   <tr>
     <th bgcolor="#CFCFCF"><h3>Pick a Quote:</h3></th>
@@ -37,12 +41,14 @@ Enqoded Topic: <b>{{ quot.quadranym.name }}</b>
 	  />{{ qo.width }} | {{ qo.subs }} | {{ qo.src|truncatechars:25 }}
       {% endfor %}
     </SELECT>
-    <br><br><span class="lil">Quotes courtesy of <b><a href="https://www.quotes.net" target="_blank">Quotes.net</a></b></span>
+    <br><br><span class="lil">Quotes courtesy of
+        <b><a href="https://www.quotes.net" target="_blank">Quotes.net</a></b></span>
 	</td>
     <td bgcolor="#CFCFCF" align="center" valign="top" height="290px" width="200px">
       <SELECT NAME="quad_id" MULTIPLE SIZE="20">
 	  {% for q in quads %}
-		<OPTION VALUE="{{ q.id }}"{% if q.id == quad.id %} selected{% endif %}/>{{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+		<OPTION VALUE="{{ q.id }}"{% if q.id == quad.id %} selected{% endif %}/>
+        {{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
 	  {% endfor %}
 	  </SELECT>
 	</td>

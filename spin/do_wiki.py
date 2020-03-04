@@ -1,5 +1,7 @@
+#!/usr/bin/env python
+# encoding: utf-8
 '''
-do_wiki.py -- wikipedia tools
+do_wiki.py -- Nymology wikipedia tools
 '''
 from random import choice, sample
 import wikipedia
@@ -9,7 +11,7 @@ NUMS = ('two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 
 
 
 def wiki_url(name, area):
-    'guess wikipedia URL'
+    'guess wikipedia URL --UNUSED: so-so results'
 
     try:
         page = wikipedia.page(name) # first try "name"

@@ -1,13 +1,15 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Sectionyms{% endblock %}
 
 {% block script%}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
+
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Polynym Intersection:</h2>
     <h3>P<sub>{{ a.name }}</sub> &cap; P<sub>{{ b.name }}</sub> &rarr; { {{ ab|join:", " }} }
     $$P^{ {{ a.depth }} }\ \cap\ P^{ {{ b.depth }} } \to | {{ ab|length }} |$$</h3>
 {% endif %}{% endblock %}
+
 {% block right %}
 <table>
     <tr>
@@ -28,7 +30,7 @@
 </table>
 {% endblock %}
 
-{% block content %}
+{% block content %}{% load motags %}
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
       <td></td>
@@ -63,11 +65,11 @@
     <td bgcolor="FFFFFF" align="center"></td>
     <td bgcolor="FFFFFF" align="center" valign="top"><h2 align="center">{{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of <a href="/p/id/{{ a.id }}">{{ a.name }}</a> &uarr;</h2></td>
     <td bgcolor="FFFFFF" align="left" valign="top" colspan="2">
-        {% if b.wiki %}<h5 align="right"><b>URL:</b> <a href="{{ b.wiki }}">{{ b.wiki }}</a></h5>{% endif %}
+        {% if b.wiki %}<h5 align="right">Info:<br><a href="{{ b.wiki }}">{{ b.wiki|wikurl }}</a></h5>{% endif %}
         {% if a.src %}<b>Source:</b> {{ a.src }}<br>{% endif %}
         {% if a.area %}<b>Area:</b> {{ a.area }}<br>{% endif %}
         {% if a.user %}<b>By:</b> {{ a.user }}<br>{% endif %}
-        {% if a.wiki %}<h5 align="left"><b>URL:</b> <a href="{{ a.wiki }}">{{ a.wiki }}</a></h5>{% endif %}</td>
+        {% if a.wiki %}<h5 align="left">Info:<br><a href="{{ a.wiki }}">{{ a.wiki|wikurl }}</a></h5>{% endif %}</td>
   </tr>
 </table>
 {% endblock %}

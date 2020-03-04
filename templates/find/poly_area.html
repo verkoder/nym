@@ -1,5 +1,6 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Polynyms by Area{% endblock %}
+
 {% block mid %}
 {% if msg %}{{ msg }}{% else %}<h2>{% if area != 'all' %}{{ area }}{% endif %} Polynyms</h2>
 <h4>TOTAL: {{ length }} Polynyms<br>{{ type }} Type

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Polynym Idea Set Mathematics{% endblock %}
 
 {% block script %}
@@ -8,6 +8,7 @@
     $$ {{ p1.named }}\ \bot\ {{ p2.named }} $$
 </h2>{% endif %}
 {% endblock%}
+
 {% block right %}
 <form action="/polymath/" method="POST">{% csrf_token %}
 <table align="center" cellpadding="6">
@@ -35,8 +36,8 @@
 </table>
 </form>
 {% endblock %}
-{% block content %}
 
+{% block content %}{% load motags %}
 {% if p1 %}
 <table width="100%">
 <tr>
@@ -85,9 +86,9 @@
 	<td><h3 align="left">{{ p2.user }}</h3></td>
   </tr>
   <tr>
-    <td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|truncatechars:25 }}</a></td>
-    <td bgcolor="#BBBBBB"><h4 align="center">:URL:</h4></td>
-    <td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|truncatechars:25 }}</a></td>
+    <td align="right"><b><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|wikurl }}</a></b></td>
+    <td bgcolor="#BBBBBB"><h4 align="center">:Info:</h4></td>
+    <td><b><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|wikurl }}</a></b></td>
   </tr>
 </table>
     </td>

@@ -1,5 +1,7 @@
+#!/usr/bin/env python
+# encoding: utf-8
 '''
-do_conceptnet.py -- ConceptNet NLP tools
+do_conceptnet.py -- Nymology ConceptNet NLP tools
 '''
 from time import sleep
 from json import JSONDecodeError

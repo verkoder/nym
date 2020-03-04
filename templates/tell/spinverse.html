@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Spin Verse{% endblock %}
 
 {% block mid %}
@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block content %}
-{% include 'bits/trace_story.html' with spun=spun trace=trace %}
-<form action="/mspin/" method="POST">{% csrf_token %}
+{% include 'bits/trace_story.html' %}
+<form action="/spinverse/" method="POST">{% csrf_token %}
 <h3 align="center">Choose below and <input type="submit" value="S P I N" /></h3>
 <h5 align="center">Use Ctrl- or Cmd-click to select multiple</h5>
 <table align="center" cellspacing="0" cellpadding="4">

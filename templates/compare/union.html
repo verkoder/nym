@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Unionyms{% endblock %}
 
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
+
 {% block mid %}<h2>
 {% if msg %}{{ msg }}
 {% else %}
@@ -24,6 +25,7 @@
     </table></h2>
 {% endif %}
 {% endblock %}
+
 {% block right %}
 <table>
     <tr>

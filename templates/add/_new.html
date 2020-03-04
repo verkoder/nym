@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
 <table width="100%" align="center" bgcolor="BBBBBB" cellpadding="6" cellspacing="0">
   <tr>
@@ -94,9 +94,9 @@
     </td>
   </tr>
   <tr>
-      <td colspan="2" bgcolor="#DEDEDE"><br><b>URL:</b>{% if form %}{{ form.wiki }}{% else %}
+      <td colspan="2" bgcolor="#DEDEDE"><br><b>Info:</b>{% if form %}{{ form.wiki }}{% else %}
           <input type="text" name="wiki" size="96">{% endif %}<br>
-          <span class="tiny">wikipedia or other info link</span><br></td>
+          <span class="tiny">wikipedia or other URL</span><br></td>
   </tr>
   {% if qseen %}
   <tr bgcolor="#FFFFFF"><td align="right" colspan="2"><span class="code"><b><a href="/queue">Request a Quadranym</a></b><br>

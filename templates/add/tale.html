@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Edit Tale{% endblock %}
 
 {% block mid %}<h2>
@@ -15,7 +15,8 @@
         <td bgcolor="#EFEFEF" width="25%"><h4 align="center">Pick a Fable:<br>
             <SELECT NAME="fabl_id" SIZE="12">
             {% for f in fabls %}
-              <option VALUE="{{ f.id }}" {% if f.id == fabl.id %}selected{% endif %}>{{ f.name }} | {{ f.length }} &times; {{ f.width }}
+              <option VALUE="{{ f.id }}" {% if f.id == fabl.id %}selected{% endif %}>
+                  {{ f.name }} | {{ f.length }} &times; {{ f.width }}
             {% endfor %}
             </SELECT></h4></td>
         <td bgcolor="#DEDEDE" width="25%"><h4 align="center">

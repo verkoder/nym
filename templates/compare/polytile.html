@@ -1,12 +1,15 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}PolyTile{% endblock %}
 
 {% block script%}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
+
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}PolyTile:
     $$\sum_{ row=1 }^{ {{ rows|length }} }\textstyle \sum_{col=1}^{ {{ rows.0|length }} } \{\ P^{ {{ poly.depth }} {% if named == "on" %}+name{% endif %} }_{ {{ poly.named }} }\ \}$$
-{% endif %}</h2>{% endblock %}
+{% endif %}</h2>
+{% endblock %}
+
 {% block right %}
 <form action="/polytile/" method="POST">{% csrf_token %}
 <table>
@@ -63,5 +66,6 @@
     </tr>
 {% endfor %}
 </table><b>Polynym:</b><br>
-{{ poly.depth }} | <a href="/p/{{ poly.name|slugify }}">{{ poly.name|truncatechars:25 }}</a>{% if poly.area %} | {{ poly.area|truncatechars:25 }}{% endif %}{% if poly.src %} | {{ poly.src|truncatechars:25 }}{% endif %}
+{{ poly.depth }} | <a href="/p/{{ poly.name|slugify }}">{{ poly.name|truncatechars:25 }}</a>
+{% if poly.area %} | {{ poly.area|truncatechars:25 }}{% endif %}{% if poly.src %} | {{ poly.src|truncatechars:25 }}{% endif %}
 {% endblock %}

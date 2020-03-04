@@ -1,4 +1,4 @@
-{% extends "add/_new.html" %}
+{% extends 'add/_new.html' %}
 {% block title %}Edit {{ form.instance.whois|title }}{% endblock %}
 
 {% block mid %}<h2>{% if form.errors %}{{ form.errors.value|striptags }}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}HyperQuadranym{% endblock %}
 
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}HyperQuadranym:<br />{{ q.name }}{% endif %}</h2>{% endblock %}
@@ -21,7 +21,7 @@
 </form>
 {% endblock %}
 
-{% block content %}
+{% block content %}{% load motags %}
 <table width="100%" align="center" bgcolor="#EFEFEF" cellpadding="6" cellspacing="0">
   <tr>
       <td bgcolor="{% if eq %}#9F9F9F{% else %}#CFCFCF{% endif %}" width="30%"align="center" valign="middle">
@@ -100,17 +100,18 @@
         <td bgcolor="{% if rq %}9F9F9F{% else %}CFCFCF{% endif %}" align="center" valign="middle">
         <table cellpadding="4">
           <tr>{% if rq %}
-            <td bgcolor="FFFFFF" align="center" width="33%"><b>E = {{ rq.e }}</b></td><td></td>
-            <td bgcolor="FFFFFF" align="center" width="33%"><b>O = {{ rq.o }}</b></td>
-          </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = <a href="/hyperq/{{ rq.name|slugify }}">{{ rq.name }}</a></b></td><td></td>
+              <td bgcolor="FFFFFF" align="center" width="33%"><b>E = {{ rq.e }}</b></td><td></td>
+              <td bgcolor="FFFFFF" align="center" width="33%"><b>O = {{ rq.o }}</b></td>
+          </tr><tr><td></td>
+              <td bgcolor="FFFFFF" align="center"><b>N = <a href="/hyperq/{{ rq.name|slugify }}">{{ rq.name }}</a></b></td><td></td>
           <tr><td bgcolor="FFFFFF" align="center"><b>S = {{ rq.s }}</b></td><td></td>
-            <td bgcolor="FFFFFF" align="center"><b>R = {{ rq.r }}</b></td>
+              <td bgcolor="FFFFFF" align="center"><b>R = {{ rq.r }}</b></td>
             {% else %}
-            <td bgcolor="FFFFFF" width="33%">&nbsp;</td><td></td>
-            <td bgcolor="FFFFFF" width="33%">&nbsp;</td>
+              <td bgcolor="FFFFFF" width="33%">&nbsp;</td><td></td>
+              <td bgcolor="FFFFFF" width="33%">&nbsp;</td>
           </tr><tr><td></td><td bgcolor="FFFFFF" align="center"><b>N = {{ quad.r }}</b></td><td></td>
           <tr><td bgcolor="FFFFFF">&nbsp;</td><td></td>
-            <td bgcolor="FFFFFF">&nbsp;</td>
+              <td bgcolor="FFFFFF">&nbsp;</td>
             {% endif %}
           </tr>
         </table>
@@ -121,5 +122,5 @@
 {% if quad.user %}<b>By:</b> {{ quad.user }}<br />{% endif %}
 {% if quad.pos %}<b>Part-of-Speech:</b> {{ quad.pos }}<br />{% endif %}
 {% if quad.area %}<b>Area:</b> {{ quad.area }}<br />{% endif %}
-{% if quad.wiki %}<a href="{{ quad.wiki }}">{{ quad.wiki }}</a>{% endif %}
+{% if quad.wiki %}<b>Info:<br><a href="{{ quad.wiki }}">{{ quad.wiki|wikurl }}</a></b>{% endif %}
 {% endblock %}

@@ -1,14 +1,15 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}aPolysis{% endblock %}
 
 {% block script%}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
-{% block title %}Nymology: aPolysis{% endblock %}
+
 {% block mid %}<h2>{% if msg %}{{ msg }}{% else %}aPolysis:</h2>
 <h3>$$\{ P_{ {{ poly_ids|length }} } \} \in url \to | {{ freq|length }} | $$</h3>
 {% endif %}
 {% endblock %}
+
 {% block right %}
 <form action="/apolysis/" method="POST">{% csrf_token %}
 <table>

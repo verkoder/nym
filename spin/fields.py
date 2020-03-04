@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# encoding: utf-8
+'''
+fields.py -- Nymology datalist widget
+'''
 from django import forms
 
 class ListTextWidget(forms.TextInput):
@@ -14,4 +19,4 @@ class ListTextWidget(forms.TextInput):
             data_list += '<option value="%s">' % item
         data_list += '</datalist>'
 
-        return (text_html + data_list)
+        return text_html + data_list

@@ -35,4 +35,7 @@
 {% endif %}
     </tr>
 </table>
-{% if thing.wiki %}<br><b>URL:</b><br><a href="{{ thing.wiki }}">{{ thing.wiki }}</a>{% endif %}
+{% if thing.wiki %}
+<br><b>Info:
+<br><a href="{{ thing.wiki }}" target="_blank">{{ thing.wiki|wikurl }}</a></b>
+{% endif %}

@@ -1,11 +1,13 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Edit Tale{% endblock %}
 
 {% block mid %}<h2>{{ msg }}</h2>{% endblock %}
-{% block right %}<h3>Using {{ fabl.length }}-Topic Fable:<br>&laquo; {{ fabl.name }} &raquo;</h3>{% endblock %}
+
+{% block right %}<h3>Using {{ fabl.length }}-Topic Fable:<br>&laquo; {{ fabl.name }} &raquo;</h3>
+{% endblock %}
+
 {% block content %}
-<form action="/add/tale2/" method="POST">
-{% csrf_token %}
+<form action="/add/tale2/" method="POST">{% csrf_token %}
 <table width="100%">
   <tr>
       <td align="center"><b>Your Tale:</b></td>

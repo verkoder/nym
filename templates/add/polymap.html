@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Edit Polymap{% endblock %}
 
 {% block mid %}{% if msg %}{{ msg }}{% else %}<h3>Think you can relate...</h3><h2>
@@ -6,9 +6,9 @@
 {{ p2.depth }} {% if p2.mode %}{{ p2.mode }}{% else %}part{% endif %}s of {{ p2.name }}?</h2>
 <h5>Build this Polymap or choose another&rarr;</h5>{% endif %}
 {% endblock%}
+
 {% block right %}
-<form action="/add/polymap2/" method="POST">
-{% csrf_token %}
+<form action="/add/polymap2/" method="POST">{% csrf_token %}
 <table align="center" cellpadding="6">
   <tr>
   	<td colspan="2" align="center">
@@ -34,8 +34,8 @@
 </table><b>(matching depths not required)</b>
 </form>
 {% endblock %}
-{% block content %}
 
+{% block content %}{% load motags %}
 {% if p1 %}
 <table align="center" bgcolor="#EFEFEF" cellpadding="8" cellspacing="0">
   <tr>
@@ -46,9 +46,13 @@
 						{% else %}Anonymous{% endif %}</h2></td>
   </tr>
   <tr>
-	<td align="right"><b>{{ p1.depth }} {% if p1.mode %}{{ p1.mode }}{% else %}part{% endif %}s of {{ p1.name }}</b></td>
+	<td align="right"><b>
+        {{ p1.depth }} {% if p1.mode %}{{ p1.mode }}{% else %}part{% endif %}s of {{ p1.name }}</b>
+    </td>
 	<td width="20" bgcolor="#BBBBBB" align="center"><b>:idea:</b></td>
-	<td align="left"><b>{{ p2.depth }} {% if p2.mode %}{{ p2.mode }}{% else %}part{% endif %}s of {{ p2.name }}</b></td>
+	<td align="left"><b>
+        {{ p2.depth }} {% if p2.mode %}{{ p2.mode }}{% else %}part{% endif %}s of {{ p2.name }}</b>
+    </td>
   </tr>
   <tr>
     <td width="45%" align="right" valign="middle"><i><b>
@@ -81,9 +85,9 @@
 	<td><h3 align="left">{{ p2.user }}</h3></td>
   </tr>
   <tr>
-    <td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|truncatechars:25 }}</a></td>
-    <td bgcolor="#BBBBBB"><h4 align="center">:URL:</h4></td>
-    <td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|truncatechars:25 }}</a></td>
+    <td align="right"><a href="{{ p1.wiki }}" target="_blank">{{ p1.wiki|wikurl }}</a></td>
+    <td bgcolor="#BBBBBB"><h4 align="center">:Info:</h4></td>
+    <td><a href="{{ p2.wiki }}" target="_blank">{{ p2.wiki|wikurl }}</a></td>
   </tr>
 </table>
 {% endif %}

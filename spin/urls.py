@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# encoding: utf-8
+'''
+urls.py -- Nymology spin app url patterns
+'''
 from django.urls import path, include
 from . import views
 
@@ -19,7 +24,7 @@ urlpatterns = [
     path('polynym/area/<slug:area>',    views.PolynymDetail.as_view(), name='polynym_detail'), # area
     path('polynym/src/<slug:src>',      views.PolynymDetail.as_view(), name='polynym_detail'), # src
     path('polynym/n/<int:n>',           views.PolynymDetail.as_view(), name='polynym_detail'), # N-nyms
-    path('polynyms/',                   views.PolynymTabler.as_view(),name='polynyms'),       # sort
+    path('polynyms/',                   views.PolynymTabler.as_view(),name='polynyms'),
 
     path('quadranym/',                  views.QuadranymDetail.as_view(), name='quadranym_detail'), # QUADRANYM
     path('quadranym/<int:pk>/',         views.QuadranymDetail.as_view(), name='quadranym_detail'),
@@ -27,7 +32,7 @@ urlpatterns = [
     path('quadranym/delete/<int:pk>',   views.QuadranymDelete.as_view(), name='quadranym_delete'),
     path('quadranym/add/',              views.QuadranymCreate.as_view(), name='quadranym_create'),
     path('quadranym/add/<str:kind>',    views.QuadranymCreate.as_view(), name='quadranym_create'),
-    path('quadranyms/',                 views.QuadranymTabler.as_view(),name='quadranyms'),       # sort
+    path('quadranyms/',                 views.QuadranymTabler.as_view(),name='quadranyms'),
 
     path('phrase/',                     views.PhraseDetail.as_view(), name='phrase_detail'), # PHRASE
     path('phrase/<int:pk>',             views.PhraseDetail.as_view(), name='phrase_detail'),
@@ -84,11 +89,11 @@ urlpatterns = [
     path('quadraset/add/',              views.QuadrasetCreate.as_view(), name='quadraset_create'),
     path('quadraset/delete/<int:pk>',   views.QuadrasetDelete.as_view(), name='quadraset_delete'),
 
-    path('hyperq/<slug:name>',          views.hyperq_vu,      name=''), #  HYPER Q      slug:name
+    path('hyperq/<slug:name>',          views.hyperq_vu,      name=''), # HYPER Q
     path('hyperq/',                     views.hyperq_vu,      name=''),
-    path('q/find/<slug:name>',          views.qfind_vu,       name=''), # Q-FIND        slug:name
+    path('q/find/<slug:name>',          views.qfind_vu,       name=''), # Q-FIND
     path('q/find/',                     views.qfind_vu,       name=''),
-    path('p/find/<slug:name>',          views.pfind_vu,       name=''), # P-FIND        slug:name
+    path('p/find/<slug:name>',          views.pfind_vu,       name=''), # P-FIND
     path('p/find/',                     views.pfind_vu,       name=''),
     path('union/',                      views.union_vu,       name=''), # UNIONYM
     path('section/',                    views.section_vu,     name=''), # SECTIONYM
@@ -96,46 +101,49 @@ urlpatterns = [
     path('apolysis/',                   views.apolysis_vu,    name=''), # APOLYSIS
     path('polymath/',                   views.polymath_vu,    name=''), # POLYMATH
     path('polytile/',                   views.polytile_vu,    name=''), # POLYTILE
-    path('polypuzl/',                   views.polypuzl_vu,    name=''), # POLYPUZZLE
-    path('polyfame/',                   views.polyfame_vu,    name=''),
     path('emo/',                        views.emo_vu,         name=''), # EMONYM
     path('polykins/',                   views.polykins_vu,    name=''), # POLYKINS
     path('fmk/',                        views.fmk_vu,         name=''), # FUNMARRYKILL
     path('quizzection/',                views.quizzection_vu, name=''), # QUIZZECTION
     path('quizfame/',                   views.quizfame_vu,    name=''),
-    path('qspin/',                      views.qspin_vu,       name=''), # EZ-SPIN
-    path('fspin/',                      views.fspin_vu,       name=''), # TALESPIN
-    path('mspin/',                      views.mspin_vu,       name=''), # SPINVERSE
-    path('oraq/',                       views.oraq_vu,        name=''), # ORA Q
+    path('polypuzzle/',                 views.polypuzzle_vu,  name=''), # POLYPUZZLE
+    path('polyfame/',                   views.polyfame_vu,    name=''),
     path('unquote/',                    views.unquote_vu,     name=''), # UNQUOTE
-    path('turnr/',                      views.turnr_vu,       name=''), # TURNR
+    path('unqfame/',                    views.unqfame_vu,     name=''),
+    path('ezverse/',                    views.ezverse_vu,     name=''), # EZ-VERSE
+    path('talespin/',                   views.talespin_vu,    name=''), # TALESPIN
+    path('spinverse/',                  views.spinverse_vu,   name=''), # SPINVERSE
+    path('oraq/',                       views.oraq_vu,        name=''), # ORAQUEUE
+    path('turnquote/',                  views.turnquote_vu,   name=''), # TURNQUOTE
+    path('turnquote/<int:pk>',          views.turnquote_vu,   name=''),
+    path('turnr/',                      views.turnr_vu,       name=''), # TURNR <<--WIP
 
     path('plot/',                       views.plot_vu,             name=''), # POLYPLOT:
-    path('plot/poly_area_rng/',         views.plot_poly_area_rng,  name='plot_poly_area_rng'), # P-depths area: columnarea
-    path('plot/poly_src_rng/',          views.plot_poly_src_rng,   name='plot_poly_src_rng'),  # P-depths src: columnarea
-    path('plot/poly_mode_deps/',        views.plot_poly_mode_deps, name='plot_poly_mode_deps'),# P-depths mode: bar
-    path('plot/poly_wordcloud/',        views.plot_poly_wordcloud, name='plot_poly_wordcloud'),# P.nyms: wordcloud
-    path('plot/quad_wordcloud/',        views.plot_quad_wordcloud, name='plot_quad_wordcloud'),# Q.nyms: wordcloud
-    path('plot/phra_wordcloud/',        views.plot_phra_wordcloud, name='plot_phra_wordcloud'),# Q.nyms: wordcloud
-    path('plot/fabl_wordcloud/',        views.plot_fabl_wordcloud, name='plot_fabl_wordcloud'),# Q.nyms: wordcloud
-    path('plot/poly_sectionym/',        views.plot_poly_sectionym, name='plot_poly_sectionym'),# SectionymP: wheel
-    path('plot/poly_sectionet/',        views.plot_poly_sectionet, name='plot_poly_sectionet'),# SectionymP: networkgraph
-    path('plot/quad_sectionet/',        views.plot_quad_sectionet, name='plot_quad_sectionet'),# SectionymQ: networkgraph
-    path('plot/quad_polar/',            views.plot_quad_polar,     name='plot_quad_polar'),    # Quadranym: polar
-    path('plot/poly_mode_dist/',        views.plot_poly_mode_dist, name='plot_poly_mode_dist'),# Polynym: modes } pie
+    path('plot/poly_area_rng/',         views.plot_poly_area_rng,  name='plot_poly_area_rng'),  # P-depths area: columnarea
+    path('plot/poly_src_rng/',          views.plot_poly_src_rng,   name='plot_poly_src_rng'),   # P-depths src: columnarea
+    path('plot/poly_mode_deps/',        views.plot_poly_mode_deps, name='plot_poly_mode_deps'), # P-depths mode: bar
+    path('plot/poly_wordcloud/',        views.plot_poly_wordcloud, name='plot_poly_wordcloud'), # P.nyms: wordcloud
+    path('plot/quad_wordcloud/',        views.plot_quad_wordcloud, name='plot_quad_wordcloud'), # Q.nyms: wordcloud
+    path('plot/phra_wordcloud/',        views.plot_phra_wordcloud, name='plot_phra_wordcloud'), # Q.nyms: wordcloud
+    path('plot/fabl_wordcloud/',        views.plot_fabl_wordcloud, name='plot_fabl_wordcloud'), # Q.nyms: wordcloud
+    path('plot/poly_sectionym/',        views.plot_poly_sectionym, name='plot_poly_sectionym'), # SectionymP: wheel
+    path('plot/poly_sectionet/',        views.plot_poly_sectionet, name='plot_poly_sectionet'), # SectionymP: networkgraph
+    path('plot/quad_sectionet/',        views.plot_quad_sectionet, name='plot_quad_sectionet'), # SectionymQ: networkgraph
+    path('plot/quad_polar/',            views.plot_quad_polar,     name='plot_quad_polar'),     # Quadranym: polar
+    path('plot/poly_mode_dist/',        views.plot_poly_mode_dist, name='plot_poly_mode_dist'), # Polynym: modes } pie
     path('plot/quad_realm_dist/',       views.plot_quad_realm_dist,name='plot_quad_realm_dist'),# Quadranym: realms } pie
-    path('plot/tale_area_dist/',        views.plot_tale_area_dist, name='plot_tale_area_dist'),# Tale    areas }
-    path('plot/fabl_area_dist/',        views.plot_fabl_area_dist, name='plot_fabl_area_dist'),# Fable     "   }
-    path('plot/stor_area_dist/',        views.plot_stor_area_dist, name='plot_stor_area_dist'),# Story     "   }
-    path('plot/phra_area_dist/',        views.plot_phra_area_dist, name='plot_phra_area_dist'),# Phrase    "   } pie
-    path('plot/poly_area_dist/',        views.plot_poly_area_dist, name='plot_poly_area_dist'),# Polynym   "   }
-    path('plot/quad_area_dist/',        views.plot_quad_area_dist, name='plot_quad_area_dist'),# Quadranym "   }
-    path('plot/pmap_area_dist/',        views.plot_pmap_area_dist, name='plot_pmap_area_dist'),# Polymap   "   }
-    path('plot/tale_src_dist/',         views.plot_tale_src_dist,  name='plot_tale_src_dist'),# Tale   sources }
-    path('plot/fabl_src_dist/',         views.plot_fabl_src_dist,  name='plot_fabl_src_dist'),# Fable     "    }
-    path('plot/stor_src_dist/',         views.plot_stor_src_dist,  name='plot_stor_src_dist'),# Story     "    }
-    path('plot/phra_src_dist/',         views.plot_phra_src_dist,  name='plot_phra_src_dist'),# Phrase    "    } pie
-    path('plot/poly_src_dist/',         views.plot_poly_src_dist,  name='plot_poly_src_dist'),# Polynym   "    }
-    path('plot/quad_src_dist/',         views.plot_quad_src_dist,  name='plot_quad_src_dist'),# Quadranym "    }
-    path('plot/pmap_src_dist/',         views.plot_pmap_src_dist,  name='plot_pmap_src_dist'),# Polymap   "    }
-]  #path('plot/poly_tilemap/',          views.plot_poly_tilemap,   name='plot_poly_tilemap'), # P-depths mode: tilemap,lol
+    path('plot/tale_area_dist/',        views.plot_tale_area_dist, name='plot_tale_area_dist'), # Tale    areas }
+    path('plot/fabl_area_dist/',        views.plot_fabl_area_dist, name='plot_fabl_area_dist'), # Fable     "   }
+    path('plot/stor_area_dist/',        views.plot_stor_area_dist, name='plot_stor_area_dist'), # Story     "   }
+    path('plot/phra_area_dist/',        views.plot_phra_area_dist, name='plot_phra_area_dist'), # Phrase    "   } pie
+    path('plot/poly_area_dist/',        views.plot_poly_area_dist, name='plot_poly_area_dist'), # Polynym   "   }
+    path('plot/quad_area_dist/',        views.plot_quad_area_dist, name='plot_quad_area_dist'), # Quadranym "   }
+    path('plot/pmap_area_dist/',        views.plot_pmap_area_dist, name='plot_pmap_area_dist'), # Polymap   "   }
+    path('plot/tale_src_dist/',         views.plot_tale_src_dist,  name='plot_tale_src_dist'),  # Tale   sources }
+    path('plot/fabl_src_dist/',         views.plot_fabl_src_dist,  name='plot_fabl_src_dist'),  # Fable     "    }
+    path('plot/stor_src_dist/',         views.plot_stor_src_dist,  name='plot_stor_src_dist'),  # Story     "    }
+    path('plot/phra_src_dist/',         views.plot_phra_src_dist,  name='plot_phra_src_dist'),  # Phrase    "    } pie
+    path('plot/poly_src_dist/',         views.plot_poly_src_dist,  name='plot_poly_src_dist'),  # Polynym   "    }
+    path('plot/quad_src_dist/',         views.plot_quad_src_dist,  name='plot_quad_src_dist'),  # Quadranym "    }
+    path('plot/pmap_src_dist/',         views.plot_pmap_src_dist,  name='plot_pmap_src_dist'),  # Polymap   "    }
+]  #path('plot/poly_tilemap/',          views.plot_poly_tilemap,   name='plot_poly_tilemap'),   # P-depths mode: tilemap,lol

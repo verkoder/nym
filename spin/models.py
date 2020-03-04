@@ -1,90 +1,29 @@
-"""
-models.py -- Nymology Django classes
-
-Nymology by G.S Vercoe & D.C Scalise
-Copyright (c) 2009-9999 Nymoholics Unlimited.
-"""
-import re
-from time import time
+#!/usr/bin/env python
+# encoding: utf-8
+'''
+models.py -- Nymology database model classes
+'''
 from random import choice, sample
 from itertools import combinations
+import urllib
 import urllib3
 
 from django.db import models
 from django.urls import reverse
-#from django.shortcuts import redirect, render
 from django.db.models.functions import Lower
 from django.contrib.auth import get_user_model
 from vote.models import VoteModel
+from .startup import QN, WIKI, GRAYS, SHADES, BADGES
 
 #####>>> SPACY NLP ON/OFF SWITCH <<<#####
-from .do_spacy import eat,retoke,inflect
-NLP = True
-#NLP = False
+#from .do_spacy import eat, retoke, inflect
+#NLP = True
+NLP = False
 
-# qode regx groups 1=qid 2=quadrant _/^  3=postag
-QN = re.compile(r'q(\d+)(n|e|r|o|s)_?\^?([A-Z]+)?', re.I) # q1n_POS format
-NEWLINE = re.compile(r'[\n\r]+')
-NEWLINE2 = re.compile(r'[\n\r]{3,}')
-TAGS = re.compile(r'</?[A-Za-z]+>')
-
-# WEB CRAWLER
+# URL opener
 HTTP = urllib3.PoolManager()
 
-# COLORS
-GRAYS = [f'{i}{i}{i}{i}{i}{i}' for i in list(range(1, 10))+['A', 'B', 'C', 'D', 'E', 'F']]
-SHADES = {
-    70: 'Gold',
-    65: 'Orange',
-    60: 'DarkOrange',
-    55: 'Coral',
-    50: 'Tomato',
-    45: 'OrangeRed',
-    40: 'Red',
-    35: 'Crimson',
-    30: 'IndianRed',
-    25: 'Firebrick',
-    20: 'DarkRed',
-    18: 'Peru',
-    16: 'Chocolate',
-    14: 'SaddleBrown',
-    12: 'Sienna',
-    10: 'Brown',
-    8: 'Maroon',
-    6: 'DarkGray',
-    4: 'Gray',
-    2: 'DarkSlateGray',
-    0: 'DimGray'
-}
-
-# POLYNYM MULTI-TERM SYSTEMS
-BENNETT = {
-    1: 'Monad',
-    2: 'Dyad',
-    3: 'Triad',
-    4: 'Tetrad',
-    5: 'Pentad',
-    6: 'Hexad',
-    7: 'Heptad',
-    8: 'Octad',
-    9: 'Ennead',
-    10: 'Decad',
-    11: 'Undecad',
-    12: 'Duodecad'
-}
-
-# STATUS LEVELS
-BADGES = (
-    (1000, 'Truth-Fabler'),
-    (500, 'Bloctologist'),
-    (200, 'High Nymologist'),
-    (100, 'Low Nymologist'),
-    (50, 'Nymtician'),
-    (25, 'Polyanna'),
-)
-
-####################
-### DB SHORTCUTS ###
+### SHORTCUTS
 def thingify(obj):
     'objects from any Common'
 
@@ -133,8 +72,13 @@ def orderfy(obj=None, n=None):
 
     return obj.objects.all().order_by(Lower('name'))
 
-###########################
-### NYMOLOGY ROOT CLASS ###
+def wikify(url):
+    wiki = WIKI.search(url)
+    return url if not wiki else urllib.parse.unquote(
+        '<img src="http://mood.scottyvercoe.com/static/img/wikipedia-icon16.png"> '
+        f'{wiki.group(2)}').replace('_', ' ')
+
+### NYMOLOGY ROOT CLASS
 class Common(VoteModel, models.Model):
     'Common Nymology root class'
 
@@ -142,7 +86,7 @@ class Common(VoteModel, models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING, blank=True, null=True)
     src = models.CharField(max_length=128, blank=True, verbose_name='source')
     area = models.CharField(max_length=32, blank=True)
-    wiki = models.CharField(max_length=128, blank=True, verbose_name='info link')
+    wiki = models.CharField(max_length=128, blank=True, verbose_name='info')
 
     class Meta:
         abstract = True
@@ -161,8 +105,7 @@ class Common(VoteModel, models.Model):
     def get_absolute_url(self, *args, **kwargs):
         return reverse(f'spin:{self.whois()}_detail', kwargs={'pk': self.pk})
 
-######################
-### COMMON CLASSES ###
+### COMMON CLASSES
 class Polynym(Common):
     'Polynym class: idea set/multi-term system up to depth 12; use comma-separated lists for synonym sets'
 
@@ -181,7 +124,7 @@ class Polynym(Common):
     p11 = models.CharField(max_length=128, blank=True)
     p12 = models.CharField(max_length=128, blank=True)
 
-    def nyms(self, named=False):
+    def nyms(self, named=True):
         'all nyms; named=True includes Polynym name'
 
         if not named:
@@ -496,8 +439,7 @@ class Quadraset(Common):
     def __str__(self):
         return f'<Qset{self.length}:{self.name}|{self.area}|{self.user}|{self.src}>'
 
-#######################
-### SPECIAL CLASSES ###
+### SPECIAL CLASSES
 class Taleline(models.Model):
     'Taleline class: Tale plot line; cascade-delete on Tale delete'
 
@@ -607,8 +549,10 @@ class Winner(models.Model):
     def __str__(self):
         return f'<W|{self.user}|{self.score}>'
 
-####################
-### QODE METHODS ###
+### END CLASSES
+
+
+### QODE METHODS
 def enqodes(q_list, text):
     'enqode via Quadranym list: FIFO'
 
@@ -684,8 +628,7 @@ def turn(text, q1s, q2s):
 
     return text
 
-#######################
-### GENERAL METHODS ###
+### GENERAL METHODS
 def quadrant_search(word, quads):
     'full-quadrant word lookup/count'
 
@@ -800,12 +743,12 @@ def fame(app):
 
     return hi, fx
 
-def sections(commons, sup=None, thresh=0):
+def sections(commons, sup=None, thresh=0, named=False):
     'mine Common objects for intersections'
 
     sex = []
     used = {x.id:0 for x in commons}
-    nyms = {x.id:set(x.nyms(named=True)) for x in commons} # dimension dict
+    nyms = {x.id:set(x.nyms(named=named)) for x in commons} # dimension dict
     comb = [(a, b, ab) for a, b, ab in [
         (a, b, tuple(nyms[a.id].intersection(nyms[b.id]))) for a, b in combinations(commons, 2)] if ab]
     nyms = {k:len(v)-1 for k, v in nyms.items()}
@@ -865,8 +808,7 @@ def unions(pids):
            [f'<b>{k}</b><sup>{v}</sup>' if v > 1 else k for k, v in sorted(sources.items())],   \
             sum([p.depth for p in polynyms]), len(terms)
 
-####################
-### VIEW METHODS ###
+### VIEW METHODS
 def polyset_table(polys):
     'Polyset view table'
 
@@ -989,21 +931,12 @@ def badge(totalscore):
         return 'Nym Noob', nextlevel, 6
     return BADGES[0][1], None, 0
 
-#####################
-### SPEED TESTING ###
-# def timer(iters):
-#    'speed check'
-#
-#    #q = orderfy(Quadranym)[34]#qode = 'I q1e_VBD the q2o_NNS to make q1s_NNS need q1r_VBG.'
-#    ps = thingify(Polynym)
-#    tic = time()
-#    for i in range(iters):
-#        sections(ps)
-#    a_speed = time() - tic
-#
-#    tic = time()
-#    for i in range(iters):
-#        sexy(ps)
-#    b_speed = time() - tic
-#
-#    print(f'A:{a_speed} vs. B:{b_speed}')
+def yo(yes=True, punc=False):
+    'random human boolean response'
+
+    out = choice(('Nice try', 'No', 'Nope', 'Not exactly', 'Not quite', 'Oh well',
+                  'Oops', 'Sorry', 'Try again', 'Unfortunately', 'Valiant effort')) if not yes \
+     else choice(('Awesome','Exactly', 'Correct', 'Excellent', 'Good job', 'Got it',
+                  'Great', 'Indeed', 'Nice', 'Nailed it', "Oh, you're good", 'Okay',
+                  'Very good', 'Well done', 'Yes', 'You guessed it', 'Yup'))
+    return out if not punc else out + choice(('!', '.'))

@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# encoding: utf-8
+'''
+admin.py -- Nymology administration
+'''
 from django.db import models
 from django.contrib import admin
 from django.forms import TextInput

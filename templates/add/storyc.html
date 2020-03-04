@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Edit Story{% endblock %}
 
 {% block mid %}<h2>
@@ -6,14 +6,15 @@
 {% else %}Build a Story from Topic &amp; Phrase lists</h2>
 {% endif %}
 {% endblock %}
+
 {% block right %}<font size="+1"><b>Story-Pushers:</b></font>
 <h4>Menu-based: <a href="/story/add/">&rarr; Frames &rarr;</a><br>
     Text-based: <a href="/add/storyb">&rarr; Pairs &rarr;</a><br>
     &raquo;&raquo; Matched &laquo;&laquo;</h4>
 {% endblock %}
+
 {% block content %}
-<form action="/add/storyc/" method="POST">
-{% csrf_token %}
+<form action="/add/storyc/" method="POST">{% csrf_token %}
 <table width="80%">
   <tr>
 	<td bgcolor="#EFEFEF" align="center"><br><b>Topics:</b><br>
@@ -36,8 +37,7 @@
   </tr>
   <tr>
 	<td bgcolor="#CFCFCF" align="center"><br><b>Phrases:</b><br>
-	<textarea name="phra_txt" cols=80 rows=8>{{ phra_txt }}</textarea><br><br>
-
+	    <textarea name="phra_txt" cols=80 rows=8>{{ phra_txt }}</textarea><br><br>
 	</td>
     <td bgcolor="#EFEFEF" valign="top" align="center">
       <h4>Available Phrases:<br />
@@ -52,6 +52,6 @@
     </td>
   </tr>
 </table>
-{% include 'bits/trace_story.html' with spun=spun trace=trace %}
+{% include 'bits/trace_story.html' %}
 </form>
 {% endblock %}

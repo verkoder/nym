@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Quadranym Dimension{% endblock %}
 
 {% block script%}
@@ -51,6 +51,6 @@
 </table>
 <b>Quadranyms:</b><br>
 {% for q in got_quads %}
-<a href="/q/{{ q.name|slugify }}">{{ q.name|truncatechars:25 }}</a>{% if q.area %} | {{ q.area|truncatechars:25 }}{% endif %}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}<br>
+<a href="/quadranym/{{ q.pk }}">{{ q.name|truncatechars:25 }}</a>{% if q.area %} | {{ q.area|truncatechars:25 }}{% endif %}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}<br>
 {% endfor %}
 {% endblock %}

@@ -1,12 +1,12 @@
-"""
-views.py -- Nymology Django view methods
-
-Nymology by G.S Vercoe & D.C Scalise
-Copyright (c) 2009-9999 Nymoholics Unlimited.
-"""
-import os.path
+#!/usr/bin/env python
+# encoding: utf-8
+'''
+views.py -- Nymology Django view classes & methods
+'''
+#import os.path
+from time import time
 from itertools import product
-from random import choice, sample
+from random import choice, sample, shuffle
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django_tables2 import SingleTableView
@@ -18,22 +18,20 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 #from formtools.wizard.views import SessionWizardView
 
-# NYMOLOGY CLASSES & METHODS
 from .models import Common, Polynym, Polymap, Polyset, Quadranym, Quadraset, Queue, \
                     Fable, Phrase, Story, Storyline, Tale, Taleline, \
                     Fortune, Quote, Vectornym, Winner, \
                     sections, unions, mappable, orderfy, thingify, winners, \
                     findquad_table, findpoly_table, polytile_table, polyset_table, poly_systems, \
                     deqodes, pairspin, turn, word_freq, alltop, top_field, \
-                    badge, fame, shade, \
-                    NEWLINE, NEWLINE2, BENNETT#, do_dict
+                    badge, fame, shade, yo#, do_dict
+from .startup import NEWLINE, NEWLINE2, BENNETT
 from .do_charts import depth_rng, depth_modes, field_dist, nym_wheel, nym_graph, wordcloud, polar
 from .do_conceptnet import RELS, guess_mood, guess_fit
 from .forms import QuadranymForm, PolynymForm, FableForm, PhraseForm, \
                    QuadrasetForm, PolysetForm, QueueForm, reform
 from .tables import QuadranymTable, PolynymTable
 
-# COMMON CLASS LOOKUP
 COMMON = dict(
     fable=Fable,
     phrase=Phrase,
@@ -42,6 +40,7 @@ COMMON = dict(
     polyset=Polyset,
     quadranym=Quadranym,
     quadraset=Quadraset,
+    quote=Quote,
     story=Story,
     tale=Tale,
     vectornym=Vectornym
@@ -105,8 +104,7 @@ class CommonVote(LoginRequiredMixin, View):
             thing.votes.delete(request.user.pk)
         return redirect(f'/{com}/{pk}')
 
-#######################
-##### COMMON CRUD #####
+##### COMMON CRUD
 class CommonDetail(DetailView):
     model = Common
 
@@ -174,8 +172,7 @@ class CommonDelete(LoginRequiredMixin, DeleteView):
     def __init__(self):
         self.success_url = reverse_lazy(f'spin:{self.model.__name__.lower()}_detail')
 
-########################
-##### POLYNYM CRUD #####
+##### POLYNYM CRUD
 class PolynymDetail(CommonDetail):
     model = Polynym
 
@@ -229,8 +226,7 @@ class PolynymUpdate(CommonUpdate):
 class PolynymDelete(CommonDelete):
     model = Polynym
 
-##########################
-##### QUADRANYM CRUD #####
+##### QUADRANYM CRUD
 class QuadranymDetail(CommonDetail):
     model = Quadranym
 
@@ -270,8 +266,7 @@ class QuadranymUpdate(CommonUpdate):
 class QuadranymDelete(CommonDelete):
     model = Quadranym
 
-#######################
-##### PHRASE CRUD #####
+##### PHRASE CRUD
 class PhraseDetail(CommonDetail):
     model = Phrase
 
@@ -290,8 +285,7 @@ class PhraseUpdate(CommonUpdate):
 class PhraseDelete(CommonDelete):
     model = Phrase
 
-#######################
-##### FABLE CRUD #####
+##### FABLE CRUD
 class FableDetail(CommonDetail):
     model = Fable
 
@@ -310,8 +304,7 @@ class FableUpdate(CommonUpdate):
 class FableDelete(CommonDelete):
     model = Fable
 
-#####################
-##### TALE CRUD #####
+##### TALE CRUD
 class TaleDetail(CommonTraceDetail):
     model = Tale
 
@@ -410,8 +403,7 @@ def tale_save_vu(request):
 class TaleDelete(CommonDelete):
     model = Tale
 
-######################
-##### STORY CRUD #####
+##### STORY CRUD
 class StoryDetail(CommonTraceDetail):
     model = Story
 
@@ -543,8 +535,7 @@ def story_save_vu(request):
 class StoryDelete(CommonDelete):
     model = Story
 
-########################
-##### POLYMAP CRUD #####
+##### POLYMAP CRUD
 class PolymapDetail(CommonDetail):
     model = Polymap
 
@@ -604,8 +595,7 @@ def polymap_save_vu(request):
 class PolymapDelete(CommonDelete):
     model = Polymap
 
-##########################
-##### VECTORNYM CRUD #####
+##### VECTORNYM CRUD
 class VectornymDetail(CommonDetail):
     model = Vectornym
 
@@ -655,7 +645,7 @@ def vectornym_save_vu(request):
         depth=request.POST['depth'],
         realm=request.POST.get('realm', ''))
     for i in range(1, 10):
-        if f'v{i}' in request.POST:
+        if f'v{i}' in request.POST and request.POST[f'v{i}'] != 'None':
             thing.__setattr__(f'v{i}', Polynym.objects.get(pk=request.POST[f'v{i}']))
     thing.save()
     return render(request, 'see/vectornym.html',
@@ -664,8 +654,7 @@ def vectornym_save_vu(request):
 class VectornymDelete(CommonDelete):
     model = Vectornym
 
-########################
-##### POLYSET CRUD #####
+##### POLYSET CRUD
 class PolysetDetail(CommonDetail):
     model = Polyset
 
@@ -700,8 +689,7 @@ class PolysetUpdate(CommonUpdate):
 class PolysetDelete(CommonDelete):
     model = Polyset
 
-##########################
-##### QUADRASET CRUD #####
+##### QUADRASET CRUD
 class QuadrasetDetail(CommonDetail):
     model = Quadraset
 
@@ -720,8 +708,7 @@ class QuadrasetUpdate(CommonUpdate):
 class QuadrasetDelete(CommonDelete):
     model = Quadraset
 
-##################
-### QUEUE: add ###
+### QUEUE: add
 def queue_add_vu(request):
     if request.method == 'POST':
         form = QueueForm(request.POST)
@@ -732,13 +719,10 @@ def queue_add_vu(request):
         form = QueueForm()
     return render(request, 'add/queue.html', dict(form=form))
 
-########## END DATABASE CRUD ##########
-#######################################
+########## END DATABASE CRUD
 
 
-
-#############################
-########## COMPARE ##########
+########## COMPARE
 
 ### APOLYSIS
 def apolysis_vu(request):
@@ -805,12 +789,12 @@ def section_vu(request):
     sex = sections(thingify(Polynym), supr)
     got = [x for x in sex if x[0] == request.POST.get('ab_id')]
     abid, a, ab, b = choice(sex) if not got or not 'ab_id' in request.POST else got[0]
-    a_sides = [x for x in a.nyms() if not x in ab] # nonsections
-    b_sides = [x for x in b.nyms() if not x in ab]
+    a_sides = [x for x in a.nyms(False) if not x in ab] # nonsections
+    b_sides = [x for x in b.nyms(False) if not x in ab]
     a_cut = len(a_sides)//2 # nonsection L/R split point
     b_cut = len(b_sides)//2
     return render(request, 'compare/section.html',
-                  dict(abid=abid, abs=sex, a=a, b=b, ab=ab, supr=supr, \
+                  dict(abid=abid, abs=sex, a=a, b=b, ab=ab, supr=supr,
                        n=a_sides[:a_cut], s=a_sides[a_cut:],
                        e=b_sides[:b_cut], w=b_sides[b_cut:]))
 
@@ -834,8 +818,7 @@ def union_vu(request):
                        drop_top=drop_top, total=total, utotal=utotal,
                        areas=areas, sources=sources))
 
-##########################
-########## FIND ##########
+########## FIND
 
 ### HYPERQ: Quadranym.name
 def hyperq_vu(request, name=None):
@@ -902,8 +885,7 @@ def pfind_vu(request, name=None):
                   dict(word=word, words=words, rows=rows, ns=ns, got_polys=got_polys,
                        d=f'{d}', wordr=word.replace(' ', '\ ')))
 
-###########################
-########## GUESS ##########
+########## GUESS
 
 ### EMONYMS
 def emo_vu(request):
@@ -930,14 +912,13 @@ def polykins_vu(request):
     word = request.POST.get('word', '')
     moods = {syn.split(',')[0]:syn for syn in poly.nyms()}
     emos = [(m, v, v*4, shade(v)) for m, v in guess_mood(word, moods.values()) if v > 0]
-    mood = 'none' if not emos else emos[0][0] # single-nym mood
-    emo = 'none' if not emos else '/'.join(moods[mood].split(',')) # multi-nym emotion
+    mood = 'none' if not emos else emos[0][0] # single-nym "mood"
+    emo = 'none' if not emos else '/'.join(moods[mood].split(',')) # multi-nym "emotion"
     say = f'{word.capitalize()} relates to {emo}.'
     return render(request, 'guess/polykins.html', dict(word=word, poly=poly, polys=polys,
                                                        emos=emos, mood=mood, say=say))
 
-##########################
-########## PLAY ##########
+########## PLAY
 
 ### FUN/MARRY/KILL
 def fmk_vu(request):
@@ -949,8 +930,53 @@ def fmk_vu(request):
                     [('pal', 4), ('prince', 19), ('shooter', 29)]
     return render(request, 'play/fmk.html', dict(emos=[(m, v, v*4, shade(v)) for m, v in best]))
 
+### UNQUOTE
+def unquote_vu(request):
+    quote = choice([x for x in thingify(Quote)])
+    quads = sample([x for x in thingify(Quadranym) if x != quote.quadranym], choice((2, 3, 4)))
+    points = quote.width + len(quads)
+    quads.append(quote.quadranym)
+    shuffle(quads)
+    spin_quads = [(quote.spin_quote(q), q) for q in quads]
+    was = request.POST.get('clu')
+    at = int(request.POST.get('at', '0'))
+    sco = int(request.POST.get('sco', '0'))
+    hi = Winner.objects.filter(app='unq').order_by('-score')[0]
+    nu = int(request.POST.get('nu', '0')) + 1
+    guess = request.POST.get('guess')
+    body = request.POST.get('body')
+    tic = float(request.POST.get('tic', 0))
+    if not was:
+        msg = None
+    elif not was == guess:
+        msg = f'{yo(False)}, it was "{was}" but you guessed "{guess}"'
+    else:
+        msg = f'Got it! {sco} points.'
+        if tic and time() - tic < 10: # bonus under ten seconds
+            sco += 5
+            msg = f'{yo(punc=True)} Speed bonus!!! {sco} points'
+        at += sco
+    if not '_save' in request.POST:
+        return render(request, 'play/unquote.html',
+                      dict(quote=quote, spin_quads=spin_quads, points=points, body=body,
+                           w=(hi.score, hi.user), tic=time(), nu=nu, at=at, msg=msg))
+    msg = f'Nice {request.user}, but not your best.'
+    won = Winner.objects.filter(user=request.user, app='unq')
+    if not won or at > won[0].score:
+        win = Winner(user=request.user, app='unq') if not won else won[0]
+        win.round = nu
+        win.score = at
+        win.save()
+        msg = f'Your finest hour, {request.user}!'
+    hi, fx = fame('unq')
+    return render(request, 'play/fame.html', dict(hi=hi, fx=fx, app='unQuote', msg=msg))
+
+def unqfame_vu(request):
+    hi, fx = fame('unq')
+    return render(request, 'play/fame.html', dict(hi=hi, fx=fx, app='unQuote'))
+
 ### POLYPUZZLE
-def polypuzl_vu(request):
+def polypuzzle_vu(request):
     poly = choice(orderfy(Polynym))
     was = request.POST.get('clu')
     at = int(request.POST.get('at', '0'))
@@ -960,36 +986,36 @@ def polypuzl_vu(request):
     if not was:
         msg = None
     elif not was == request.POST.get('guess'):
-        msg = f'Sorry, it was "{was}"'
+        msg = f'{yo(False)}, it was "{was}"'
     else:
         at += sco
-        msg = f'Got it! {sco} points.'
+        msg = f'{yo(punc=True)} {sco} points.'
     if not '_save' in request.POST:
-        return render(request, 'play/polypuzl.html',
+        return render(request, 'play/polypuzzle.html',
                       dict(poly=poly, clu=choice(poly.nyms()),
                            w=(hi.score, hi.user), nu=nu, at=at, msg=msg))
-    msg = f"Nice {request.user}, but you didn't beat your high score."
+    msg = f'Nice {request.user}, but not your best.'
     won = Winner.objects.filter(user=request.user, app='puz')
     if not won or at > won[0].score:
         win = Winner(user=request.user, app='puz') if not won else won[0]
         win.round = nu
         win.score = at
         win.save()
-    msg = f'Congratulations on a new high score, {request.user}!'
+        msg = f'Your finest hour, {request.user}!'
     hi, fx = fame('puz')
-    return render(request, 'play/polyfame.html', dict(hi=hi, fx=fx, msg=msg))
+    return render(request, 'play/fame.html', dict(hi=hi, fx=fx, app='PolyPuzzle', msg=msg))
 
 def polyfame_vu(request):
     hi, fx = fame('puz')
-    return render(request, 'play/polyfame.html', dict(hi=hi, fx=fx))
+    return render(request, 'play/fame.html', dict(hi=hi, fx=fx, app='PolyPuzzle'))
 
 ### QUIZZECTION
 def quizzection_vu(request):
     sex = sections(thingify(Polynym))
     got = [x for x in sex if x[0] == request.POST.get('abid')]
     abid, a, ab, b = choice(sex) if not got or not 'abid' in request.POST else got[0]
-    a_sides = [x for x in a.nyms() if not x in ab] # nonsections
-    b_sides = [x for x in b.nyms() if not x in ab]
+    a_sides = [x for x in a.nyms(False) if not x in ab] # nonsections
+    b_sides = [x for x in b.nyms(False) if not x in ab]
     a_cut = len(a_sides)//2 # nonsection split sizes
     b_cut = len(b_sides)//2
     was = request.POST.get('clu')
@@ -1000,36 +1026,35 @@ def quizzection_vu(request):
     if not was:
         msg = None
     elif not was == request.POST.get('guess'):
-        msg = f'Sorry, it was "{was}"'
+        msg = f'{yo(False)}, it was "{was}"'
     else:
         at += sco
-        msg = f'Got it! {sco} points.'
+        msg = f'{yo(punc=True)} {sco} points.'
     if not '_save' in request.POST:
         return render(request, 'play/quizzection.html',
                       dict(a=a, b=b, abs=sex, ab=ab, abid=abid,
                            clu=choice(ab), nu=nu, at=at, wi=(hi.score, hi.user),
                            n=a_sides[:a_cut], s=a_sides[a_cut:],
                            e=b_sides[:b_cut], w=b_sides[b_cut:], msg=msg))
-    msg = f"Nice {request.user}, but you didn't beat your high score."
+    msg = f'Nice {request.user}, but not your best.'
     won = Winner.objects.filter(user=request.user, app='sec')
     if not won or at > won[0].score:
         win = Winner(user=request.user, app='sec') if not won else won[0]
         win.round = nu
         win.score = at
         win.save()
-        msg = f'Congratulations on a new high score, {request.user}!'
+        msg = f'Your finest hour, {request.user}!'
     hi, fx = fame('sec')
-    return render(request, 'play/quizfame.html', dict(hi=hi, fx=fx, msg=msg))
+    return render(request, 'play/fame.html', dict(hi=hi, fx=fx, app='QuizZection', msg=msg))
 
 def quizfame_vu(request):
     hi, fx = fame('sec')
-    return render(request, 'play/quizfame.html', dict(hi=hi, fx=fx))
+    return render(request, 'play/fame.html', dict(hi=hi, fx=fx, app='QuizZection'))
 
-##########################
-########## TELL ##########
+########## TELL
 
 ### TALESPIN
-def fspin_vu(request): # user picks Qs for Fable!
+def talespin_vu(request): # user picks Qs for Fable!
     quads = orderfy(Quadranym)
     fabls = orderfy(Fable)
     msg, got_quads, fabl = None, None, None
@@ -1045,38 +1070,38 @@ def fspin_vu(request): # user picks Qs for Fable!
     msg = 'Not enough topics!' if len(got_quads) < fabl.length else msg
     msg = 'Too many topics!' if len(got_quads) > fabl.length else msg
     if not got_quads or not fabl:
-        return render(request, 'tell/fspin.html',
+        return render(request, 'tell/talespin.html',
                       dict(quads=quads, fabls=fabls, msg='Pick your Topics!'))
-    return render(request, 'tell/fspin.html',
+    return render(request, 'tell/talespin.html',
                   dict(quads=quads, fabls=fabls, spun=deqodes(got_quads, fabl.qode),
                        got_quads=got_quads, fabl=fabl, quad_ids=[q.id for q in got_quads],
                        rev=rev, trace=request.POST.get('trace'), msg=msg))
 
 ### SPINVERSE
-def mspin_vu(request): # pick & spin: Phra x Quad
+def spinverse_vu(request): # pick & spin: Phra x Quad
     path = request.POST.get('path', 'tq')
     got_quads = [Quadranym.objects.get(pk=i) for i in request.POST.getlist('quad_id')]
     got_phras = [Phrase.objects.get(pk=i) for i in request.POST.getlist('phra_id')]
     if not got_quads or not got_phras:
-        return render(request, 'tell/mspin.html',
+        return render(request, 'tell/spinverse.html',
                       dict(quads=orderfy(Quadranym), phras=orderfy(Phrase),
                            quad_ids=[], phra_ids=[], path='qt'))
-    return render(request, 'tell/mspin.html',
+    return render(request, 'tell/spinverse.html',
                   dict(quads=orderfy(Quadranym), phras=orderfy(Phrase),
                        spun=pairspin(got_phras, got_quads, path),
                        quad_ids=[int(q.id) for q in got_quads],
                        phra_ids=[int(ph.id) for ph in got_phras],
                        path=path, trace=request.POST.get('trace')))
 
-### EZ-SPIN
-def qspin_vu(request): # pick & spin: Phras x Quads
+### EZVERSE
+def ezverse_vu(request): # pick & spin: Phras x Quads
     quads = sample(list(thingify(Quadranym)), 15)
     phras = sample(list(thingify(Phrase)), 15)
     quad = Quadranym.objects.get(pk=request.POST.get('quad_id')) \
                     if 'quad_id' in request.POST else choice(orderfy(Quadranym))
     phra = Phrase.objects.get(pk=request.POST.get('phra_id')) \
                  if 'phra_id' in request.POST else choice(orderfy(Phrase))
-    return render(request, 'tell/qspin.html',
+    return render(request, 'tell/ezverse.html',
                   dict(quads=quads, phras=phras, quad=quad, phra=phra, spun=phra.spin(quad)))
 
 ### ORAQUEUE
@@ -1105,20 +1130,24 @@ def oraq_vu(request): # pick & flip: Fort x Quad
                        quad_ids=[q.id for q in got_quads], exes=exes,
                        rev=rev, trace=trace, msg=msg))
 
-### UNQUOTE
-def unquote_vu(request): # pick & flip: Quote x Quad
+### TURNQUOTE
+def turnquote_vu(request, pk=None): # pick & flip: Quote x Quad
     quads = orderfy(Quadranym)
     quots = orderfy(Quote)
-    try:
-        quad = Quadranym.objects.get(pk=request.POST.get('quad_id'))
-        quot = Quote.objects.get(pk=request.POST.get('quot_id'))
-    except (KeyError, Quadranym.DoesNotExist, Quote.DoesNotExist):
-        quad = choice(quads)
-        quot = choice(quots)
+    if pk:
+        quot = Quote.objects.get(pk=pk)
+        quad = quot.quadranym
+    else:
+        try:
+            quad = Quadranym.objects.get(pk=request.POST.get('quad_id'))
+            quot = Quote.objects.get(pk=request.POST.get('quot_id'))
+        except (KeyError, Quadranym.DoesNotExist, Quote.DoesNotExist):
+            quad = choice(quads)
+            quot = choice(quots)
     if not quad or not quot:
-        return render(request, 'tell/unquote.html',
+        return render(request, 'tell/turnquote.html',
                       dict(quots=quots, quads=quads, msg='Pick below!'))
-    return render(request, 'tell/unquote.html',
+    return render(request, 'tell/turnquote.html',
                   dict(quots=quots, quads=quads, quot=quot, quad=quad,
                        spun=quot.spin_quote(quad, True)))
 
@@ -1133,8 +1162,7 @@ def turnr_vu(request):
                                                    q1_ids=[q.pk for q in quad2s],
                                                    q2_ids=[q.pk for q in quad1s]))
 
-#######################
-##### PLOT CHARTS #####
+##### PLOT CHARTS
 def plot_vu(request):
     typ = request.POST.get('typ', 'area_rng')
     ob = request.POST.get('ob', 'poly')
@@ -1197,8 +1225,7 @@ def plot_quad_src_dist(request):
 def plot_pmap_src_dist(request):
     return field_dist(Polymap.objects.all(), 'src')
 
-################
-##### SORT #####
+##### SORT
 class QuadranymTabler(SingleTableView):
     model = Quadranym
     table_class = QuadranymTable
@@ -1209,9 +1236,7 @@ class PolynymTabler(SingleTableView):
     table_class = PolynymTable
     template_name = 'see/commons.html'
 
-##############################
-########## DISABLED ##########
-
+########## DISABLED
 # def get_context_data(self, *args, **kwargs):
 #    kwargs['pk'] = self.get_object().pk
 #    return super().get_context_data(**kwargs)

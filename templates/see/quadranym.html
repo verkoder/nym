@@ -1,8 +1,12 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Nymology: Quadranym View{% endblock %}
-{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}{% if thing.epos == 'VB' and thing.rpos == 'VB' and thing.opos == 'NN' and thing.spos == 'NN' %} Conjugal{% endif %} Quadranym:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
 
-{% block right %}
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}
+{% if thing.epos == 'VB' and thing.rpos == 'VB' and thing.opos == 'NN' and thing.spos == 'NN' %} Conjugal{% endif %} Quadranym:
+<br>{{ thing.name }}{% endif %}</h2>
+{% endblock %}
+
+{% block right %}{% load motags %}
 <form method="POST">{% csrf_token %}
 <table>
     <tr>
@@ -11,7 +15,8 @@
         <td>
             <SELECT NAME="pk" MULTIPLE SIZE="12">
             {% for q in things %}
-              <option VALUE="{{ q.id }}" {% ifequal q.id thing.id %}selected{% endifequal %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+              <option VALUE="{{ q.id }}" {% ifequal q.id thing.id %}selected{% endifequal %}/>
+              {{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
             {% endfor %}
             </SELECT>
         </td>
@@ -49,6 +54,11 @@
           </tr>
         </table>
     </td>
+  </tr>
+  <tr>
+      <td colspan="2" bgcolor="#EFEFEF" align="left"><b>{% with sakes=thing.nyms|nymsake:"polynym" %}
+          {% if sakes %}{{ sakes }}<br>{% endif %}{% endwith %}
+          {% with qq=thing|quoted %}{% if qq %}{{ qq }}<br>{% endif %}{% endwith %}</b></td>
   </tr>
   <tr>
       <td colspan="2" bgcolor="#EFEFEF" align="right"><b><a href="/queue/">Request a Quadranym</a></b></td>

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Polynym Dimension{% endblock %}
 
 {% block script%}
@@ -51,6 +51,6 @@
 </table>
 <b>Polynyms:</b><br>
 {% for p in got_polys %}
-{{ p.depth }} | <a href="/p/{{ p.name|slugify }}">{{ p.name|truncatechars:25 }}</a>{% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}<br>
+{{ p.depth }} | <a href="/polynym/{{ p.pk }}">{{ p.name|truncatechars:25 }}</a>{% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}<br>
 {% endfor %}
 {% endblock %}

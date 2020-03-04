@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}Qontext{% endblock %}
 
 {% block mid %}<h2>{% if msg %}{{ msg }}</h2>{% else %}Qontext</h2>
@@ -16,8 +16,7 @@
 </table>
 {% endblock %}
 
-{% block content %}
-{% load static %}
+{% block content %}{% load static %}{% load motags %}
 <table width="100%" align="center" bgcolor="EFEFEF" cellpadding="6" cellspacing="0">
   <tr>
 	<td bgcolor="DEDEDE" align="left" valign="top" width="20%"><br>
@@ -62,7 +61,11 @@
     </td>
   </tr>
   <tr>
-      <td bgcolor="DEDEDE">{% if q2.wiki %}<a href="{{ q2.wiki }}">{{ q2.wiki }}</a>{% endif %}</td>
+      <td bgcolor="DEDEDE">
+{% if q1.wiki %}<b>Layer 1 Info:<br><a href="{{ q1.wiki }}">{{ q1.wiki|wikurl }}</a></b><br>{% endif %}
+{% if q2.wiki %}<b>Layer 2 Info:<br><a href="{{ q2.wiki }}">{{ q2.wiki|wikurl }}</a></b><br>{% endif %}
+{% if q3.wiki %}<b>Layer 3 Info:<br><a href="{{ q3.wiki }}">{{ q3.wiki|wikurl }}</a></b>{% endif %}
+      </td>
       <td bgcolor="DEDEDE" align="right"></td>
   </tr>
 </table>

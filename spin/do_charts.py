@@ -1,6 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# encoding: utf-8
 '''
-do_charts.py -- Highcharts plotting tools
+do_charts.py -- Nymology Highcharts plotting tools
 '''
 from math import sqrt
 from collections import Counter
