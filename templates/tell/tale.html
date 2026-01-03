@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Tell Tales{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Tell Tales</h3>
+    <div class="text-muted"><em>spin narrative from<br>template/topic menus</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<form action="{% url 'spin:tell_tale' %}" method="POST">{% csrf_token %}
+<div class="row g-0">
+    <div class="col">
+        <input class="tell" type="submit" value="T E L L" />
+        {% if msg %}<div class="text-warning">{{ msg }}</div>{% endif %}
+    </div>
+    <div class="col text-start mt-3">
+        <input type="checkbox" name="rev"{% if rev == "on" %} checked{% endif %}> Reverse
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="row g-0 text-end">
+    <div class="col-12">
+    	<SELECT NAME="fabl_id" MULTIPLE SIZE="7" class="p-0 m-0">
+            {% for f in fabls %}
+                <OPTION VALUE="{{ f.id }}"{% if f.id == fabl.id %}selected {% endif %}/>
+                {{ f.name|truncatechars:25 }} | Pick {{ f.length }} Topics >>
+            {% endfor %}
+        </SELECT>
+        <SELECT NAME="quad_id" MULTIPLE SIZE="7" class="p-0 m-0">
+    	    {% for q in quads %}
+    		    <OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>
+                {{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+    	    {% endfor %}
+    	</SELECT>
+        <div class="text-end text-muted lil mt-1 me-3">&uarr; Ctrl- or Cmd-click to pick multiple &uarr;</div>
+    </div>
+</div>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="row g-0">
+    <div class="col-lg-3 col-sm-4">
+        <div class="row g-0 text-muted h-100">
+            <h3 class="col-6 my-auto px-1 text-end">
+                {{ fabl.name }}
+            </h3>
+            <h4 class="col-1 my-auto px-1 text-center">
+                &times;
+            </h4>
+            <div class="col-5 my-auto px-1 text-start">
+            <div class="ms-1">[ {{ topics }} ]</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-8">
+        {% include 'bits/book.html' with qode=fabl.qode %}
+    </div>
+</div>
+
+{% include 'bits/show_tale.html' with thing=fabl things=quadranyms %}
+{% endblock %}

@@ -1,0 +1,18 @@
+<script type="text/javascript">
+var count=30;
+
+var counter=setInterval(timer, 1000); // = every second
+
+function timer()
+{
+  count=count-1;
+  if (count <= 0)
+  {
+     clearInterval(counter);
+     document.getElementById("timer").style.display = "none";
+     return;
+  }
+
+ document.getElementById("timer").innerHTML="<b>Speed Bonus:</b> <font size=+2><code>" + count + "</code></font>";
+}
+</script>

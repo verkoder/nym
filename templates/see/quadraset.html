@@ -1,54 +1,63 @@
 {% extends 'base.html' %}
-{% block title %}Quadraset{% endblock %}
+{% block title %}Quadranym Set{% endblock %}
 
-{% block mid %}
-{% if msg %}{{ msg }}{% else %}<h2>Quadraset:<br>{{ thing.name }}</h2>{% endif %}
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Quadranym Set</h3>
+    <div class="text-muted"><em>a set of related quadranyms</em></div>
+</div>
 {% endblock %}
+
+{% block mid %}{% if msg %}{{ msg }}<br>{% endif %}
+<h4 class="text-center">{{ thing.name }}
+{% endblock %}
+
 {% block right %}
-<form method="POST">{% csrf_token %}
-<table>
-    <tr>
-        <td><h4 align="center">
-        <SELECT NAME="pk" SIZE="8">
-        {% for qt in things %}
-          <option VALUE="{{ qt.id }}" {% if qt.id == thing.id %}selected{% endif %}>{{ qt.name }} | {{ qt.length }}
-        {% endfor %}
-        </SELECT></h4></td>
-        <td align="center"><h4><input type="submit" value="S E E" name="_save" /></h4></td>
-    </tr>
-</table>
+<form action="{% url 'spin:quadraset_detail' %}" method="POST">{% csrf_token %}
+<div class="container p-0">
+    <div class="row g-0 text-end">
+        <div class="col-6 my-auto">
+            <div class="btn-group-vertical">
+                <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:quadraset_detail' %}">Random Pick</a>
+                <input class="btn btn-primary" type="submit" value="View Selected" />
+            </div>
+        </div>
+        <div class="col-6">
+            <SELECT NAME="pk" SIZE="7">
+                {% for qt in things %}
+                  <option VALUE="{{ qt.id }}" {% if qt.id == thing.id %}selected{% endif %}>{{ qt.name }} | {{ qt.length }}
+                {% endfor %}
+            </SELECT>
+        </div>
+    </div>
+</div>
 </form>
 {% endblock %}
 
 {% block content %}
-<table width="100%" bgcolor="#EFEFEF">
-<tr><td>{% include 'bits/common.html' %}</td>
-<td>
-    <table border="0" cellspacing="0" cellpadding="2" align="center" width="96%">
-        <tr bgcolor="6F6F6F"><td><span class="navbar"><font size="+1" color="#FFFFFF">Name</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Expansion</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Reduction</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Objective</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Subjective</span></td></tr>
-        {% for q in thing.quadranyms.all %}
-        <tr bgcolor="{% cycle '#EFEFEF' '#DFDFDF'%}">
-            {% for nym in q.nyms %}
-                <td width="20%">
-                    {% if forloop.first %}
-                        <a href="/quadranym/{{ q.id }}"><b>{{ nym }}</b></a>
-                    {% else %}{{ nym }}{% endif %}
-                </td>
+<div class="row g-0">
+    <div class="col-xl-3 col-md-12 px-1 pb-3">{% include 'bits/common.html' %}</div>
+    <div class="col-xl-9 col-md-12">
+        <table class="table table-sm table-dark table-striped table-borderless">
+            <tr bgcolor="#6F6F6F"><td><span class="navbar"><font size="+1">Name</span></td>
+                                 <td><span class="navbar"><font size="+1">Expansion</span></td>
+                                 <td><span class="navbar"><font size="+1">Reduction</span></td>
+                                 <td><span class="navbar"><font size="+1">Objective</span></td>
+                                 <td><span class="navbar"><font size="+1">Subjective</span></td></tr>
+            {% for q in thing.quadranyms.all %}
+            <tr>
+                {% for nym in q.names %}
+                    <td width="20%">
+                        {% if forloop.first %}
+                            <a href="{% url 'spin:quadranym_detail' q.id %}"><b>{{ nym }}</b></a>
+                        {% else %}{{ nym }}{% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-        <tr bgcolor="6F6F6F"><td><span class="navbar"><font size="+1" color="#FFFFFF">Name</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Expansion</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Reduction</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Objective</span></td>
-                             <td><span class="navbar"><font size="+1" color="#FFFFFF">Subjective</span></td></tr></table>
-</td></tr>
-   <tr>
-       <td bgcolor="#EFEFEF" colspan="2"><br></td>
-   </tr>
-</table>
+        </table>
+    </div>
+</div>
+
+{% include 'bits/shows.html' with things=thing.quadranyms.all useq='both' %}
 {% endblock %}

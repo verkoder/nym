@@ -1,52 +1,57 @@
 {% extends 'base.html' %}
-{% block title %}P{% if n != 1 %}{{ n }}: {{ ad }}{% else %}olynym{% endif %}s{% endblock %}
+{% block title %}P{% if n != 1 %}{{ n }}: {{ ad }}{% else %}olynym{% endif %} Systems{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Polynym Systems</h3>
+    <div class="text-muted"><em>by dimension</em></div>
+</div>
+{% endblock %}
 
 {% block mid %}
-{% if msg %}{{ msg }}{% else %}<h2>P{% if n != 1 %}<sup>{{ n }}</sup>: {{ ad }}{% else %}olynym{% endif %}s</h2>
-<h4>TOTAL: {{ polys|length }} Polynyms<br>{{ type }} Type
-{% if part %} &nbsp;|&nbsp; {{ part }} Part{% endif %}
-{% if step %} &nbsp;|&nbsp; {{ step }} Step{% endif %}{% endif %}
+{% if msg %}{{ msg }}{% else %}
+    {% if n != 1 %}<h4>{{ n }}: {{ polyad }}s</h4>{% else %}<h4 class="text-muted">Choose Dimension</h4>{% endif %}{% endif %}
 {% endblock %}
 
 {% block right %}
-<table cellpadding="4">
-    <tr align="center">
-    {% for sysad in ben.values %}{% if forloop.counter0 %}
-        <td><b><a href="/polynym/n/{{ forloop.counter }}">{{ forloop.counter }}: {{ sysad }}</a><b></td>
-        {% if forloop.counter0|divisibleby:3 %}</tr><tr align="center" bgcolor="{% cycle '#DFDFDF' '#EFEFEF' %}">{% endif %}
-    {% endif %}{% endfor %}
-    <td align="center"><b>&laquo; <a href="/polynym/add/">add</a> &raquo;</b></td></tr><tr>
-    <td align="center"><b>&laquo; <a href="/polynym/n/1">system</a> &raquo;</b></td>
-    <td align="center"><b>&laquo; <a href="/polynym/area/all">area</a> &raquo;</b></td>
-    <td align="center"><b>&laquo; <a href="/polynym/src/all">source</a> &raquo;</b></td>
-    </tr>
-</table>
+<div class="row row-cols-3 px-2 my-3 g-0">
+    {% for sysad in ben.values %}
+        {% if forloop.counter0 %}
+            <a type="button" class="col rounded-0 btn btn-sm btn-outline-secondary nym" href="{% url 'spin:polynyms_n' forloop.counter %}">
+            {{ forloop.counter }}: {{ sysad }}s</a>
+        {% endif %}
+    {% endfor %}
+    <div class="btn-group bg-dark btn-group-sm ps-1 my-auto">
+        <a class="btn btn-sm btn-outline-secondary {% if request.path == '/polynym/n/1' %} disabled{% endif %}"
+                                                    href="{% url 'spin:polynyms_n' 1 %}">dimension</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:polynyms_area' 'all' %}">area</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:polynyms_src' 'all' %}">source</a>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block content %}
 {% if n == 1 %}
-{% include 'bits/poly_systems.html' %}
+    {% include 'bits/poly_systems.html' %}
 {% else %}
-<table border="0" cellspacing="0" cellpadding="2" align="center">
-    <tr bgcolor="#6F6F6F">
-    {% for t in ttl %}
-        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ t }}</span></td>
-    {% endfor %}
-    </tr>
-    {% for p in polys %}
-        <tr bgcolor="{% cycle '#EFEFEF' '#DFDFDF' %}">
-            <td><b><a href="/polynym/{{ p.id }}">{{ p.name }}</a></b></td>
-        {% for nym in p.nyms %}
-            <td>{{ nym }}</td>
+<table class="table table-sm table-borderless text-center">
+    <tr class="text-light">
+        {% for header in ttl %}
+            <td><h5>{{ header }}</h5></td>
         {% endfor %}
-    {% endfor %}
     </tr>
-    <tr>
-    {% for t in ttl %}
-        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ t }}</span></td>
+    {% for poly in polys %}
+        <tr class="text-secondary">
+            <td>
+                <a class="btn btn-outline-secondary rounded-0 p-1 m-0 w-100" href="{% url 'spin:polynym_detail' poly.id %}">{{ poly.name }}</a>
+            </td>
+            {% for nym in poly.nyms %}
+                <td>{{ nym }}</td>
+            {% endfor %}
+        </tr>
     {% endfor %}
-    </tr>
 </table>
-{% if n == 3 %}<br>For more Triads, see <b><a href="http://bookofthrees.com">Book of Threes</a></b>{% endif %}
+{% if n == 3 %}<div class="p-3">For more Triads, see <a href="http://bookofthrees.com" target="_blank">Book of Threes</a></div>{% endif %}
 {% endif %}
 {% endblock %}

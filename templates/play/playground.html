@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% block mid%}
+<h3 class="text-center my-3">Want to play a game?</h3>
+{% endblock %}
+
+{% block right %}
+{% endblock %}
+
+{% block content %}{% load static %}
+
+<div class="row g-0 my-3 text-center">
+    <div class="col-lg-7 col-sm-12">
+        <div class="row g-0 text-light">
+            <div class="col-6 px-3">
+                <small>Intuit the missing word</small>
+                <div class="row g-0">
+                    <div class="col-12">
+                		<div class="container p-0"><a href="/polypuzzle">
+                            <img src="{% static 'spin/img/PolyPuzzle.png' %}" class="p-1 w-100" style="background-color: plum;">
+                            <div class="overlay">PLAY</div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 px-3">
+                <small>Ask the AI</small>
+                <div class="row g-0">
+                    <div class="col-12">
+                		<div class="container p-0"><a href="/feel_fmk">
+                            <img src="{% static 'spin/img/fmk.png' %}" class="p-1 w-100" style="background-color: crimson;">
+                            <div class="overlay">FEEL</div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 p-3">
+                <small>Find where two ideas intersect</small>
+                <div class="row g-0">
+                    <div class="col-12">
+                		<div class="container p-0"><a href="/quizzection">
+                            <img src="{% static 'spin/img/QuizZection.png' %}" class="p-1 w-100" style="background-color:indigo;">
+                            <div class="overlay">PLAY</div></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 col-sm-6 px-3">
+        <small>Plot polynym data</small>
+        <div class="row g-0">
+            <div class="col-12">
+                <div class="container p-0"><a href="/plot/">
+                    <img src="{% static 'spin/img/polynym_areas.png' %}" class="p-1 w-100">
+                    <div class="overlay">PLOT</div></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 p-3 my-auto">
+        <h5 class="text-light">Researchers: Use our data!</h5>
+        <a class="btn btn-outline-secondary" href="/info/api/">Nymology API</a>
+        <h5 class="text-light mt-5">Developers: Add a game!</h5>
+        <a class="btn btn-outline-secondary" href="http://github.com/verkoder/nym" target="_blank">Nymology on GitHub</a>
+    </div>
+    <div class="col-lg-4 col-sm-6 p-3">
+        <small>Guess the real quote</small>
+        <div class="row g-0">
+            <div class="col-12">
+        		<div class="container p-0"><a href="/unquote">
+                    <img src="{% static 'spin/img/unQuote.png' %}" class="p-1 w-100" style="background-color: peru;">
+                    <div class="overlay">PLAY</div></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 text-center p-3">
+        <small>Hit the topic</small>
+        <div class="container p-0"><a href="/thegist">
+            <img src="{% static 'spin/img/TheGist.png' %}" class="p-1 w-100" style="background-color:DeepSkyBlue;">
+            <div class="overlay">PLAY</div></a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6 p-3">
+        <div class="row g-0">
+            <div class="col-12">
+                <small class="text-light">Seek the hidden dimension</small>
+                <div class="container p-0"><a href="/quadrazone">
+                    <img src="{% static 'spin/img/QuadraZone.png' %}" class="p-1 w-100" style="background-color:LightSeaGreen;">
+                    <div class="overlay">PLAY</div></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 p-3 text-center text-muted">
+		<div class="container mt-4 align-items-center">
+            <table width="100%">
+                <tr>
+                    <td><a href="{% url 'spin:feel_mood' %}"><img src="{% static 'spin/emo/Paul Ekman_6_sad.png' %}"></td><td></td>
+                    <td><a href="{% url 'spin:feel_mood' %}"><img src="{% static 'spin/emo/Paul Ekman_6_angry.png' %}"></td><td></td>
+                    <td><a href="{% url 'spin:feel_mood' %}"><img src="{% static 'spin/emo/Paul Ekman_6_happy.png' %}"></td>
+                </tr>
+                <tr>
+                    <td><span class="code">e</span></td>
+                    <td><span class="code text-muted"><b> • </b></span></td>
+                    <td><span class="code">mo</span></td>
+                    <td><span class="code text-muted"><b> • </b></span></td>
+                    <td><span class="code">nym</span></td>
+                </tr>
+            </table>
+            <a class="btn btn-outline-secondary my-2" href="{% url 'spin:feel_mood' %}">Feel mood of any text</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-0 text-muted text-center my-3 norm">
+    <div class="col-xl-6 col-lg-7 col-md-8 col-sm-10 offset-lg-3 offset-sm-1 bg-light text-dark">
+        <div class="row g-0 p-3">
+            <div class="col-2" id="news">
+                <a href="#news" onclick="location.reload()" class="btn btn-secondary"><b>Reload for a new issue!</b></a>
+            </div>
+            <div class="col-10">
+                <h1><b><sup><small>The</small></sup> Nymology News</b></h1><hr><hr>
+            </div>
+            <div class="col-2 text-center">
+                <div>
+                    <small><b>This Issue:</b></small><br>
+                    {% now "F j" %}<sup>{% now "S" %}</sup> {% now "Y" %}<br>{% now "P" %}
+                </div>
+            </div>
+
+            <div class="col-10">
+                <h3 class="text-center mb-0"><b><i>{{ top_tale.name|title }}</i></b></h3>
+                <small>
+                    Tale by <a href="/user/{{ top_tale.user.username }}"><b>{{ top_stor.user.username }}</b></a>
+                </small>
+                <div class="text-start mb-3 px-3">
+                    {% autoescape off %}{{ top_tale.tell|striptags|truncatechars:200 }}{% endautoescape %}
+                    <a class="btn btn-sm btn-secondary" href="/tale/{{ top_tale.pk }}">Continue reading&hellip;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-0 p-3">
+            <div class="col-lg-6 col-md-12">
+                <h3 class="text-center mb-0"><b><i>{{ top_stor.name|title }}</i></b></h3>
+                <small>
+                    Story by <a href="/user/{{ top_stor.user.username }}"><b>{{ top_stor.user.username }}</b></a>
+                </small>
+                <div class="text-start px-3">
+                    {% autoescape off %}{{ top_stor.tell.0|striptags|truncatechars:300 }}{% endautoescape %}
+                    <a class="btn btn-sm btn-secondary" href="/story/{{ top_stor.pk }}">Continue reading&hellip;</a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12 text-center nym">
+                {% now 's' as sec %}
+                {% if sec|slice:'1:' in '0368' %}
+                    <form action="{% url 'spin:feel_polynym' %}">
+                        <h5><b>OUR SPONSOR:</b></h5>
+                        <input type="submit" class="feel" name="" value="&nbsp;Emonym's&nbsp;"><span class="align-top">&reg;</span><br>
+                        <small class="book"><b><em>&ldquo;Catch the Feels&rdquo;</em></b></small>
+                    </form>
+                {% elif sec|slice:'1:' in '147' %}
+                    <form action="{% url 'spin:tell_tale' %}">
+                        <h5>OUR SPONSOR:</h5>
+                        <input type="submit" class="tell" name="" value="&nbsp;The Tale-Teller&nbsp;"><span class="align-top">&reg;</span><br>
+                        <small class="book"><b><em>&ldquo;Spinning Your Best Yarn&rdquo;</em></b></small>
+                    </form>
+                {% else %}
+                    <form action="{% url 'spin:flip_quote' %}">
+                        <h5>OUR SPONSOR:</h5>
+                        <input type="submit" class="flip" name="" value="&nbsp;Flip Quotes&nbsp;"><span class="align-top">&reg;</span><br>
+                        <small class="book"><b><em>&ldquo;Targeting the Topics&rdquo;</em></b></small>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

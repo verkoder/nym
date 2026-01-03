@@ -1,0 +1,8 @@
+{% extends 'add/common.html' %}
+
+{% block addy %}
+<div class="row px-3">
+    <b>{{ form.name.label_tag }}</b><br>{{ form.name }}<br><br>
+    {% if form.polynyms %}<b>{{ form.polynyms.label_tag }}</b><br>{{ form.polynyms }}<br>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'add/common.html' %}
+
+{% block right %}
+<form method="POST">{% csrf_token %}
+<div class="btn-group m-2">
+    <input class="btn btn-success" type="submit" value="SAVE"/>
+    <a class="btn btn-secondary" href="javascript:history.back()">CANCEL</a>
+    {% if kind == 'conjugal' %}
+        <span class="pt-2 h6 px-4">Style = Conjugal</span>
+        <a class="btn btn-secondary" href="{% url 'spin:guessaquad_use' pk=pk kind='freeform' %}">&larr; Make Freeform</a>
+        {% else %}
+        <span class="pt-2 h6 px-4">Style = Freeform</span>
+        <a class="btn btn-secondary" href="{% url 'spin:guessaquad_use' pk=pk kind='conjugal' %}">&larr; Make Conjugal</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block addy %}{% load motags %}
+<div class="row g-0 mx-2">
+    <div class="card text-center" style="min-width: 48em; max-width: 88em; background-color: #212529;">
+        <div class="card-body mx-2 px-2 py-0">
+            <div class="card-text">
+                <div class="row h-100">
+                    <div class="col-4 my-auto py-2">
+                        <div class="my-1 text-muted lil">EXPANSION</div>
+                            {% if kind != 'conjugal' %}
+                                {{ form.e }}<br><br>{{ form.epos }}
+                            {% else %}
+                                {{ form.e }}<br><br>verb root: to ___<input name="epos" type="hidden" value="VB">
+                            {% endif %}
+                    </div>
+                    <div class="col-4 bg-dark"></div>
+                    <div class="col-4 my-auto py-2">
+                        <div class="my-1 text-muted lil">OBJECTIVE</div>
+                            {{ form.o }}<br><br>
+                            {% if kind != 'conjugal' %}
+                                {{ form.opos }}
+                            {% else %}
+                                singular noun /phrase<input name="opos" type="hidden" value="NN">
+                            {% endif %}
+                    </div>
+                </div>
+                <div class="row h-100">
+                    <div class="col-4 bg-dark"></div>
+                    <div class="col-4 my-auto py-2">
+                        <h3 class="mb-1">Topic:</h3>{{ form.name }}
+                        <div class="text-muted pt-1 pb-3">&uarr; click for requested topics &uarr;</div>
+                        {{ form.pos }}
+                    </div>
+                    <div class="col-4 bg-dark"></div>
+                </div>
+                <div class="row h-100">
+                    <div class="col-4 my-auto py-2">
+                        <div class="my-1 text-muted lil">SUBJECTIVE</div>
+                            {{ form.s }}<br><br>
+                            {% if kind != 'conjugal' %}
+                                {{ form.spos }}
+                            {% else %}
+                                singular noun /phrase<input name="spos" type="hidden" value="NN">
+                            {% endif %}
+                    </div>
+                    <div class="col-4 bg-dark"></div>
+                    <div class="col-4 my-auto py-2">
+                        <div class="my-1 text-muted lil">REDUCTION</div>
+                            {% if kind != 'conjugal' %}
+                                {{ form.r }}<br><br>{{ form.rpos }}
+                            {% else %}
+                                {{ form.r }}<br><br>verb root: to ___<input name="rpos" type="hidden" value="VB">
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pt-1"><b>Keyword:</b>&nbsp; {{ form.initial.word }}</div>
+<div class="pt-3"><b>Context:</b>&nbsp; {{ form.initial.sentence|embolden:form.initial.word }}</div>
+<div class="text-muted small pt-3"><b>Full context:</b>&nbsp; {{ form.initial.paragraph|embolden:form.initial.word }}</div>
+{% endblock %}
+
+{% block trace %}
+{% if sco.0.1.0.1 != 0 %}
+    <div class="p-2">
+        <div class="ps-4">
+            &nbsp;&mdash; Q Placement Scores &mdash;
+        </div>
+        {% for word,li in sco %}
+            {{ word }}: 
+                {% for eros,num in li %}
+                    {% if num != 0 %}
+                        &nbsp; {{ eros }}={{ num }}
+                    {% endif %}
+                {% endfor %}
+            <br>
+        {% endfor %}
+    </div>
+{% endif %}
+{% include 'bits/shows.html' with things=form.initial.traces %}
+{% endblock %}

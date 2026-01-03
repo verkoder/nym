@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Quadranym Tiles{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Quadranym Tiles</h3>
+    <div class="text-muted"><em>2D quadranym visualization</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<div class="p-3">
+    {% include 'bits/infocard.html' with thing=quad %}
+</div>
+{% endblock %}
+
+{% block right %}
+<form action="{% url 'spin:quadratile' %}" method="POST">{% csrf_token %}
+<div class="container p-0">
+    <div class="row g-0 text-end">
+        <div class="col-6 my-auto">
+            <div class="btn-group-vertical p-1">
+                <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:quadratile' %}">Random Pick</a>
+                <input class="btn btn-primary" type="submit" value="View Selected" />
+            </div>
+        </div>
+        <div class="col-6">
+            <SELECT NAME="pk" MULTIPLE SIZE="7">
+            {% for q in quads %}
+              <option VALUE="{{ q.id }}" {% if q.id == quad.id %}selected{% endif %}/>{{ q.name|truncatechars:25 }}
+            {% endfor %}
+            </SELECT>
+        </div>
+    </div>
+</div>
+</form>
+{% endblock %}
+<!--{% with eq.name|slugify as slug %}<a href="{% url 'spin:quadratile' slug %}">{% endwith %}-->
+
+{% block content %}{% load motags %}
+<table width="100%">
+    <tr width="100%">
+        <td style="width: 33%; height: 8em;">{% if eq %}{% include 'bits/quad.html' with thing=eq %}{% endif %}</td>
+        <td style="width: 33%; height: 8em;"></td>
+        <td style="width: 33%; height: 8em;">{% if oq %}{% include 'bits/quad.html' with thing=oq %}{% endif %}</td>
+    </tr>
+    <tr width="100%">
+        <td style="width: 33%; height: 8em;"></td>
+        <td style="width: 33%; height: 8em;">{% include 'bits/quad.html' with thing=quad %}</td>
+        <td style="width: 33%; height: 8em;">&nbsp;</td>
+    </tr>
+    <tr width="100%">
+        <td style="width: 33%; height: 8em;">{% if sq %}{% include 'bits/quad.html' with thing=sq %}{% endif %}</td>
+        <td style="width: 33%; height: 8em;"></td>
+        <td style="width: 33%; height: 8em;">{% if rq %}{% include 'bits/quad.html' with thing=rq %}{% endif %}</td>
+    </tr>
+</table>
+{% endblock %}

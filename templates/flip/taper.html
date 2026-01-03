@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>A Billion People Oughta Know (Taper #10)</title>
+
+<!-- “A Billion People Oughta Know” Copyright (C) 2023 Scotty Vercoe & Dane Scalise
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright 
+notice and this notice are preserved. This file is offered as-is,
+without any warranty.
+
+This is from Taper #10: Powers Of Ten, Spring 2023:
+
+https://taper.badquar.to/10/a_billion_people_oughta_know.html
+
+A world exponentially striving and confused.
+-->
+
+<style>
+	body { margin:0 ; overflow:hidden }
+	a { color:#eee ; text-decoration:none }
+	header { margin:0 ; padding:0 ; background-color:#444 ; color:#bbb ;
+		position:relative ; z-index:1000 }
+	header > h1 { margin:0 ; font-size:12px ; font-family:sans-serif ;
+		border-bottom:1px #999 solid ; padding:5px 10px ; line-height:17px }
+</style>
+</head>
+<body>
+<header id=nav>
+	<h1>
+		<a href="index.html">Taper #10 : TBA</a> : Spring 2023 <br>
+		<a href="billionpeople.html">“A Billion People Oughta Know”</a> by
+		<a href="about.html">Scotty Vercoe & Dane Scalise</a> :
+		<a href="prev.html">&lt;&lt;</a> &mdash;
+		<a href="next.html">&gt;&gt;</a>
+	</h1>
+</header>
+<h2 style="text-align: center">A Billion People Oughta Know</h2><div style="text-align:left; width:97%; height:700px; overflow-x:hidden; overflow-y:auto; padding:20px; font-size:18px;" id="mo"></div>
+<script>var phrases=["q1r will need q1o and q1s to help q1n become q1e.","q1e will need q1o and q1s to help q1r become q1n.","Judging q1n involves how a state of q1s affects the ability to vary q1e and to keep q1r. If all goes well, you'll achieve q1o.","When arguing q1n, the word q1s asks why the word q1e is a mystery but the word q1o will state how the word q1r is logic.","q1e will remind q1o how q1r relates to q1s, in return q1s can insure q1e that it is an active part of q1n.","q1r will remind q1s how q1e relates to q1o. In return, q1o can remind q1r that it's an action of q1n.","When relating to q1n, understanding q1r makes me think of q1o, which allows q1e to make sense of q1s.","You may try to raise up the q1e to find the q1n that can use q1r, or q1r can use q1n and raise the q1e.","When explaining q1n, it may be that q1s and q1e are actually a single factor that contain the multiple factors of q1o and q1r."]
+var qs = [['perception','stimuli','select','organize','interpret'],['soulmate','love','lust','body','mind'],['creator','cause','effect','change','produce'],['operator','potential','actual','connected','random'],['love','thought','knowledge','desire'],['affordance','stimulant','reference','structure','function'],['partnership','individual','relationship','accountability','compatibility'],['physical control','command','order','directive','communication'],['religious control','worship','ascend','unity','sin'],['motive','urge','resolve','order','chaos'],['partner','mutual','accountability','other','individual'],['pattern','linear','circular','separate','whole'],['acceptance','offer','receive','acquirement','consent'],['mind','unknown','known','knowable','knower'],['writing','sign','number','symbol','meaning'],['agent','positive','negative','goal','self'],['human control','rule','govern','peace','law']]
+var nth = ['a billion','a hundred million','ten million','a million','a hundred thousand','ten thousand','a thousand','a hundred','ten','one'];
+function getRndInteger(min, max) { return Math.floor(Math.random() * (max - min) ) + min; }
+function spin() {let q = qs[getRndInteger(0, 16)];let t=phrases[getRndInteger(0, 8)];t=t.replace(/q1n/g, q[0]);t=t.replace(/q1e/g,q[1]);t=t.replace(/q1r/g, q[2]);t=t.replace(/q1o/g, q[3]);t=t.replace(/q1s/g, q[4]);return t.charAt(0).toUpperCase()+t.slice(1);}
+function powspin() {let n = getRndInteger(0, 9);let t=phrases[getRndInteger(0, 8)];t=t.replace(/q1n/g, nth[n]);t=t.replace(/q1e/g,'zeroes');t=t.replace(/q1r/g, '10');t=t.replace(/q1o/g, 'power');t=t.replace(/q1s/g, n);return t.charAt(0).toUpperCase()+t.slice(1);}
+function qpick() {q = qs[getRndInteger(0, 16)];return q[0]}
+var w = [['A billion people','A million people','A thousand people','A hundred people'],['A million people','A thousand people','A hundred people','Ten people'],['A thousand people','A hundred people','Ten people','One person']]
+var i = 0;var p;var r;
+function poem() {if(i > 1000){clearInterval(r);return;}
+let q=qpick();let p=w[getRndInteger(0,3)];document.getElementById('mo').innerHTML+='They tried to find the '+q+'. '+p[0]+' oughta know.<br>';document.getElementById('mo').innerHTML+=spin()+'<br>';document.getElementById('mo').innerHTML+='They tried to find the '+q+'. '+p[1]+' had to go.<br>';document.getElementById('mo').innerHTML+=powspin()+'<br>';document.getElementById('mo').innerHTML+='They tried to find the '+q+'. '+p[2]+' will die.<br>';document.getElementById('mo').innerHTML+=spin()+'<br>';document.getElementById('mo').innerHTML+='They tried to find the '+q+'. '+p[3]+' must have lied.<br><br>';i++;}
+run=setInterval(poem,3500);</script>
+</body>
+</html>

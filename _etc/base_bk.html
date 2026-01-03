@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'spin/style.css' %}">
+<link rel="shortcut icon" type="image/png" href="{% static 'spin/favicon.ico' %}"/>
+<title>Nymology :: {% block title %}Idea Set Theory{% endblock %}</title>
+{% block script %}
+{% endblock %}
+</head>
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="FFFFFF">
+  <tr>
+	<td bgcolor="#CFCFCF" nowrap>
+		<span class="navbar"><font size="+2"><a href="{% url 'spin:home' %}" style="width:138px;"><img src="{% static 'spin/favlogo.png' %}"/><b>Nymology</b></a></font>
+    &nbsp;<font size="4em"><a href="{% url 'spin:polynyms_n' 2 %}" class="tooltip-bottom" data-tooltip="See 2-nyms: Dyads">&ovbar;</a>
+    <a href="{% url 'spin:polynyms_n' 3 %}" class="tooltip-bottom" data-tooltip="See 3-nyms: Triads">&xdtri;</a>
+    <a href="{% url 'spin:polynyms_n' 4 %}" class="tooltip-bottom" data-tooltip="See 4-nyms: Tetrads">&fltns;</a></font>&nbsp;
+        <small><b><a href="{% url 'spin:api_info' %}">API</a></b> | <b><a href="http://polynyms.com/doku.php?id=nymology">info</a></b></small>
+    </span></td>
+    <td bgcolor="#CFCFCF"><span class="tiny">
+{% if user.is_authenticated %}
+User: <a href="{% url 'spin:user_detail' user.username %}">{{ user.username }}</a><br>
+<a href="{% url 'spin:logout' %}">Logout</a>
+{% else %}
+User: --<br><a href="{% url 'spin:login' %}">Login</a>
+{% endif %}</span>
+	</td>
+	<td bgcolor="#9F9F9F" align="center" width="33%">
+		<span class="navbar"><font size="+2" color="FFFFFF"><i>Idea Set Theory</i></font></span>
+	</td>
+  <tr>
+	<td class="tip" width="18%" bgcolor="#EFEFEF" align="left">
+
+{% block bar %}
+    <table cellpadding="1" cellspacing="0">
+        <tr>
+            <td colspan="4" class="tip" nowrap bgcolor="#DFDFDF"><span class="navbar">&ThinSpace;<b><a
+                   href="{% url 'spin:plot' %}" class="tooltip-right" data-tooltip="Plot Polynyms">&bigwedge;</a>
+                <a href="{% url 'spin:polynyms' %}" class="tooltip-right" data-tooltip="All Polynyms">&check;</a>
+                <a href="{% url 'spin:polytile' %}" class="tooltip-right" data-tooltip="PolyTile">&plusb;</a>
+                <a href="{% url 'spin:polymath' %}" class="tooltip-right" data-tooltip="Compare Polynyms">&bot;</a>
+                <a href="{% url 'spin:polynym_search' %}" class="tooltip-above" data-tooltip="Find Polynym dimension">?</a>
+                <a href="{% url 'spin:polynym_create' %}" class="tooltip-above" data-tooltip="Add Polynym">+</a><a
+                   href="{% url 'spin:polynym_detail' %}" style="width:72px;" class="tooltip-above" data-tooltip="See Polynym">Polynym</a><a
+                   href="{% url 'spin:union' %}" class="tooltip-above" data-tooltip="See Unionym">&cup;</a>
+                <a href="{% url 'spin:section' %}" class="tooltip-above" data-tooltip="See Sectionym">&cap;</a>&nbsp;<a
+                   href="{% url 'spin:polyset_create' %}" class="tooltip-above" data-tooltip="Add Polynym set">+</a><a
+                   href="{% url 'spin:polyset_detail' %}" style="width:39px;" class="tooltip-above" data-tooltip="See Polynym Set">Pset</a>
+                <a href="{% url 'spin:polymap_create' %}" class="tooltip-above" data-tooltip="Add Polymap">+</a><a
+                   href="{% url 'spin:polymap_detail' %}" class="tooltip-above" data-tooltip="See Polymap">Pmap</a></b>
+
+         <br>&ThinSpace;<b><a
+                   href="{% url 'spin:plot' %}" class="tooltip-right" data-tooltip="Plot Quadranyms">&bigwedge;</a>
+                <a href="{% url 'spin:quadranyms' %}" class="tooltip-right" data-tooltip="All Quadranyms">&check;</a>
+                <a href="{% url 'spin:hyperq' %}" class="tooltip-right" data-tooltip="HyperQ">&plusb;</a>
+                <a href="{% url 'spin:polyquad' %}" class="tooltip-right" data-tooltip="Compare Polynym-Quadranym">&bot;</a>
+                <a href="{% url 'spin:quadranym_search' %}" class="tooltip-bottom" data-tooltip="Find Quadranym dimension">?</a>
+                <a href="{% url 'spin:quadranym_create' %}" class="tooltip-bottom" data-tooltip="Add Quadranym">+</a><a
+                   href="{% url 'spin:quadranym_detail' %}" style="width:93px;px;" class="tooltip-bottom" data-tooltip="See Quadranym">Quadranym</a>&nbsp;<a
+                   href="{% url 'spin:quadraset_create' %}" class="tooltip-bottom" data-tooltip="Add Quadranym set">+</a><a
+                   href="{% url 'spin:quadraset_detail' %}" style="width:39px;" class="tooltip-bottom" data-tooltip="See Quadranym Set">Qset</a>
+                <a href="{% url 'spin:vectornym_create' %}" class="tooltip-bottom" data-tooltip="Add Vectornym">+</a><a
+                   href="{% url 'spin:vectornym_detail' %}" class="tooltip-bottom" data-tooltip="See Vectornym">Pvect</a></b>
+            </td>
+        </tr>
+        <tr><td class="tip" nowrap><span class="tiny">&darr; Content &darr;</span><br>
+                <span class="navbar">
+             <b><a href="{% url 'spin:story_create' %}" class="tooltip-right" data-tooltip="Add Story">+</a><a
+                   href="{% url 'spin:story_detail' %}" style="width:48px;" class="tooltip-right" data-tooltip="See Story">Story</a>&boxHD;
+            <br><a href="{% url 'spin:tale_create' %}" class="tooltip-right" data-tooltip="Add Tale">+</a><a
+                   href="{% url 'spin:tale_detail' %}" style="width:48px;" class="tooltip-right" data-tooltip="See Tale">Tale</a></b>&boxVH;</span><br>
+                    <span class="tiny">&nbsp;&darr; Verse &darr; &nbsp;&swArr;&dArr;&seArr;</span>
+                <br><span class="navbar"><b>
+                <a href="{% url 'spin:ezverse' %}" class="tooltip-right" data-tooltip="Spin a Phrase">EzVerse</a><br>
+                <a href="{% url 'spin:talespin' %}" style="width:34px;" class="tooltip-right" data-tooltip="Spin a Tale">Tale</a><a
+                   href="{% url 'spin:spinverse' %}" style="width:36px;" class="tooltip-right" data-tooltip="Spin Verse">Spin</a></b></span>
+            </td>
+
+            <td class="tip" nowrap><span class="tiny">&darr; Templates &darr; &seArr;&dArr;&swArr;</span><br>
+            <span class="navbar"><b>
+                <a href="{% url 'spin:phrase_create' %}" class="tooltip-bottom" data-tooltip="Add Phrase">+</a><a
+                   href="{% url 'spin:phrase_detail' %}" style="width:56px;" class="tooltip-bottom" data-tooltip="See Phrase">Phrase</a>&boxVL;
+                <br><a href="{% url 'spin:fable_create' %}" class="tooltip-bottom" data-tooltip="Add Fable">+</a><a
+                   href="{% url 'spin:fable_detail' %}" style="width:56px;" class="tooltip-bottom" data-tooltip="See Fable">Fable</a>&boxUL;<br>
+            <span class="tiny"> &nbsp; &nbsp; &nbsp; &darr; <b>Flip</b> &darr;</span><br>
+            <span class="navbar"><b>
+                <a href="{% url 'spin:oraq' %}" class="tooltip-bottom" data-tooltip="Ask the OraQueue...">ora&Qopf;</a> <a
+                   href="{% url 'spin:turnr' %}" class="tooltip-bottom" data-tooltip="Flip any text">tu&YAcy;&Icy;</a><br>
+                   &nbsp;<a href="{% url 'spin:enquote' %}" class="tooltip-bottom" data-tooltip="Flip Famous Quotes">enQuote</a>
+            </b></span>
+            </td>
+
+            <td class="tip" nowrap>
+            <span class="tiny"> &nbsp; &nbsp; &darr; Feel &darr;</span><br>
+            <span class="navbar" nowrap><b>
+                <a href="{% url 'spin:emo' %}" class="tooltip-bottom" data-tooltip="Feel the Mood">Emonym</a>
+                <br><a href="{% url 'spin:polykins' %}" class="tooltip-bottom" data-tooltip="Feel the Polynym">Polynym</a>
+                <br><a href="{% url 'spin:qontext' %}" style="width:68px;" class="tooltip-bottom" data-tooltip="Dynamical Context">Qontext</a>
+                <br><a href="{% url 'spin:apolysis' %}" style="width:68px;" class="tooltip-bottom" data-tooltip="Unionym-Search URLs">aPolysis</a>
+                <br><a href="{% url 'spin:fmk' %}" class="tooltip-bottom" data-tooltip="Fun/Marry/Kill">&nbsp;FMK&nbsp;</a>
+            </b></span>
+            </td>
+
+            <td class="tip" nowrap>
+            <span class="tiny"> &nbsp;&nbsp; &darr; Games &darr;</span><br>
+            <span class="navbar"><b>
+                <a href="{% url 'spin:quizzection' %}" class="tooltip-bottom" data-tooltip="Guess Sectionym dimension">Qui&Zopf;ection</a>
+                <br><a href="{% url 'spin:polypuzzle' %}" class="tooltip-bottom" data-tooltip="Guess Polynym dimension">PolyPuzzle</a>
+                <br><a href="{% url 'spin:quadrahuh' %}" class="tooltip-bottom" data-tooltip="Guess Quadranym dimension">QuadraHuh</a>
+                <br><a href="{% url 'spin:unquote' %}" class="tooltip-bottom" data-tooltip="Guess Quote">unQuote</a>
+                <br><a href="{% url 'spin:thegist' %}" class="tooltip-bottom" data-tooltip="Guess Topic">TheGist</a>
+            </b></span>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+    </td>
+    <td align="center">
+{% block mid %}
+{% endblock %}
+    </td>
+	<td bgcolor="EFEFEF" align="center">
+{% block right %}
+{% endblock %}
+    </td>
+  </tr>
+</table><hr>
+<div class="norm">
+{% block content %}
+{% endblock %}{% if request.user.is_superuser %}<br><span class="teeny"><a href="/admin">admin</a></span>{% endif %}<br>
+</div><div style="position: fixed; bottom: 0; right: 0; font-family: sans-serif; font-size: 12px; background-color: #CFCFCF;">
+&copy; 2021-12-2 Nymology&nbsp;</div>
+</body></html>

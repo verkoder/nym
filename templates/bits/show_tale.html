@@ -1,0 +1,18 @@
+<div class="row g-0 px-3">
+    <div class="col">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Trace &dtrif;</button>
+    </div>
+</div>
+<div class="row g-0">
+    <div class="collapse" id="show">
+        <div class="row g-0">
+            <div class="col-lg-5 col-xs-11 p-2">
+                {% include 'bits/infocard.html' %}
+            </div>
+            <div class="col-1 text-center huge">&times;</div>
+            <div class="col-lg-6 col-xs-12">
+                {% include 'bits/infogrid.html' with plus=True useq='both' %}
+            </div>
+        </div>
+    </div>
+</div>

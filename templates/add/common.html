@@ -1,30 +1,139 @@
-{% extends 'add/_new.html' %}
-{% block title %}Edit {{ form.instance.whois|title }}{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Edit {{ form.instance.label }}{% endblock %}
 
-{% block mid %}<h2>{% if form.errors %}{{ form.errors.value|striptags }}
-{% else %}Work that {{ form.instance.whois|title }}!{% endif %}</h2>{% endblock %}
+{% block mid %}<h3>
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+
+{% elif msg %}{{ msg }}{% else %}Work that {{ form.instance.label }}!{% endif %}</h3>
+{% endblock %}
 
 {% block right%}
 <form method="POST">{% csrf_token %}
-<h3>Enter below, then <input type="submit" value="S A V E"/><br><br>
-or <a href="/{{ form.instance.whois }}{% if pk %}/{{ pk }}{% endif %}">CANCEL</a></h3>
+<div class="col p-3">
+    <input class="btn btn-success" type="submit" value="SAVE"/>
+    <a class="btn btn-secondary mx-3" href="javascript:history.back()">BACK</a>
+</div>
 {% endblock %}
 
+{% block content %}
+<div class="row g-0 text-center w-100 px-3">
+	<div class="col-xl-4 col-md-12 text-end align-top px-3">
+        <div class="text-muted"><b>Source:</b></div>
+        <input list="sources" name="src"{% if form.src.value or thing.src %} value="{{ form.src.value }}{{ thing.src }}"{% endif %}>
+            <datalist id="sources">
+                <option value="Ancient Greeks">
+                <option value="Hannah Arendt">
+                <option value="Aristotle">
+                <option value="John G. Bennett">
+                <option value="Simone de Beauvoir">
+                <option value="The Bible">
+                <option value="Buddha">
+                <option value="Leonardo da Vinci">
+                <option value="Charles Dickens">
+                <option value="Paul Ekman">
+                <option value="Sigmund Freud">
+                <option value="Erich Fromm">
+                <option value="Galileo">
+                <option value="G.W.F. Hegel">
+                <option value="Howard Gardner">
+                <option value="Hippocrates">
+                <option value="Hypatia">
+                <option value="I Ching">
+                <option value="Jainism">
+                <option value="Carl Jung">
+                <option value="Kabbalah">
+                <option value="George Lakoff">
+                <option value="Gregor Mendel">
+                <option value="Marvin Minsky">
+                <option value="Mohammed">
+                <option value="Isaac Newton">
+                <option value="Charles Peirce">
+                <option value="Plato">
+                <option value="Pope Gregory the Great">
+                <option value="Bertrand Russell">
+                <option value="Sappho of Lesbos">
+                <option value="William Shakespeare">
+                <option value="Vandana Shiva">
+                <option value="Socrates">
+                <option value="US Constitution">
+                <option value="Alfred North Whitehead">
+                <option value="Wu Xing">
+            </datalist>
+        <div class="text-muted lil">type or click for options</div>
+        <div class="text-muted"><b>Area:</b></div>
+        <input list="areas" name="area"{% if form.area.value or thing.src %} value="{{ form.area.value }}{{ thing.src }}"{% endif%}>
+            <datalist id="areas">
+                <option value="AI">
+                <option value="Anatomy">
+                <option value="Anthropology">
+                <option value="Archaeology">
+                <option value="Art">
+                <option value="Astrology">
+                <option value="Astronomy">
+                <option value="Biology">
+                <option value="Captology">
+                <option value="Chemistry">
+                <option value="Cognitive Science">
+                <option value="Commonsense">
+                <option value="Cosmology">
+                <option value="Ecology">
+                <option value="Economics">
+                <option value="Education">
+                <option value="History">
+                <option value="Linguistics">
+                <option value="Literature">
+                <option value="Mathematics">
+                <option value="Media">
+                <option value="Medicine">
+                <option value="Metaphysics">
+                <option value="Music">
+                <option value="Neurology">
+                <option value="Numerology">
+                <option value="Numeronomy">
+                <option value="Nymology">
+                <option value="Ontology">
+                <option value="Orgonomy">
+                <option value="Philosophy">
+                <option value="Physics">
+                <option value="Politics">
+                <option value="Psychology">
+                <option value="Semiotics">
+                <option value="Sociology">
+                <option value="Storytelling">
+                <option value="Theology">
+            </datalist>
+        <div class="text-muted lil">type or click for options</div>
+            {% if form.realm or spun %}{% include 'bits/pick_realm.html' %}{% endif %}
+    </div>
+    <div class="col-xl-8 col-md-12 text-start align-top">
 {% block addy %}
-<b>{{ form.name.label_tag }}</b><br>{{ form.name }}<br><br>
 
-{% if form.qode %}<b>{{ form.qode.label_tag }}</b><br>{{ form.qode }}<br>{% endif %}
-
-{% if form.instance.whois == 'phrase' %}
-    <span class="code"><b>Valid Single-Q Qode:</b><br>&nbsp; q1[n, e, r, o, s]_[ADJ, NN, NNS, VB, VBD, VBG, VBN]<br>
-    <b>Examples:</b><br>&nbsp; I q1e. &nbsp; You q1r_VB. &nbsp; We like q1s_NNS.</span>
-{% elif form.instance.whois == 'fable' %}
-    <span class="code"><b>Valid Multi-Q Qode:</b><br>&nbsp; q[number][n, e, r, o, s]_[ADJ, NN, NNS, VB, VBD, VBG, VBN]<br>
-    <b>Examples:</b><br>&nbsp; I q1e. &nbsp; You q2r_VB. &nbsp; We like q5s_NNS.</span>
-{% endif %}
-
-{% if form.quadranyms %}<b>{{ form.quadranyms.label_tag }}</b><br>{{ form.quadranyms }}<br>{% endif %}
-
-{% if form.polynyms %}<b>{{ form.polynyms.label_tag }}</b><br>{{ form.polynyms }}<br>{% endif %}
-
+{% endblock %}
+    </div>
+</div>
+<div class="row g-0">
+    <div class="col-10 offset-1 text-start px-3"><br><span class="text-muted"><b>URL:</b></span>
+        {% if form %}{{ form.wiki }}{% else %}<input type="text" name="wiki" size="64">{% endif %}
+        <button type="button" class="btn btn-sm btn-success mb-1 px-3"
+             onclick="window.open(document.getElementsByName('wiki')[0].value)" target="_blank">&rtrif;</button>
+        <div class="ps-5 text-muted lil">wikipedia, etc.</div>
+    </div>
+</div>
+<div class="row g-0 px-3">
+</div>
+</form>
+{% block trace %}
+{% endblock %}
 {% endblock %}

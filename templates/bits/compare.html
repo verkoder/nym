@@ -1,0 +1,37 @@
+<table cellpadding="6">
+  <tr valign="top">
+	<td align="right">{% include 'bits/infocard.html' with thing=a %}</td>
+	<td width="20" class="bg-dark"><br><br><h2 align="center">vs.</h2></td>
+	<td align="left">{% include 'bits/infocard.html' with thing=b %}</td>
+  </tr>
+  <tr>
+	<td align="right"><b>{% if a.depth %}
+        {{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of {{ a.name }}
+        {% else %}4 sides of {{ a.name }}{% endif %}
+    </b></td>
+	<td width="20" class="text-center bg-dark"><h3>&bot;</h3></td>
+	<td align="left"><b>{% if b.depth %}
+        {{ b.depth }} {% if b.mode %}{{ b.mode }}{% else %}part{% endif %}s of {{ b.name }}
+        {% else %}4 sides of {{ b.name }}{% endif %}
+    </b></td>
+  </tr>
+  <tr>
+    <td align="right"><i><b>
+      {% for nym in a.nyms %}
+      	{% if nym and not forloop.last %}
+      	{{ nym }}<br>
+      	{% else %}{% if nym %}{{ nym }}
+      	{% endif %}{% endif %}
+      {% endfor %}</b></i>
+    </td>
+  	<td class="text-center bg-dark"><h3>&bot;</h3></td>
+  	<td align="left"><i><b>
+      {% for nym in b.nyms %}
+      	{% if nym and not forloop.last %}
+      	{{ nym }}<br>
+      	{% else %}{% if nym %}{{ nym }}
+      	{% endif %}{% endif %}
+      {% endfor %}</b></i>
+    </td>
+  </tr>
+</table>

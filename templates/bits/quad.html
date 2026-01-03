@@ -1,16 +1,40 @@
-<table width="100%" cellspacing="0" cellpadding="0">
-  <tr>
-    <td bgcolor="#FFFFFF" align="center" width="33%"><b>E = {{ quad.e }}</b></td>
-    <td width="33%">&nbsp;</td>
-    <td bgcolor="#FFFFFF" align="center" width="33%"><b>O = {{ quad.o }}</b></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td bgcolor="#FFFFFF" align="center"><b>N = {{ quad.name }}</b></td>
-    <td>&nbsp;</td>
-  <tr>
-    <td bgcolor="#FFFFFF" align="center"><b>S = {{ quad.s }}</b></td>
-    <td>&nbsp;</td>
-    <td bgcolor="#FFFFFF" align="center"><b>R = {{ quad.r }}</b></td>
-  </tr>
-</table>
+<div class="card text-center border-0" style="min-width: 24em; max-width: 64em;">
+    <div class="card-body m-0 p-0">
+        <div class="card-text">
+            <div class="row g-0 h-100" style="background-color: Black;">
+                <div class="col-4 my-auto p-1">
+                    {% if eros %}<div class="m-2 text-muted lil">EXPANSION</div>{% endif %}
+                    {{ thing.e }}
+                    {% if pos %}<div class="m-2 text-muted lil">{{ thing.epos }}</div>{% endif %}
+                </div>
+                <div class="col-4 bg-dark"></div>
+                <div class="col-4 my-auto p-1">
+                    {% if eros %}<div class="m-2 text-muted lil">OBJECTIVE</div>{% endif %}
+                    {{ thing.o }}
+                    {% if pos %}<div class="m-2 text-muted lil">{{ thing.opos }}</div>{% endif %}
+                </div>
+            </div>
+            <div class="row g-0 h-100">
+                <div class="col-4 bg-dark"></div>
+                <div class="col-4 my-auto p-3" style="background-color: #333;">
+                    <a href="{% url 'spin:quadranym_detail' thing.pk %}">{{ thing.name }}</a>
+                    {% if pos %}<div class="m-2 text-muted lil">{{ thing.pos }}</div>{% endif %}
+                </div>
+                <div class="col-4 bg-dark"></div>
+            </div>
+            <div class="row g-0 h-100"  style="background-color: Black;"">
+                <div class="col-4 my-auto p-1">
+                    {% if eros %}<div class="m-2 text-muted lil">SUBJECTIVE</div>{% endif %}
+                    {{ thing.s }}
+                    {% if pos %}<div class="m-2 text-muted lil">{{ thing.spos }}</div>{% endif %}
+                </div>
+                <div class="col-4 bg-dark"></div>
+                <div class="col-4 my-auto p-1">
+                    {% if eros %}<div class="m-2 text-muted lil">REDUCTION</div>{% endif %}
+                    {{ thing.r }}
+                    {% if pos %}<div class="m-2 text-muted lil">{{ thing.rpos }}</div>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

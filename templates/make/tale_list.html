@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Edit Tale{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Edit Tale</h3>
+</div>
+{% endblock %}
+
+{% block mid %}<h2 class="mb-0">
+{% if msg %}{{ msg }}{% elif spun %}<h2>Telling your Tale!</h2>
+{% else %}Tell a Tale with {{ fabl.length }} Topic{% if fabl.length != 1 %}s{% endif %}!</h2><small class="text-muted mt-0">(comma-separated)</small>
+{% endif %}
+{% endblock %}
+
+{% block right %}<h5 class="m-2">Tale Template:<br>{{ fabl.name }} <span class="text-muted">/ {{ fabl.length }} topics</span></h5>
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'spin:tale_list' %}" method="POST">{% csrf_token %}
+<input name="length" type="hidden" value="{{ tale_quads|length }}">
+<input name="fabl_id" type="hidden" value="{{ fabl.id }}">
+<div class="row g-0 text-center">
+    <div class="col p-3">
+        <h3>&darr; List <span class="huge">{{ fabl.length }}</span> Topic{% if fabl.length != 1 %}s{% endif %} &darr;<br>
+	    <textarea name="quad_txt" cols=32 rows=2>{{ quad_txt }}</textarea></h3>
+        <div class="mt-3 p-3 text-start bg-light text-dark book">
+                <h4 class="text-center">{{ request.user|title}}'s New Tale</h4>
+                {% autoescape off %}{% if spun %}{{ spun }}{% else %}{{ fabl.qode }}{% endif %}{% endautoescape %}<br>
+        </div>
+    </div>
+    <div class="col p-3">
+        <SELECT SIZE="12" class="h-100">
+        {% for q in quads %}
+            <option>{{ q.name }}
+        {% endfor %}
+        </SELECT>
+    </div>
+    <div class="col">
+        <input class="btn btn-outline-secondary m-3" type="submit" value="TRY" name="_tell">
+        {% if spun and not msg %}
+            <input class="btn btn-outline-primary" type="submit" value="SAVE" name="_save">
+        {% endif %}<br>
+        <a class="btn btn-outline-warning m-3" href="{% url 'spin:tale_create' %}">Restart</a>
+    </div>
+</div>
+</form>
+
+{% include 'bits/show_tale.html' with thing=fabl things=tale_quads %}
+{% endblock %}

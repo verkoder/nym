@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Qontext{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Qontext{% endif %}</h2>
+<h3>{{ q3.name }} &lrarr; {{ q2.name }} &lrarr; {{ q1.name }}</h3>
+{% endblock %}
+
+{% block right %}
+<table>
+    <tr>
+        <td align="right"><form action="{% url 'spin:qontext' %}" method="POST">{% csrf_token %}
+            <h3>Choose and <input type="submit" value="S E E" /></h3></td>
+        <td>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block content %}{% load static %}{% load motags %}
+<table width="100%" align="center" cellpadding="6" cellspacing="0">
+  <tr>
+	<td bgcolor="#DEDEDE" align="left" valign="top" width="20%">
+        <table cellpadding="4">
+            <tr><td>{% include 'bits/infocard.html' with thing=q3 %}</td></tr>
+            <tr><td>{% include 'bits/infocard.html' with thing=q2 %}</td></tr>
+            <tr><td>{% include 'bits/infocard.html' with thing=q1 %}</td></tr>
+        </table>
+        <span style="color:purple;"><b>Layer 1:</b></span><br>
+        <SELECT NAME="q3_id" MULTIPLE SIZE="12">
+        {% for q in quads %}
+          <option VALUE="{{ q.id }}" {% if q.id == q3.id %}selected{% endif %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+        {% endfor %}
+        </SELECT><hr>
+        <span style="color:orange;"><b>Layer 2:</b></span>
+        <SELECT NAME="q2_id" MULTIPLE SIZE="12">
+        {% for q in quads %}
+          <option VALUE="{{ q.id }}" {% if q.id == q2.id %}selected{% endif %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+        {% endfor %}
+        </SELECT><hr>
+        <span style="color:green;"><b>Layer 3:</b></span><br>
+        <SELECT NAME="q1_id" MULTIPLE SIZE="12">
+        {% for q in quads %}
+          <option VALUE="{{ q.id }}" {% if q.id == q1.id %}selected{% endif %}/>{{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+        {% endfor %}
+        </SELECT>
+    </td>
+	<td bgcolor="#DEDEDE" align="center" valign="top" width="80%">
+        <div class="qontainer">
+            <img src="{% static 'spin/qontext.png' %}" style="width:100%;">
+            <div class="q1n">{{ q1.name }}</div>
+            <div class="q1e">{{ q1.e }}</div>
+            <div class="q1r">{{ q1.r }}</div>
+            <div class="q1o">{{ q1.o }}</div>
+            <div class="q1s">{{ q1.s }}</div>
+            <div class="q2n">{{ q2.name }}</div>
+            <div class="q2e">{{ q2.e }}</div>
+            <div class="q2r">{{ q2.r }}</div>
+            <div class="q2o">{{ q2.o }}</div>
+            <div class="q2s">{{ q2.s }}</div>
+            <div class="q3n">{{ q3.name }}</div>
+            <div class="q3e">{{ q3.e }}</div>
+            <div class="q3r">{{ q3.r }}</div>
+            <div class="q3o">{{ q3.o }}</div>
+            <div class="q3s">{{ q3.s }}</div>
+        </div>
+    </td>
+  </tr>
+  <tr>
+      <td bgcolor="#DEDEDE" colspan="2">&nbsp;</td>
+  </tr>
+</table>
+{% endblock %}
+
+## REQUIRED CSS:
+.qontainer {
+  position: relative;
+  text-align: center;
+  color: black;
+}
+.q1n { position: absolute; bottom: 24.5%; left: 27.65%; transform: translate( -50%, -50% ); }
+.q1e { position: absolute; bottom: 42%; left: 13.3%; transform: translate( -50%, -50% ); }
+.q1r { position: absolute; bottom:  7%; left: 42%; transform: translate( -50%, -50% ); }
+.q1o { position: absolute; bottom: 42%; left: 42%; transform: translate( -50%, -50% ); }
+.q1s { position: absolute; bottom:  7%; left: 13.3%; transform: translate( -50%, -50% ); }
+
+.q2n { position: absolute; bottom: 58%; left: 61.3%; transform: translate( -50%, -50% ); }
+.q2e { position: absolute; bottom: 69%; left: 52.5%; transform: translate( -50%, -50% ); }
+.q2r { position: absolute; bottom: 47%; left: 70.1%; transform: translate( -50%, -50% ); }
+.q2o { position: absolute; bottom: 69%; left: 70.1%; transform: translate( -50%, -50% ); }
+.q2s { position: absolute; bottom: 47%; left: 52.5%; transform: translate( -50%, -50% ); }
+
+.q3n { position: absolute; bottom: 82.5%; left: 85.9%; transform: translate( -50%, -50% ); }
+.q3e { position: absolute; bottom: 90%; left: 80.4%; transform: translate( -50%, -50% ); }
+.q3r { position: absolute; bottom: 75%; left: 91.4%; transform: translate( -50%, -50% ); }
+.q3o { position: absolute; bottom: 90%; left: 91.4%; transform: translate( -50%, -50% ); }
+.q3s { position: absolute; bottom: 75%; left: 80.4%; transform: translate( -50%, -50% ); }

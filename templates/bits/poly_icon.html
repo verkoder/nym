@@ -1,0 +1,35 @@
+<div class="card border-dark bg-dark" style="width: 28em;">
+    <div class="card-body align-top">
+        <div class="icontains bg-dark">{% load static %}
+            <img class="clip{{ thing.depth }} img-fluid" src="{% static 'spin' %}/img/polynym-rays.jpg">
+            {% with dep=thing.depth %}
+                <div style="line-height: 1.3em;" class="icenter text-dark
+                {% if dep == 3 %}mt-5{% elif dep == 4 %}mt-2{% elif dep == 5 or dep == 2 %}mt-3{% endif %}">
+            {% endwith %}
+                <div class="btn-group-vertical">
+                    {% if thing.nyms|length <= 8 and thing.max_nym < 24 %}
+                        <h4><b>
+                            {% for nym in thing.nyms %}
+                                {% if nym %}
+                                    {{ nym }}<br>
+                                {% endif %}
+                            {% endfor %}
+                        </b></h4>
+                    {% else %}
+                        <b>
+                            {% for nym in thing.nyms %}
+                                {% if nym %}
+                                    {{ nym }}<br>
+                                {% endif %}
+                            {% endfor %}
+                        </b>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-title text-light text-center">
+        <h3>{{ thing.name }}</h3><hr class="bg-secondary mx-auto w-50 mb-0 mt-2">
+        <div class="text-muted mt-0">{{ thing.depth }} {{ thing.mode }}s</div>
+    </div>
+</div>

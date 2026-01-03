@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Nymology API{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">API</h3>
+    <div class="text-muted"><em>research, develop<br>& contribute</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<p><b>Nymology API</b> is fully <a target="_blank" href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a></p>
+<code><b>http://nymology.org/api/</b></code>
+{% endblock %}
+
+{% block right %}
+<div class="btn-group-vertical p-2">
+    <a class="btn btn-outline-secondary" href="/api/">Browse the API</a>
+    <a class="btn btn-outline-secondary" href="/static/spin/nymology-wrapper.zip" download><b>Download Python wrapper</b></a>
+</div>
+<div class="text-start offset-3 p-2">
+    Use Nymology in a Python project with this wrapper.<br>
+    Or use standard REST commands in any language.
+</div>
+{% endblock %}
+
+{% block content %}{% load apitags %}
+<div class="row g-0">
+    <div class="col-3 offset-2">
+        <h2 class="text-center"><a href="/api/">Available<br>Endpoints:</a></h2>
+    </div>
+    <div class="col-3">
+        <code>{% for endpoint in 'data'|endpoints %}
+            <a href="/api/{{ endpoint }}/">{{ endpoint }}/</a><br>
+        {% endfor %}</code>
+    </div>
+    <div class="col-3">
+        <code class="text-light"><b># Nymology API -- Python wrapper</b><br>
+        from nymology import NymologyAPI<br>
+        nym = NymologyAPI(<br> &nbsp; username='gus',<br> &nbsp; password='nym'
+        <br>)<br><br>
+        <b># WRAPPER METHODS:</b><br>
+        nym.create(endpoint, data)<br>
+        nym.read(endpoint, pk)<br>
+        nym.update(endpoint, pk, data)<br>
+        nym.delete(endpoint, pk)<br>
+        nym.get_page(endpoint, page)<br>
+        nym.get_data(endpoint)<br>
+        nym.get_file(endpoint)<br>
+        nym.save_file(endpoint)<br>
+        nym.save_database()<br>
+        nym.endpoints()
+        </code>
+    </div>
+</div>
+{% endblock %}

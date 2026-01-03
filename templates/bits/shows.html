@@ -1,0 +1,12 @@
+{% if things %}
+<div class="row g-0 px-3">
+    <div class="col">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Trace &dtrif;</button>
+    </div>
+</div>
+<div class="row g-0 pb-5">
+    <div id="show" class="collapse">
+        {% include 'bits/infogrid.html' %}
+    </div>
+</div>
+{% endif %}

@@ -1,109 +1,77 @@
-{% extends 'base.html' %}
-{% block title %}QuizZection{% endblock %}
+{% extends 'play/gamer.html' %}
 
 {% block mid %}
-<div class="container"><img src="http://mood.scottyvercoe.com/static/img/quizzection.png" style="width:90%; background-color:purple;"></div>
-<h2>{% if msg %}{{ msg }}{% else %}Find the Missing Nym!{% endif %}</h2>
+{% if msg %}{% autoescape off %}<h5>{{ msg }}</h5>{% endautoescape %}{% else %}<h3>Find where two ideas intersect!</h3>{% endif %}
 {% endblock %}
 
-{% block right %}{% load motags %}
-<form action="/quizzection/" method="POST">{% csrf_token %}
-<table border="0" cellspacing="0" cellpadding="4" width="90%">
-    <tr>
-        <td align="left" valign="top" bgcolor="#DEDEDE">
-            <span class="num"><b>YOUR SCORE:</b> {{ at }} points<br>
-            <b>ROUND[{{ nu }}]:</b> {{ a.depth|add:b.depth }} points</span></td>
-        <td align="left" valign="top" bgcolor="#DEDEDE">
-            <span class="num"><b>TOP SCORE TO BEAT:</b><br>
-                {% for s in wi %}{{ s }} &nbsp;{% endfor %}</span>
-        </td>
-    </tr>
-    <tr>
-        <td align="center">
-            <b>Enter below and<br><input type="submit" value="G U E S S" name="_guess" /></b>
-        </td>
-        <td align="center" valign="middle"><br><b>{% if user.is_authenticated %}
-            <input type="submit" value="S A V E" name="_save" /><br>Player: {{ user.username }}
-            {% else %}<a href="/accounts/login">LOGIN</a> or <a href="/signup">SIGN UP</a> to save your score!{% endif %}
-        </td>
-    </tr>
-</table>
-{% endblock %}
+{% block content %}{% load motags %}
+<div class="container-fluid">
 
-{% block content %}
-<table width="100%" cellpadding="2" cellspacing="0" border="0">
-  <tr>
-      <td></td>
-      <td align="center" colspan="3"><h2>
-          {{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of {{ a.name }} &darr;</h2></td>
-      <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td bgcolor="#FFFFFF" align="center"> </td>
-    <td bgcolor="#DEDEDE" align="center"><h3><i><b>
-        {% for pt in n %}
-            {% if pt %}{{ pt }}<br />{% endif %}
-        {% endfor %}</b></i></h3></td>
-    <td bgcolor="#FFFFFF" align="right" colspan="2"></td>
-  </tr>
-  <tr>
-    <td><h2>{{ b.depth }} {% if b.mode %}{{ b.mode }}{% else %}part{% endif %}s of {{ b.name }}<br>&rarr;</h2>
-    </td>
-    <td bgcolor="#DEDEDE" align="center" width="28%"><h3><i><b>
-        {% for pt in w %}
-            {% if pt %}{{ pt }}<br>{% endif %}
-        {% endfor %}</b></i></h3>
-    </td>
-    <td bgcolor="#CFCFCF" align="center" width="28%"><h3><i><b>
-                {% for pt in ab %}
-                  {% if pt == clu %}
-                    <input type="text" name="guess" value="" size="28">
-                  {% else %}
-                    {{ pt }}
-                  {% endif %}<br />
-                {% endfor %}</b></i></h3>
-    </td>
-    <td bgcolor="#DEDEDE" align="center" width="28%"><h3><i><b>
-        {% for pt in e %}{% if pt %}{{ pt }}<br>{% endif %}{% endfor %}</b></i></h3></td>
-    <td bgcolor="#FFFFFF" width="16%"><h2>
-        {{ b.depth }} {% if b.mode %}{{ b.mode }}{% else %}part{% endif %}s of {{ b.name }}<br>&larr;</h2></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td bgcolor="#FFFFFF" align="center"><h2></h2></td>
-    <td bgcolor="#DEDEDE" align="center"><h3><i><b>
-        {% for pt in s %}{% if pt %}{{ pt }}<br />{% endif %}{% endfor %}</b></i></h3></td>
-    <td bgcolor="#FFFFFF" align="center"></td>
-    <td bgcolor="#FFFFFF">
-            {% if b.src %}<b>Source:</b> {{ b.src }}<br>{% endif %}
-            {% if b.area %}<b>Area:</b> {{ b.area }}<br>{% endif %}</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td bgcolor="#FFFFFF" align="center"></td>
-    <td bgcolor="#FFFFFF" align="center" valign="top"><h2 align="center">
-        {{ a.depth }} {% if a.mode %}{{ a.mode }}{% else %}part{% endif %}s of {{ a.name }} &uarr;</h2></td>
-    <td bgcolor="#FFFFFF" align="left" valign="top" colspan="2">
-        {% if b.wiki %}<h5 align="right">Info:
-            <br><a href="{{ b.wiki }}">{{ b.wiki|wikurl }}</a>
-            <br>&uarr; But no cheating! &uarr;</h5>{% endif %}
-        {% if a.src %}<b>Source:</b> {{ a.src }}<br>{% endif %}
-        {% if a.area %}<b>Area:</b> {{ a.area }}<br>{% endif %}
-        {% if a.wiki %}<h5 align="left">Info:
-            <br><a href="{{ a.wiki }}">{{ a.wiki|wikurl }}</a>
-            <br>&uarr; But no cheating! &uarr;</h5>
-        {% endif %}</td>
-  </tr>
-  <tr>
-      <td align="right" valign="bottom" colspan="5">
-          <a href="/quizfame"><b>&rarr; See HIGH SCORES&rarr;</b></a></td>
-  </tr>
-</table>
+    <div class="row g-0 mt-3 nym">
+        <div class="col-5"></div>
+        <div class="col-2 p-1 text-center text-muted" style="background-color: black;">
+            {{ things.1.depth }} {% if things.1.mode %}{{ things.1.mode }}{% else %}part{% endif %}s of {{ things.1.name }}<br>&darr;
+        </div>
+    </div>
 
-<input name="at" type="hidden" value="{{ at }}">
-<input name="nu" type="hidden" value="{{ nu }}">
-<input name="clu" type="hidden" value="{{ clu }}">
-<input name="sco" type="hidden" value="{{ a.depth|add:b.depth }}">
-</form>
+    <div class="row g-0 nym">
+        <div class="col-5"></div>
+        <div class="col-2 p-2 text-center" style="background-color: black;">
+            {% for pt in n %}
+                {% if pt %}<b>{{ pt }}</b><br>{% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row g-0 nym" style="background-color: indigo;">
+        <div class="col-1" style="background-color: #292b2c;"></div>
+        <div class="col-2 p-1 bg-dark text-muted text-center">
+            {{ things.0.depth }} {% if things.0.mode %}{{ things.0.mode }}{% else %}part{% endif %}s of {{ things.0.name }}<br>&rarr;
+        </div>
+        <div class="col-2 p-2 bg-dark text-center">
+            {% for pt in w %}
+                {% if pt %}<b>{{ pt }}</b><br>{% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-2 text-center my-auto mx- p-2">
+            {% for pt in ab %}
+                {% if pt == clue %}
+                    <input type="text" name="guess" value="" size="12" class="mx-auto">
+                {% else %}
+                    <b>{{ pt }}</b>
+                {% endif %}<br>
+            {% endfor %}
+        </div>
+        <div class="col-2 p-2 bg-dark text-center">
+            {% for pt in e %}{% if pt %}<b>{{ pt }}</b><br>{% endif %}{% endfor %}
+        </div>
+        <div class="col-2 p-1 bg-dark text-muted text-center">
+            {{ things.0.depth }} {% if things.0.mode %}{{ things.0.mode }}{% else %}part{% endif %}s of {{ things.0.name }}<br>&larr;
+        </div>
+        <div class="col-1" style="background-color: #292b2c;"></div>
+    </div>
+    <input name="at" type="hidden" value="{{ at }}">
+    <input name="nu" type="hidden" value="{{ nu }}">
+    <input name="tic" type="hidden" value="{{ tic }}">
+    <input name="clue" type="hidden" value="{{ clue }}">
+    <input name="sco" type="hidden" value="{{ points }}">
+    </form>
+
+    <div class="row g-0 nym">
+        <div class="col-5"></div>
+        <div class="col-2 p-2 text-center" style="background-color: black;">
+            {% for pt in s %}{% if pt %}<b>{{ pt }}</b><br />{% endif %}{% endfor %}
+        </div>
+    </div>
+
+    <div class="row g-0 nym">
+        <div class="col-5"></div>
+        <div class="col-2 p-1 text-center text-muted" style="background-color: black;">
+            &uarr;<br>{{ things.1.depth }} {% if things.1.mode %}{{ things.1.mode }}{% else %}part{% endif %}s of {{ things.1.name }}
+        </div>
+    </div>
+</div>
+
+<div class="lil text-muted p-3"><b>Partial credit via <a href="http://conceptnet.io" target="_blank">ConceptNet</a> similarity</b></div>
+{% include 'bits/shows.html' %}
 {% endblock %}

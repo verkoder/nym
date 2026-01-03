@@ -1,0 +1,18 @@
+<div class="container mb-3">{% load booktags %}
+    <nav class="nav nav-tabs nav-justified" role="tablist">
+        <a class="nav-link booktabs" data-bs-toggle="tab" href="#text">Spaces</a>
+        <a class="nav-link booktabs active" data-bs-toggle="tab" href="#qode">Template</a>
+        <a class="nav-link booktabs" data-bs-toggle="tab" href="#grad">Grad Libs</a>
+    </nav>
+    <div class="tab-content bg-light text-dark text-start book p-3">
+        <div id="text" class="container tab-pane">
+            {% autoescape off %}{{ qode|blanken }}{% endautoescape %}
+        </div>
+        <div id="qode" class="container tab-pane active">
+            {% autoescape off %}{{ qode|embolden }}{% endautoescape %}
+        </div>
+        <div id="grad" class="container tab-pane">
+            {% autoescape off %}{{ qode|gradlibs }}{% endautoescape %}
+        </div>
+    </div>
+</div>

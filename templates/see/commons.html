@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
-{% block title %}Quadranyms{% endblock %}
+{% block title %}{{ table.data.0.whois|title }}s{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">{{ table.data.0.whois|title }}s</h3>
+    <div class="text-muted"><em>database</em></div>
+</div>
+{% endblock %}
+
+{% block flair %}
+{% endblock %}
 
 {% block mid %}
-<h2>All {{ table.data.0.whois|title }}s</h2>
-<h4>click column name to sort</h4>
-<h4>click row icons to &check; edit or &timesb; delete</h4>
+<div class="text-center p-2"><i class="fas fa-edit"></i> edit <span class="text-muted">&nbsp;|&nbsp;</span>
+                             <i class="fas fa-trash-alt"></i> delete <span class="text-muted">&nbsp;|&nbsp;</span> click column to sort
+</div>
 {% endblock %}
 
 {% block right %}
-<form action="/{{ table.data.0.whois }}/add/" value="A D D">{% csrf_token %}<input type="submit" value="A D D"></form>
+<a class="btn btn-sm btn-outline-success m-2" href="/{{ table.data.0.whois }}/add/">Create</a>
 {% endblock %}
 
 {% block content %}

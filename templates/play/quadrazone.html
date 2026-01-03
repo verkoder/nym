@@ -1,0 +1,55 @@
+{% extends 'play/gamer.html' %}
+
+{% block mid %}
+{% if msg %}{% autoescape off %}<h5>{{ msg }}</h5>{% endautoescape %}{% else %}<h3>Seek the hidden dimension!</h3>{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row g-0 text-center bg-dark nym">
+    <div class="col-4 p-3">
+        <div class="text-muted mb-3"><b>Expansion</b></div>{% if quad.e == clue %}
+        <input type="text" name="guess" value="" size="16">
+        {% else %}<h4>{{ quad.e }}</h4>{% endif %}
+    </div>
+    <div class="col-4 bg-secondary"></div>
+    <div class="col-4 p-3">
+        <div class="text-muted mb-3"><b>Objective</b></div>{% if quad.o == clue %}
+        <input type="text" name="guess" value="" size="16">
+        {% else %}<h4>{{ quad.o }}</h4>{% endif %}
+    </div>
+</div>
+<div class="row g-0 text-center bg-dark nym">
+    <div class="col-4 bg-secondary"></div>
+    <div class="col-4 p-3">
+        <h2>{{ quad.name }}</h2>
+    </div>
+    <div class="col-4 bg-secondary"></div>
+</div>
+<div class="row g-0 text-center bg-dark nym">
+    <div class="col-4 p-3">
+        <div class="text-muted mb-3"><b>Subjective</b></div>{% if quad.s == clue %}
+        <input type="text" name="guess" value="" size="16">
+        {% else %}<h4>{{ quad.s }}</h4>{% endif %}
+    </div>
+    <div class="col-4 bg-secondary"></div>
+    <div class="col-4 p-3">
+        <div class="text-muted mb-3"><b>Reduction</b></div>{% if quad.r == clue %}
+        <input type="text" name="guess" value="" size="16">
+        {% else %}<h4>{{ quad.r }}</h4>{% endif %}
+    </div>
+</div>
+<input name="at" type="hidden" value="{{ at }}">
+<input name="nu" type="hidden" value="{{ nu }}">
+<input name="tic" type="hidden" value="{{ tic }}">
+<input name="sco" type="hidden" value="{{ points }}">
+<input name="clue" type="hidden" value="{{ clue }}">
+</form>
+<h3 class="text-center text-muted p-2">(the
+    <b>{% if quad.e == clue %}expansive
+    {% elif quad.r == clue %}reductive
+    {% elif quad.o == clue %}objective
+    {% elif quad.s == clue %}subjective{% endif %}</b> sense of <b>{{ quad.name }}</b>)
+</h3>
+<div class="lil text-muted p-3"><b>Partial credit via <a href="http://conceptnet.io" target="_blank">ConceptNet</a> similarity</b></div>
+{% include 'bits/show.html' with thing=quad %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}{{ app }}{% endblock %}
+
+{% block script %}
+{% include 'bits/countdown.html' %}
+{% endblock %}
+
+{% block left %}{% load static %}
+<div class="row g-0 text-center w-100">
+    <div class="col-12">
+        <img src="{% static 'spin' %}/img/{{ app }}.png" class="img-fluid p-1" style="background-color:{{ color }};">
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="container">
+    <div class="row g-0 text-start align-top bg-secondary p-1">
+        <div class="col align-top">
+            <div class="num"><b>ROUND</b>: {{ nu }} <span class="text-dark">+{{ points }}&nbsp;point{% if points > 1%}s{% endif %}</span><br>
+                <b>SCORE:</b> {{ at }} points
+            </div>
+        </div>
+        <div class="col text-center">
+            <div class="num"><b>PLAYER TO BEAT:<br>{{ winner.1 }}, {{ winner.0 }} points</b></div>
+        </div>
+        <div class="col text-end mt-1">
+            <a href="{% url 'spin:fame' app %}" class="btn btn-sm btn-outline-light"><b>SEE HIGH SCORES</b></a>
+        </div>
+    </div>
+    <div class="row g-0 bg-dark mb-2">
+        <div class="col my-auto">
+            <form action="/{{ app|lower }}/" method="POST">{% csrf_token %}
+            <input class="btn btn-success" type="submit" value="GUESS" name="_guess" />
+        </div>
+        <div class="col p-1 my-auto text-start">
+            <span id="timer""><b>Speed Bonus:</b> <font size="+2"><code>30</code></font></span><font size="+2"><code>&nbsp;</code></font>
+        </div>
+        <div class="col text-center my-auto text-muted p-1">
+            {% if user.is_authenticated %}
+                {% if at %}<input class="btn btn-primary" type="submit" value="SAVE SCORE" name="_save" />{% endif %}
+            {% else %}
+                <a class="btn btn-sm btn-outline-secondary py-0" href="{% url 'spin:login' %}"><small>Log in</small></a> or
+                 <a class="btn btn-sm btn-outline-secondary py-0" href="{% url 'spin:signup' %}"><small>Sign up</small></a><br>to keep score!
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

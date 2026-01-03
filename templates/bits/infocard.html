@@ -1,0 +1,79 @@
+<div class="card border-dark" style="min-width: 17rem; max-width: 25rem; background-color: #212529;">{% load motags %}
+    <div class="card-body p-0 align-top text-start">
+        <div class="card-header px-2 py-0 text-muted" style="background-color: black;">
+            <dl class="row py-0 my-0">
+                <dt class="col-sm-6 py-1 text-muted my-auto"><small><b>{% if thing.label %}{{ thing.label }}{% else %}Quote{% endif %}</b></small></dt>
+                <dd class="col-sm-6 py-0 my-auto text-end tiny">
+                    {% if thing.wiki %}
+                        <a class="card-link mx-1" href="{{ thing.wiki }}" target="_blank" style="line-height:0.85em">{{ thing.wiki|wikurl }}</a>
+                    {% endif %}
+                </dd>
+            </dl>
+        </div>
+        <h4 class="card-title text-center p-2 mb-0 bg-dark">
+            {% if thing.name or thing.src %}<a href="/{% if thing.whois %}{{ thing.whois }}{% else %}quote{% endif %}/{{ thing.pk }}">{% endif %}
+            {% if thing.name %}{{ thing.name }}</a>{% elif thing.src %}{{ thing.src }}</a>{% else %}Fortune{% endif %}
+        </h4>
+        <div class="card-text p-2">
+            {% if thing.src and thing.name %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Source</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.src }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.area %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Area</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.area }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.mode %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Mode</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.mode }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.subs %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Subs</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.subs }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.length %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Length</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.length }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.width %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Width</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.width }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.depth %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Depth</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.depth }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.realm %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>Realm</small></dt>
+                    <dd class="col-sm-8 my-0">{{ thing.realm }}</dd>
+                </dl>
+            {% endif %}
+            {% if thing.user %}
+                <dl class="row my-0">
+                    <dt class="col-sm-4 my-0 text-muted"><small>User</small></dt>
+                    <dd class="col-sm-8 my-0 text-muted">{{ thing.user }}</dd>
+                </dl>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% if text %}
+    <div class="col p-3 mx-2 bg-light text-dark book">
+        {% autoescape off %}{{ text }}{% endautoescape %}
+    </div>
+{% endif %}

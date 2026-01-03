@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Edit Story{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1 pb-1">Edit Story</h3>
+    <div class="btn-group px-1">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_create' %}">Menu</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_pair' %}">Pair</a>
+        <a class="btn btn-sm btn-outline-secondary disabled" href="">Dual List</a>
+    </div>
+    <br><small class="text-muted">select storybuilder</small>
+</div>
+{% endblock %}
+
+{% block flair %}
+{% endblock %}
+
+{% block mid %}
+<h3>Dual List Storybuilder</h3>
+{% if msg %}<div class="text-warning">{{ msg }}</div>
+{% else %}<div class="text-muted">list topics and phrases to build your story</div>
+{% endif %}
+{% endblock %}
+
+{% block right %}
+<form action="{% url 'spin:story_list' %}" method="POST">{% csrf_token %}
+<div class="btn-group mb-1">
+    <input class="btn btn-sm btn-outline-secondary" type="submit" value="Try" name="_tell" />
+    {% if spun %}
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_list' %}">Restart</a>
+        <input class="btn btn-sm btn-outline-success" type="submit" value="SAVE" name="_save" />
+    {% endif %}
+    <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_detail' %}">CANCEL</a>
+</div>
+<br><small class="text-muted">Story length: {% if length %}{{ length }} pair{{ length|pluralize }}{% else %}-{% endif %}</small>
+{% endblock %}
+
+{% block content %}
+
+<div class="row g-0 p-3">
+    <div class="col-lg-6 col-sm-12 pe-1">
+        {% include 'bits/book.html' %}
+    </div>
+    <div class="col-lg-6 col-sm-12 ps-1">
+        <div class="row g-0">
+            <div class="col-lg-6 col-sm-12 pe-1">
+                <b>Topics:</b><br>
+                <textarea name="quad_txt" class="w-100 p-1" rows-7 placeholder="topic1, topic2&#10;topic3">{{ quad_txt }}</textarea>
+            </div>
+            <div class="col-lg-6 col-sm-12 pe-1">
+                <b>Phrases:</b><br>
+                <textarea name="phra_txt" class="w-100 p-1" rows-7 placeholder="phrase1, phrase2&#10;phrase3">{{ phra_txt }}</textarea>
+            </div>
+        </div>
+        <div class="col-12 text-center text-muted">
+            <small>Match list lengths, or single item in either list &mdash;
+                Use newline for &para;</small>
+        </div>
+        <div class="row g-0 mb-3">
+            <div class="col-lg-6 col-sm-12 pe-1">
+                <small class="text-muted">Topics:</small>
+                <SELECT class="h-100 w-100" SIZE="7">
+                    {% for q in quads %}
+                        <option>{{ q.name }}
+                    {% endfor %}
+                </SELECT>
+            </div>
+            <div class="col-lg-6 col-sm-12 ps-1">
+                <small class="text-muted">Phrases:</small>
+                <SELECT class="h-100 w-100" SIZE="7">
+                    {% for ph in phras %}
+                        <option>{{ ph.name }}
+                    {% endfor %}
+                </SELECT>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+{% include 'bits/show_pairs.html' %}
+{% endblock %}

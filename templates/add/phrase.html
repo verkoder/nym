@@ -1,0 +1,8 @@
+{% extends 'add/common.html' %}
+
+{% block addy %}
+<b>{{ form.name.label_tag }}</b><br>{{ form.name }}<br><br>
+<b>{{ form.qode.label_tag }}</b><br>{{ form.qode }}<br>
+<span class="code"><b>Valid Single-Q Qode:</b><br>&nbsp; q1[n, e, r, o, s]_[ADJ, NN, NNS, VB, VBD, VBG, VBN]<br>
+<b>Examples:</b><br>&nbsp; I q1e. &nbsp; You q1r_VB. &nbsp; We like q1s_NNS.</span>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Feel Site{% endblock %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Feel Site</h3>
+    <div class="text-muted"><em>relate polynym<br>dimensions to a site</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<h4>$$\{ P_{ {{ poly_ids|length }} } \} \in url \to | {{ freq|length }} | $$</h4>
+<h4>{% if msg %}{{ msg }}{% else %}Dimension Frequency:{% endif %}</h4>
+<table class="padding-1">
+      {% for word,count in freq %}
+        <tr>
+            <td class="text-end p-1"><b>{{ word }}</b></td>
+            <td class="text-end p-1" nowrap><code>{{ count }}</code></td>
+            <td><div style="height: 18px; width: {% widthratio count maxcount 200 %}px; background-color: purple;"></td>
+        </tr>
+      {% endfor %}
+</table>
+{% endblock %}
+
+{% block right %}
+<form action="{% url 'spin:feel_site' %}" method="POST">{% csrf_token %}
+<div class="container text-end p-0">
+    <div class="row g-0">
+        <div class="col my-auto text-center">
+            <input class="feel" type="submit" value="F E E L" />
+        </div>
+        <div class="col">
+            <SELECT NAME="pk" MULTIPLE SIZE="7">
+            {% for p in polys %}
+                <option VALUE="{{ p.id }}" {% if p.id in poly_ids %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:18 }}{% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+            </SELECT>
+        </div>
+    </div>
+    <div class="text-end mt-2 p-0">
+        <b>URL:</b> <input type="text" name="url" size="48" value="{{ url }}"><br>
+    </div>
+</div>
+</form>
+{% endblock %}
+
+{% block content %}
+{% autoescape off %}
+<div class="container-fluid mt-2">
+    <div class="row p-2">
+        <div class="col-1 text-muted"><b>Topics:</b></div>
+        <div class="col">{{ nams|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted"><b>Sources:</b></div>
+        <div class="col">{{ sources|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted"><b>Areas:</b></div>
+        <div class="col">{{ areas|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted"><b>Depths:</b></div>
+        <div class="col">{{ deps|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted"><b>Dimensions:</b></div>
+        <div class="col">{{ terms|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+</div>
+{% endautoescape %}
+{% include 'bits/shows.html' %}
+{% endblock %}

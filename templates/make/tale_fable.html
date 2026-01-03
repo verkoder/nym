@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Edit Tale{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Edit Tale</h3>
+</div>
+{% endblock %}
+
+{% block mid %}
+<h4>Choose a template and builder method</h4>
+{% endblock %}
+
+{% block right %}<h5 class="m-2">Tale Template:<br>{{ fabl.name }} <span class="text-muted">/ {{ fabl.length }} topics</span></h5>
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'spin:tale_create' %}" method="POST">{% csrf_token %}
+<div class="row g-0 text-center">
+    <div class="col-lg-6 col-sm-12 m-2 p-3 bg-light text-dark text-start book">
+        <h4 class="text-center">{{ request.user|title }}'s New Tale Template</h4>{{ fabl.qode }}
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <SELECT NAME="fabl_id" SIZE="12">
+        {% for f in fabls %}
+          <option VALUE="{{ f.id }}" {% if f.id == fabl.id %}selected{% endif %}>
+              {{ f.name }} | {{ f.length }} &times; {{ f.width }}
+        {% endfor %}
+        </SELECT>
+    </div>
+    <div class="col-lg-2 col-sm-6">
+        <input class="btn btn-outline-secondary" type="submit" value="Try Template" name="_try">
+        <h4 class="mt-4">Tale Builders:</h4>
+        <input class="btn btn-outline-primary" type="submit" value="MENU" name="_use"> &nbsp;
+        <input class="btn btn-outline-primary" type="submit" value="TEXT" name="_text">
+    </div>
+</div>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% load motags %}
+<b><font size="+1">
+{% if thing.name or thing.src %}<a href="/{% if thing.whois %}{{ thing.whois }}{% else %}quote{% endif %}/{{ thing.pk }}">{% endif %}
+{% if thing.name %}{{ thing.name|title }}</a>{% elif thing.src %}{{ thing.src }}</a>{% else %}Fortune{% endif %}</font>
+<font size="-1"><sup>{% if thing.whois %}{{ thing.whois|title }}{% else %}Quote{% endif %}</sup></font><br>
+{% if thing.wiki %}<a href="{{ thing.wiki }}" target="_blank">{{ thing.wiki|wikurl }}</a><br>{% endif %}
+{% if thing.src and thing.name %}<span class="text-muted">&boxvr;Source:</span> {{ thing.src }}<br>{% endif %}
+{% if thing.area %}<span class="text-muted">&boxvr;Area:</span> {{ thing.area }}<br>{% endif %}
+{% if thing.mode %}<span class="text-muted">&boxvr;Mode:</span> {{ thing.mode }}<br>{% endif %}
+{% if thing.subs %}<span class="text-muted">&boxvr;Subs:</span> {{ thing.subs }}<br>{% endif %}
+{% if thing.length %}<span class="text-muted">&boxvr;Length:</span> {{ thing.length }}<br>{% endif %}
+{% if thing.width %}<span class="text-muted">&box{% if thing.name %}v{% else %}u{% endif %}r;Width:</span> {{ thing.width }}<br>{% endif %}
+{% if thing.depth %}<span class="text-muted">&box{% if thing.name or thing.src %}v{% else %}u{% endif %}r;Depth:</span> {{ thing.depth }}<br>{% endif %}
+{% if thing.realm %}<span class="text-muted">&boxvr;Realm:</span> {{ thing.realm }}<br>{% endif %}
+{% if thing.user %}<span class="text-muted">&boxur;By:</span> <a href="{% url 'spin:user_detail' username=thing.user %}">{{ thing.user }}</a><br>{% endif %}</b>

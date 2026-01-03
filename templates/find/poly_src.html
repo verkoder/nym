@@ -1,26 +1,36 @@
 {% extends 'base.html' %}
-{% block title %}Polynyms by Source{% endblock %}
+{% block title %}Polynym Systems{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Polynym Systems</h3>
+    <div class="text-muted"><em>by source & dimension</em></div>
+</div>
+{% endblock %}
 
 {% block mid %}
-{% if msg %}{{ msg }}{% else %}<h2>Polynyms{% if src != 'all' %} from {{ src|title }}{% endif %}</h2>
-<h4>TOTAL: {{ length }} Polynyms<br>{{ type }} Type
-{% if part %} &nbsp;|&nbsp; {{ part }} Part{% endif %}
-{% if step %} &nbsp;|&nbsp; {{ step }} Step{% endif %}{% endif %}
+{% if src != 'All' %}<h4>{{ src }}</h4>{% else %}
+<h4 class="text-muted">Choose source or enter below:</h4>{% endif %}
+<form class="form-inline my-2 my-lg-0" method="GET" action="/polynym/" value="{{ request.GET.src }}">
+    <button type="submit" class="btn btn-outline-secondary my-2 my-sm-0"><i class="fa fa-search"></i></button>
+    <input type="search" class="searchfield" name="src" value="{{ request.GET.src }}" placeholder="Search polynym sources...">
+</form>
 {% endblock %}
 
 {% block right %}
-<table cellpadding="4">
-    <tr align="center">
+<div class="row row-cols-3 px-2 my-3 g-0">
     {% for s in sources %}
-        <td><b><a href="/polynym/src/{{ s|slugify }}">{{ s }}</a><b></td>
-        {% if forloop.counter|divisibleby:3 %}</tr><tr align="center" bgcolor="{% cycle '#DFDFDF' '#EFEFEF' %}">{% endif %}
+        {% with s|slugify as slug %}
+            <a type="button" class="col rounded-0 btn btn-sm btn-outline-secondary nym" href="{% url 'spin:polynyms_src' slug %}">
+        {% endwith %}{{ s }}</a>
     {% endfor %}
-    <td align="center"><b>&laquo; <a href="/polynym/add/">add</a> &raquo;</b></td></tr><tr>
-    <td align="center"><b>&laquo; <a href="/polynym/n/1">system</a> &raquo;</b></td>
-    <td align="center"><b>&laquo; <a href="/polynym/area/all">area</a> &raquo;</b></td>
-    <td align="center"><b>&laquo; <a href="/polynym/src/all">source</a> &raquo;</b></td>
-    </tr>
-</table>
+    <div class="btn-group bg-dark btn-group-sm ps-1 my-auto">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:polynyms_n' 1 %}">dimension</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:polynyms_area' 'all' %}">area</a>
+        <a class="btn btn-sm btn-outline-secondary{% if request.path == '/polynym/src/all' %} disabled{% endif %}"
+                                                    href="{% url 'spin:polynyms_src' 'all' %}">source</a>
+    </div>
+</div>
 {% endblock %}
 
 {% block content %}

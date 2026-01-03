@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+
+{% block mid %}
+<div class="btn-group my-2">
+    <a class="btn btn-outline-secondary py-1" href="{% url 'spin:home' %}">Home</a>
+    {% if user.is_authenticated %}
+        <a class="btn btn-outline-secondary py-1" href="{% url 'spin:user_detail' request.user %}">Status</a>
+        <a class="btn btn-outline-secondary py-1" href="{% url 'spin:logout' %}">Log out</a>
+    {% else %}
+        <a class="btn btn-outline-secondary py-1" href="{% url 'spin:login' %}">Log in</a>
+        <a class="btn btn-outline-secondary py-1" href="{% url 'spin:signup' %}">Sign up</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block right %}
+{% endblock %}
+
+{% block content %}{% load static %}
+<div class="row g-0">
+    <div class="col-lg-5 col-md-12 p-3">
+        <div class="mt-2">
+            <h2>Polynyms are related ideas.</h2>
+            <h5 class="mt-4">Some occur naturally&hellip;</h5>
+            <h5 class="offset-1">&hellip;others are artefacts of years of study.</h5>
+            <h5 class="my-4">We collect them all with fun puzzles & games.</h5>
+        </div>
+        <div class="col-9 offset-1 text-muted mt-4 small">Why?<br>
+            We seek deeper meaning in language and between ourselves.
+            By mapping idea sets across cultures and disciplines,
+            we can find the hidden connections that bring us closer together.
+        </div>
+        <div class="col-9 offset-1 text-muted mt-2 small">Is this AI?<br>
+            No. We build knowledge bases for AI systems to use.
+            The web teaches poorly, like the infamous racist AI by IBM.
+            We offer a manicured knowledge garden as an alternative to a web wasteland.
+            In the spirit of MIT's Open Mind project, we feel building knowledge
+            for AI can be open, fun and engaging.
+        </div>
+        <h5 class="mt-3">Thanks for playing and contributing to humanity!</h5>
+        <div class="text-center text-muted mt-3 mb-1">More info:</div>
+        <div class="offset-2">
+            <div class="btn-group">
+                <a class="btn btn-dark px-3" href="{% url 'spin:home' %}">Back</a>
+                <a class="btn btn-secondary px-3" href="http://polynyms.com/" target="_blank">Site guide</a>
+                <a class="btn btn-secondary px-3 mx-1" href="https://buildintuit.com/" target="_blank">Quadranym model</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7 col-md-12 text-center my-3 px-3">
+        <a href="{% url 'spin:home' %}"><img class="img-fluid" src="{% static 'spin/img/nymGraph.png' %}"></a>
+        <small class="text-muted">Polynym Dimensional Intersections Graph</small>
+    </div>
+</div>
+{% endblock %}

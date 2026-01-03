@@ -1,50 +1,14 @@
-{% extends 'base.html' %}
-{% block title %}Edit Vectornym{% endblock %}
+{% extends 'add/common.html' %}
 
-{% block mid %}
-<h2>{% if msg %}{{ msg }}{% else %}Build a Vectornym!<br>Pick Topics starting in top left.{% endif %}</h2>
-{% endblock %}
-
-{% block right%}
-<form action="/vectornym/add/" method="POST">{% csrf_token %}
-<h4 align="center">Ready your Vectornym and<br><input type="submit" value="A I M" name='_save' /></h4>
-{% endblock %}
-
-{% block content %}
-<table width="100%" cellpadding="4">
-  <tr>
-    <td bgcolor="#DEDEDE"><SELECT NAME="v1" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v1.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
-    <td bgcolor="#EFEFEF"><SELECT NAME="v2" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v2.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
-    <td bgcolor="#DEDEDE"><SELECT NAME="v3" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v3.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
-  </tr>
-  <tr align="center">
-    <td bgcolor="#EFEFEF"><span class="huge">&rarr;</span><SELECT NAME="v4" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v4.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
-    <td bgcolor="#DEDEDE"><span class="huge">&rarr;</span><SELECT NAME="v5" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v5.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
-    <td bgcolor="#EFEFEF"><span class="huge">&rarr;</span><SELECT NAME="v6" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v6.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT><span class="huge">&rarr;</span></td>
-  </tr>
-  <tr align="right">
-    <td bgcolor="#DEDEDE"><span class="huge">&rarr;</span><SELECT NAME="v7" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v7.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT></td>
-    <td bgcolor="#EFEFEF"><span class="huge">&rarr;</span><SELECT NAME="v8" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v8.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT></td>
-    <td bgcolor="#DEDEDE"><span class="huge">&rarr;</span><SELECT NAME="v9" MULTIPLE SIZE="12">{% for p in polys %}
-        <option VALUE="{{ p.id }}" {% if p.id == v9.id %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:25 }} {% if p.mode %}| {{ p.mode }}{% endif %} {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-    {% endfor %}</SELECT></td>
-  </tr>
-</table>
-</form>
+{% block addy %}
+<b>{{ form.name.label_tag }}</b><br>{{ form.name }}<br><br>
+<b>{{ form.v1.label_tag }}</b><br>{{ form.v1 }}<br>
+<b>{{ form.v2.label_tag }}</b><br>{{ form.v2 }}<br>
+<b>{{ form.v3.label_tag }}</b><br>{{ form.v3 }}<br>
+<b>{{ form.v4.label_tag }}</b><br>{{ form.v4 }}<br>
+<b>{{ form.v5.label_tag }}</b><br>{{ form.v5 }}<br>
+<b>{{ form.v6.label_tag }}</b><br>{{ form.v6 }}<br>
+<b>{{ form.v7.label_tag }}</b><br>{{ form.v7 }}<br>
+<b>{{ form.v8.label_tag }}</b><br>{{ form.v8 }}<br>
+<b>{{ form.v9.label_tag }}</b><br>{{ form.v9 }}<br>
 {% endblock %}

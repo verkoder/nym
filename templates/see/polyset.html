@@ -1,56 +1,70 @@
 {% extends 'base.html' %}
 {% block title %}Polyset{% endblock %}
 
-{% block mid %}
-{% if msg %}{{ msg }}{% else %}<h2>Polyset:<br>{{ thing.name }}</h2>{% endif %}
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Polynym Set</h3>
+    <div class="text-muted"><em>a set of related polynyms</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}<h4 class="text-center">{% if msg %}{{ msg }}{% else %}{{ thing.name }}{% endif %}</h4>
 {% endblock %}
 
 {% block right %}
-<form action="/polyset/" method="POST">{% csrf_token %}
-<table>
-    <tr>
-        <td><h4 align="center">
-        <SELECT NAME="pk" SIZE="8">
-        {% for pt in things %}
-          <option VALUE="{{ pt.id }}" {% if pt.id == thing.id %}selected{% endif %}>{{ pt.name }} | {{ pt.length }} x {{ pt.depth }}
-        {% endfor %}
-        </SELECT></h4></td>
-        <td align="center"><h4><input type="submit" value="S E E" name="_save" /></h4></td>
-    </tr>
-</table>
+<form action="{% url 'spin:polyset_detail' %}" method="POST">{% csrf_token %}
+<div class="container p-0">
+    <div class="row g-0 text-end">
+        <div class="col-6 my-auto">
+            <div class="btn-group-vertical">
+                <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:polyset_detail' %}">Random Pick</a>
+                <input class="btn btn-primary" type="submit" value="View Selected" />
+            </div>
+        </div>
+        <div class="col-6">
+            <SELECT NAME="pk" SIZE="6">
+                {% for pt in things %}
+                    <option VALUE="{{ pt.id }}" {% if pt.id == thing.id %}selected{% endif %}>
+                    {{ pt.name }} | {{ pt.length }} x {{ pt.depth }}
+                {% endfor %}
+            </SELECT>
+        </div>
+    </div>
+</div>
 </form>
 {% endblock %}
 
 {% block content %}
-<table width="100%" bgcolor="#EFEFEF">
-<tr><td>{% include 'bits/common.html' %}</td>
-<td>
-    <table border="0" cellspacing="0" cellpadding="2" align="center" width="96%">
-        <tr bgcolor="6F6F6F"><td><span class="navbar"><font size="+1" color="#FFFFFF">Name</span></td>
-    {% for n in ns %}
-            <td><span class="navbar"><font size="+1" color="#FFFFFF">p{{ forloop.counter }}</span></td>
-    {% endfor %}
-        </tr>
-        {% for ro in tabl %}
-        <tr bgcolor="{% cycle '#EFEFEF' '#DFDFDF'%}">
-            {% for nym in ro %}
-                <td {% if not nym %} bgcolor="#9F9F9F"{% endif %}>
-                    {% if forloop.first %}
-                        <a href="/polynym/{{ nym.id }}"><b>{{ nym.name }}</b></a>
-                    {% else %}{{ nym }}{% endif %}
+<div class="row g-0">
+    <div class="col-xl-3 col-lg-12 px-1">
+        {% include 'bits/common.html' %}
+    </div>
+    <div class="col-xl-9 col-lg-12">
+        <table class="table table-sm table-dark table-striped table-borderless">
+            <tr>
+                <td>
+                    <span class="navbar"><font size="+1">Name</span>
                 </td>
+                {% for n in ns %}
+                    <td>
+                        <span class="navbar"><font size="+1">p{{ forloop.counter }}</span>
+                    </td>
+                {% endfor %}
+            {% for ro in tabl %}
+                <tr>
+                {% for nym in ro %}
+                    <td {% if not nym %} bgcolor="#333333"{% endif %}>
+                        {% if forloop.first %}
+                            <a href="{% url 'spin:polynym_detail' nym.id %}"><b>{{ nym.name }}</b></a>
+                        {% else %}
+                            {{ nym }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-        <tr bgcolor="#6F6F6F">
-        <td><span class="navbar"><font size="+1" color="#FFFFFF">Name</span></td>
-            {% for n in ns %}
-                <td><span class="navbar"><font size="+1" color="#FFFFFF">p{{ forloop.counter }}</span></td>
-        {% endfor %}
-    </tr></table>
-</td></tr>
-   <tr>
-       <td bgcolor="#EFEFEF" colspan="2"><br></td>
-   </tr>
-</table>
+        </table>
+    </div>
+</div>
+{% include 'bits/shows.html' with things=thing.polynyms.all %}
 {% endblock %}

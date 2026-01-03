@@ -1,0 +1,27 @@
+{% extends 'add/common.html' %}
+{% block title %}Edit Tale{% endblock %}
+
+{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Label your Tale!{% endif %}</h2>{% endblock %}
+
+{% block right %}
+<form action="{% url 'spin:tale_save' %}" method="POST">{% csrf_token %}
+<input class="btn btn-success m-2" type="submit" value="SAVE"/>
+<a class="btn btn-secondary mx-3" href="javascript:history.back()">BACK</a>
+{% endblock %}
+
+{% block addy %}
+<div class="row g-0 p-3">
+    <div class="col">
+        <label for="id_name"><span class="text-muted"><b>Title:</b></span></label>
+            <input type="text" name="name" size="60" value="{{ fabl.name }}/Spun" required id="id_name">
+        <div class="mt-3"><span class="text-muted"><b>Fable:</b></span> [{{ fabl.name }}]</div>
+        <div class="mt-3 text-muted"><b>Length:</b> <code>{{ fabl.length }}</code></div>
+        <div class="mt-3"><span class="text-muted"><b>Topics:</b></span> [{{ quad_txt }}]</div>
+        <div class="mt-3 text-muted"><b>Spun Tale:</b></div>
+            <div class="col-8">{{ spun|striptags }}</div>
+    </div>
+</div>
+<input name="quad_ids" type="hidden" value="{{ quad_ids }}">
+<input name="fabl_id" type="hidden" value="{{ fabl.id }}">
+<input name="length" type="hidden" value="{{ fabl.length }}">
+{% endblock %}

@@ -5,27 +5,23 @@
 <h2>Really delete {{ object.whois|title }}?</h2>
 {% endblock %}
 
-{% block right %}
-<img src="http://mood.scottyvercoe.com/static/img/emo/Paul Ekman_6_afraid.png">
+{% block right %}{% load static %}
+<img src="{% static 'spin/emo/Paul Ekman_6_afraid.png' %}">
 {% endblock %}
+
 {% block content %}
 <form method="POST">{% csrf_token %}
-<table align="center" cellpadding="4" width="100%">
-    <tr>
-        <td width="30%" align="left">
-            {% if object.length %}<b>Length:</b> {{ object.length }}<br>{% endif %}
-            {% if object.width %}<b>Width:</b> {{ object.width }}<br>{% endif %}
-            {% if object.depth %}<b>Depth:</b> {{ object.depth }}<br>{% endif %}
-            {% if object.src %}<b>Source:</b> {{ object.src }}<br>{% endif %}
-            {% if object.area %}<b>Area:</b> {{ object.area }}<br>{% endif %}
-            {% if object.realm %}<b>Realm:</b> {{ object.realm }}<br>{% endif %}
-            {% if object.user %}<b>By:</b> <a href="/user/{{ object.user }}">{{ object.user }}</a><br>{% endif %}
-        </td>
-        <td width="30%" valign="top" align="center">
-            <h2>Deleting:<br>{{ object.name }}</h2></td>
-        <td width="40%"><input type="submit" value="D E L E T E" /><br>
-        <h3>or <a href="/{{ object.whois }}/{{ object.pk }}">CANCEL</a></h3></td>
-    </tr>
-</table>
+<div class="row g-0 bg-danger text-center">
+    <div class="col">
+        <h2><b>ABOUT TO REMOVE DATA</b></h2>
+    </div>
+</div>
+<div class="row g-0">
+    <div class="col">{% include 'bits/infocard.html' with thing=object %}</div>
+    <div class="col">
+        <input class="btn btn-danger m-3" type="submit" value="DELETE" />
+        <a class="btn btn-secondary" href="javascript:history.back()">CANCEL</a>
+    </div>
+</div>
 </form>
 {% endblock %}

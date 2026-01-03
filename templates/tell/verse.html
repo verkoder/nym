@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Tell Verses{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Tell Verses</h3>
+    <div class="text-muted"><em>spin narrative from<br>phrase/topic menus</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<form action="{% url 'spin:tell_verse' %}" method="POST">{% csrf_token %}
+<div class="row g-0">
+    <div class="col">
+        <input class="tell" type="submit" value="T E L L" /><br>
+        {% if msg %}{{ msg }}{% else %}&nbsp;{% endif %}<br>
+    </div>
+    <div class="col text-start mt-3">
+        <div class="lil">Spin&hellip;</div>
+        <div class="btn-group mb-1">
+            <input class="btn-check" type="radio" name="path" value="tq"{% if path == "tq" %} checked{% endif %} id="spin1" autocomplete="off">
+            <label class="btn btn-outline-light" for="spin1">Topic</label>
+            <input class="btn-check" type="radio" name="path" value="qt"{% if path == "qt" %} checked{% endif %} id="spin2" autocomplete="off">
+            <label class="btn btn-outline-light" for="spin2">Phrase</label>
+            <input class="btn-check" type="radio" name="path" value="zp"{% if path == "zp" %} checked{% endif %} id="spin3" autocomplete="off">
+            <label class="btn btn-outline-light" for="spin3">Zipped</label>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="text-center text-muted"><b>&swarr; Phrases &mdash; Pick any number of each &mdash; Topics &searr;</b></div>
+<div class="row g-0 text-center">
+    <div class="col">
+        <SELECT NAME="phra_id" MULTIPLE SIZE="7" class="p-0">
+        {% for ph in phras %}
+            <OPTION VALUE="{{ ph.id }}" {% if ph.id in phra_ids %}selected {% endif %}/>{{ ph.name }}
+        {% endfor %}
+        </SELECT>
+    </div>
+    <div class="col">
+        <SELECT NAME="quad_id" MULTIPLE SIZE="7" class="p-0">
+        {% for q in quads %}
+            <OPTION VALUE="{{ q.id }}" {% if q.id in quad_ids %}selected {% endif %}/>{{ q.name }}
+        {% endfor %}
+        </SELECT>
+    </div>
+</div>
+<div class="text-center text-muted lil mt-1 mb-3">&nwarr; Ctrl- or Cmd-click to select multiple &nearr;</div>
+</form>
+{% endblock %}
+
+{% block content %}
+{% include 'bits/book.html' %}
+{% include 'bits/show_story.html' %}
+{% endblock %}

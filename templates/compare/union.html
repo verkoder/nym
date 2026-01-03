@@ -1,60 +1,96 @@
 {% extends 'base.html' %}
-{% block title %}Unionyms{% endblock %}
+{% block title %}Polynym Unions{% endblock %}
 
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
 
-{% block mid %}<h2>
-{% if msg %}{{ msg }}
-{% else %}
-    Polynym Union:
-    <table>
-        <tr align="center">
-            <td>$$\sum_x^{ {{ poly_ids|length }} } \{P_x\}$$
-            </td>
-            <td>
-{% ifequal total utotal %}
-    $$\to |{{ total }}| \leftarrow$$
-{% else %}
-    $$\to |{{ total }}| \supseteq |{{ utotal }}| \leftarrow$$
-{% endifequal %}
-            </td><td> <span style="position: relative; bottom: -11px;">$$\bigcup_{x={{ poly_ids|length }} }\{P_x\}$$</span>
-            </td>
-        </tr>
-    </table></h2>
-{% endif %}
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Polynym Union</h3>
+    <div class="text-muted"><em>combined polynym dimensions/convergence</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<div class="row g-0">
+    <div class="col-4">
+        $$\sum_x^{ {{ poly_ids|length }} } \{P_x\}$$
+    </div>
+    <div class="col-4 mt-3">
+        {% ifequal total utotal %}
+            $$\to |{{ total }}| \leftarrow$$
+        {% else %}
+            $$\to |{{ total }}| \supseteq |{{ utotal }}| \leftarrow$$
+        {% endifequal %}
+    </div>
+    <div class="col-4">
+        <span style="position: relative; bottom: -11px;">$$\bigcup_{x={{ poly_ids|length }} }\{P_x\}$$</span>
+    </div>
+</div>
 {% endblock %}
 
 {% block right %}
-<table>
-    <tr>
-        <td align="right"><form action="/union/" method="POST">
-            {% csrf_token %}
-            <b><a href="/union">Refresh</a> for random picks or choose and <input type="submit" value="S E E" /></b></td>
-        <td align="right">
-            <span class="lil">Use Ctrl- or Cmd-click to select multiple</span>
-            <SELECT NAME="poly_id" MULTIPLE SIZE="12">
-            {% for p in polys %}
-              <option VALUE="{{ p.id }}" {% if p.id in poly_ids %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:18 }}
-              {% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
-            {% endfor %}
-            </SELECT>
-        </td>
-    </tr>
-</table>
+<form action="{% url 'spin:union' %}" method="POST">{% csrf_token %}
+<div class="row g-0">
+    <div class="col-6 my-auto">
+        <div class="btn-group-vertical">
+            <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:union' %}">Random Picks</a>
+            <input class="btn btn-primary" type="submit" value="View Selected" />
+        </div>
+    </div>
+    <div class="col-6">
+        <SELECT NAME="pk" MULTIPLE SIZE="7" class="w-100">
+        {% for p in polys %}
+          <option VALUE="{{ p.id }}" {% if p.id in poly_ids %}selected{% endif %}/>{{ p.depth }} | {{ p.name|truncatechars:18 }}
+          {% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}{% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+        {% endfor %}
+        </SELECT><br>
+        <span class="lil">Use Ctrl- or Cmd-click to select multiple</span>
+    </div>
+</div>
+</form>
 {% endblock %}
 
-{% block content %}{% autoescape off %}
-<div align="center">{% if drop_dep %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
-<b>Depths:</b>{% if drop_dep %} &nbsp; <span class="lil">&searr; {{ drop_dep|floatformat:2 }}%</span>{% endif %}<br>
-{{ deps|join:" | " }}<hr>{% if drop_area %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
-<b>Areas:</b>{% if drop_area %} &nbsp; <span class="lil">&searr; {{ drop_area|floatformat:2 }}%</span>{% endif %}<br>
-{{ areas|join:" | " }}<hr>{% if drop_src %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
-<b>Sources:</b>{% if drop_src %} &nbsp; <span class="lil">&searr; {{ drop_src|floatformat:2 }}%</span>{% endif %}<br>
-{{ sources|join:" | " }}<hr>{% if drop_top %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
-<b>Topics:</b>{% if drop_top %} &nbsp; <span class="lil">&searr; {{ drop_top|floatformat:2 }}%</span>{% endif %}<br>
-{{ nams|join:" | " }}<hr>{% if drop_dim %} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {% endif %}
-<b>Dimensions:</b>{% if drop_dim %} &nbsp; <span class="lil">&searr; {{ drop_dim|floatformat:2 }}%</span>{% endif %}<br>
-{{ terms|join:" | " }}</div>{% endautoescape %}
+{% block content %}
+{% autoescape off %}
+<div class="container-fluid mt-2">
+    <div class="row p-2">
+        <div class="col-1 text-muted">
+            <b>Topics:</b>
+            {% if drop_top %}<div class="lil">&searr; {{ drop_top|floatformat:2 }}%</div>{% endif %}
+        </div>
+        <div class="col">{{ nams|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted">
+            <b>Sources:</b>
+            {% if drop_src %}<div class="lil">&searr; {{ drop_src|floatformat:2 }}%</div>{% endif %}
+        </div>
+        <div class="col">{{ sources|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted">
+            <b>Areas:</b>
+            {% if drop_area %}<div class="lil">&searr; {{ drop_area|floatformat:2 }}%</div>{% endif %}
+        </div>
+        <div class="col">{{ areas|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted">
+            <b>Depths:</b>
+            {% if drop_dep %}<div class="lil">&searr; {{ drop_dep|floatformat:2 }}%</div>{% endif %}
+        </div>
+        <div class="col">{{ deps|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+    <div class="row p-2">
+        <div class="col-1 text-muted">
+            <b>Dimensions:</b>
+            {% if drop_dim %}<div class="lil">&searr; {{ drop_dim|floatformat:2 }}%</div>{% endif %}
+        </div>
+        <div class="col">{{ terms|join:' &nbsp;<span class="text-muted">|</span>&nbsp; ' }}</div>
+    </div>
+</div>
+{% endautoescape %}
+{% include 'bits/shows.html' %}
 {% endblock %}

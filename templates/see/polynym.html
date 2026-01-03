@@ -1,45 +1,65 @@
 {% extends 'base.html' %}
 {% block title %}Polynym{% endblock %}
-{% block mid %}<h2>{% if msg %}Polynym {{ msg }}!{% else %}Polynym:<br />{{ thing.name }}{% endif %}</h2>{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Polynym</h3>
+    <div class="text-muted"><em>an idea set of<br>related dimensions</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}<h4 class="text-center">{{ thing.name }}</h4>
+{% endblock %}
 
 {% block right %}{% load motags %}
-<form method="POST">{% csrf_token %}
-<table>
-    <tr>
-        <td align="center">
-            <b>Choose and <input type="submit" value="S E E" /></b></td>
-        <td>
-            <SELECT NAME="pk" MULTIPLE SIZE="12">
+<form action="{% url 'spin:polynym_detail' %}" method="POST">{% csrf_token %}
+<div class="container p-0">
+    <div class="row g-0 text-end">
+        <div class="col-6 my-auto text-center">
+            <div class="btn-group-vertical">
+                <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:polynym_detail' %}">Random Pick</a>
+                <input class="btn btn-primary" type="submit" value="View Selected" />
+            </div>
+        </div>
+        <div class="col-6">
+            <SELECT NAME="pk" MULTIPLE SIZE="7" class="w-100 p-0 m-0">
             {% for p in things %}
               <option VALUE="{{ p.id }}"
-                {% ifequal p.id thing.id %}selected{% endifequal %}/>
+                {% if p.id == thing.id %}selected{% endif %}/>
                                   {{ p.depth }} | {{ p.name|truncatechars:25 }}
                 {% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}
                 {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
             {% endfor %}
             </SELECT>
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+</div>
 </form>
 {% endblock %}
 
 {% block content %}
-<table width="100%" align="center" bgcolor="BBBBBB" cellpadding="6" cellspacing="0">
-  <tr>
-	<td bgcolor="EFEFEF" align="left" valign="top" width="20%">
+<div class="row g-0 px-3">
+	<div class="col-xl-4 col-md-6 align-top">
         {% include 'bits/common.html' %}
-    </td>
-	<td bgcolor="DEDEDE" align="center" valign="middle" width="60%">
-        {% include 'bits/icon_polynym.html' %}
-    </td>
-    <td bgcolor="EFEFEF" width="20%" align="right" valign="top"><b>Mode = <font color="darkseagreen">type</font>
-         <font color="lightblue">part</font> <font color="peru">step</font><br>Depth = Shape</b>
-    </td>
-  </tr>
-  <tr>
-      <td colspan="3" bgcolor="#EFEFEF" align="left"><b>{% with sakes=thing.nyms|nymsake:"quadranym" %}
-          {% if sakes %}{{ sakes }}{% endif %}{% endwith %}</b></td>
-  </tr>
-</table>
+    </div>
+	<div class="col-xl-8 col-md-6 text-center align-middle">
+        {% include 'bits/poly_icon.html' %}
+    </div>
+</div>
+
+<div class="row g-0 p-3">
+    <div class="col text-start">
+        {% if thing.names|nymsake:"quadranym" or thing|quoted %}
+            <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Related &dtrif;</button>
+        {% endif %}
+    </div>
+    {% if thing.names|nymsake:"quadranym" or thing|quoted %}
+        <div class="col-8">
+            <div id="show" class="collapse">
+                {% with sakes=thing.names|nymsake:"quadranym" %}
+                {% if sakes %}{{ sakes }}{% endif %}{% endwith %}
+            </div>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.forms import TextInput
 
 # NYMOLOGY CLASSES
-from .models import Polynym, Polymap, Polyset, Quadranym, Quadraset, \
+from .models import Polynym, Guessanym, Polymap, Polyset, Quadranym, Quadraset, \
                     Fable, Phrase, Story, Storyline, Tale, Taleline, \
                     Fortune, Queue, Quote, Vectornym, Winner
 
@@ -24,6 +24,8 @@ class PhraseAdmin(BaseAdmin):
 class PolymapAdmin(BaseAdmin):
     pass
 class PolynymAdmin(BaseAdmin):
+    pass
+class GuessanymAdmin(BaseAdmin):
     pass
 class PolysetAdmin(BaseAdmin):
     pass
@@ -53,6 +55,7 @@ admin.site.register(Fortune, FortuneAdmin)
 admin.site.register(Phrase, PhraseAdmin)
 admin.site.register(Polymap, PolymapAdmin)
 admin.site.register(Polynym, PolynymAdmin)
+admin.site.register(Guessanym, GuessanymAdmin)
 admin.site.register(Polyset, PolysetAdmin)
 admin.site.register(Quadranym, QuadranymAdmin)
 admin.site.register(Queue, QueueAdmin)

@@ -1,0 +1,59 @@
+{% extends 'feel/polynym.html' %}
+{% block title %}Feel Mood{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Feel Mood</h3>
+    <div class="text-muted"><em>relate emotion <br>dimensions to any text</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<h3>{% if emos.0.1 %}{{ emos.0.0|title }}{% else %}no feelings{% endif %}</h3>
+<hr class="bg-secondary mx-auto w-50">
+<div class="text-muted">{{ poly.depth }} mood{% if poly.name == "moodset" %} set{% else %}s{% endif %}</div>
+<form action="{% url 'spin:feel_mood' %}" method="POST">{% csrf_token %}
+{% endblock %}
+
+{% block content %}{% load motags %}{% load static %}
+<div class="row g-0 text-center p-2">
+    <div class="col-md-5 offset-lg-1 my-auto p-2">
+        <img src="{% static 'spin/emo' %}/{{ poly.src }}_{{ poly.depth }}_{{ mood }}.png" alt="mood">
+        <div class="lil">{{ say }}</div>
+    </div>
+    <div class="col-md-6 my-auto p-2 text-start">
+        {% if emos %}
+            <table class="table table-sm table-borderless text-light w-100">
+                {% for mo,perc,siz,colr in emos %}
+                    <tr>
+                        <td><div class="nym">{{ mo }}</div></td>
+                        <td><code>{{ perc|floatformat:1 }}%</code></td>
+                        <td><div style="height: 18px; width: {{ siz }}em; background-color: {{ colr }};"></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h3 class="text-muted">&mdash;nothing to feel&mdash;</h3>
+        {% endif %}
+    </div>
+</div>
+<div class="lil text-muted p-3"><b>Feel via <a href="http://conceptnet.io" target="_blank">ConceptNet</a> relatedness</b></div>
+
+<div class="row g-0 px-3">
+    <div class="col">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Trace &dtrif;</button>
+    </div>
+</div>
+<div class="row g-0 m-2">
+    <div id="show" class="collapse">
+        {% include 'bits/infocard.html' with thing=poly %}
+        {% if poly.name == 'moodset' %}
+            <div class="btn-group-vertical">
+                {% for nym in poly.nyms %}
+                    <a class="btn btn-outline-secondary disabled" href="#">{{ nym }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

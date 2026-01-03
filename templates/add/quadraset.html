@@ -1,0 +1,6 @@
+{% extends 'add/common.html' %}
+
+{% block addy %}
+<b>{{ form.name.label_tag }}</b><br>{{ form.name }}<br><br>
+{% if form.quadranyms %}<b>{{ form.quadranyms.label_tag }}</b><br>{{ form.quadranyms }}<br>{% endif %}
+{% endblock %}

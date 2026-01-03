@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}User{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">User Detail</h3>
+</div>
+{% endblock %}
+
+{% block mid %}{% load static %}
+<div class="container bg-dark p-1">
+    <div class="col bg-secondary p-1">
+        <div class="col bg-success p-1">
+            <div class="col bg-primary p-1">
+                <div class="col bg-info p-1">
+                    <div class="col bg-danger p-1">
+                        <div class="col bg-warning p-1">
+                            <div class="bg-light text-dark p-3">
+                                {% if msg %}{{ msg }}{% else %}
+                                <img src="{% static 'spin/badges/badge' %}{{ earn.2 }}.png">
+                                <div class="display-5 pb-3">{{ usr }}</div>
+                                <h5 class="display5"><em>{{ earn.0 }}</em></h5>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="row g-0 p-3">
+    <div class="col-lg-4 col-md-6 bg-dark p-3 m-2">
+        <h3>Total<br>Points</h3>
+        <h3><code>{{ grand }}</code></h3><hr>
+        <h5 class="text-muted"><code>{{ earn.1 }}</code> points to<br>&nbsp; next status!</h5>
+    </div>
+    <div class="col-lg-3 col-md-4 offset-md-1 text-end bg-dark my-auto p-3">
+        <h5>Other users</h5><hr>
+        {% for u in usrs %}
+            <a href="{% url 'spin:user_detail' u.username %}">{{ u.username }}</a><br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row g-0">
+    <div class="col-lg-3 col-sm-6 align-top p-3">
+        <h3>Game Points: <code>{{ total_wins }}</code></h3>
+        {% if wins.QuizZection.0 %}<b>QuizZection wins:</b><br>{{ wins.QuizZection.0.score }} points in {{ wins.QuizZection.0.round }} rounds<br><br>{% endif %}
+        {% if wins.PolyPuzzle.0 %}<b>PolyPuzzle wins:</b><br>{{ wins.PolyPuzzle.0.score }} points in {{ wins.PolyPuzzle.0.round }} rounds<br><br>{% endif %}
+        {% if wins.QuadraZone.0 %}<b>QuadraZone wins:</b><br>{{ wins.QuadraZone.0.score }} points in {{ wins.QuadraZone.0.round }} rounds<br><br>{% endif %}
+        {% if wins.unQuote.0 %}<b>unQuote wins:</b><br>{{ wins.unQuote.0.score }} points in {{ wins.unQuote.0.round }} rounds<br><br>{% endif %}
+        {% if wins.TheGist.0 %}<b>TheGist wins:</b><br>{{ wins.TheGist.0.score }} points in {{ wins.TheGist.0.round }} rounds<br><br>{% endif %}
+    </div>
+    <div class="col-lg-6 col-sm-12 align-top p-3">
+        <h3>Nyms Added: <code>{{ total_nyms }}</code></h3>
+        {% for obj,li in nyms %}
+            {% if li %}<b>{{ obj|title }} adds:</b><br>{{ li|join:', ' }}<br><br>{% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-3 col-sm-6 align-top p-3"><h3>Votes Cast: <code>{{ total_votes }}</code></h3>
+        {% for obj,li in votes %}
+            {% if li %}<b>{{ obj|title }} votes:</b><br>{{ li|join:', ' }}<br><br>{% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

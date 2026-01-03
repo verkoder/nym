@@ -1,67 +1,61 @@
 {% extends 'base.html' %}
-{% block title %}Nymology: Quadranym View{% endblock %}
+{% block title %}Quadranym{% endblock %}
 
-{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}
-{% if thing.epos == 'VB' and thing.rpos == 'VB' and thing.opos == 'NN' and thing.spos == 'NN' %} Conjugal{% endif %} Quadranym:
-<br>{{ thing.name }}{% endif %}</h2>
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Quadranym</h3>
+    <div class="text-muted"><em>a word sensibility model</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}{% if msg %}{{ msg }}<br>{% endif %}
+<h4 class="text-center">{{ thing.name }}
+{% if thing.epos == 'VB' and thing.rpos == 'VB' and thing.opos == 'NN' and thing.spos == 'NN' %}<span class="text-muted">(conjugal)</span>{% endif %}</h4>
 {% endblock %}
 
 {% block right %}{% load motags %}
-<form method="POST">{% csrf_token %}
-<table>
-    <tr>
-        <td align="right">
-            <b>Choose and <input type="submit" value="S E E" /></b></td>
-        <td>
-            <SELECT NAME="pk" MULTIPLE SIZE="12">
+<form action="{% url 'spin:quadranym_detail' %}" method="POST">{% csrf_token %}
+<div class="container p-0">
+    <div class="row g-0 text-end">
+        <div class="col-6 my-auto text-center">
+            <div class="btn-group-vertical">
+                <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:quadranym_detail' %}">Random Pick</a>
+                <input class="btn btn-primary" type="submit" value="View Selected" />
+            </div>
+        </div>
+        <div class="col-6">
+            <SELECT NAME="pk" MULTIPLE SIZE="7">
             {% for q in things %}
-              <option VALUE="{{ q.id }}" {% ifequal q.id thing.id %}selected{% endifequal %}/>
+              <option VALUE="{{ q.id }}" {% if q.id == thing.id %}selected{% endif %}/>
               {{ q.name|truncatechars:25 }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
             {% endfor %}
             </SELECT>
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+</div>
 </form>
 {% endblock %}
 
 {% block content %}
-<table width="100%" align="center" bgcolor="#EFEFEF" cellpadding="6" cellspacing="0">
-  <tr>
-	<td bgcolor="#EFEFEF" align="left" valign="top" width="20%">
-        {% include 'bits/common.html' with obj=thing com='quadranym' %}
-    </td>
-	<td bgcolor="#BBBBBB" align="left" valign="middle" width="80%">
-        <table width="100%" cellpadding="4">
-          <tr>
-            <td bgcolor="#FFFFFF" align="center" width="33%"><h3>E = {{ thing.e }}</h3>
-            {% if thing.epos %}<b>POS:<b> {{ thing.epos }}<br>{% endif %}</td>
-            <td width="33%">&nbsp;</td>
-            <td bgcolor="#FFFFFF" align="center" width="33%"><h3>O = {{ thing.o }}</h3>
-            {% if thing.opos %}<b>POS:<b> {{ thing.opos }}<br>{% endif %}</td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td bgcolor="#FFFFFF" align="center"><h3>N = {{ thing.name }}</h3>
-             {% if thing.pos %}<b>POS:<b> {{ thing.pos }}<br />{% endif %}</td>
-            <td>&nbsp;</td>
-          <tr>
-            <td bgcolor="#FFFFFF" align="center"><h3>S = {{ thing.s }}</h3>
-            {% if thing.spos %}<b>POS:<b> {{ thing.spos }}<br>{% endif %}</td>
-            <td>&nbsp;</td>
-            <td bgcolor="#FFFFFF" align="center"><H3>R = {{ thing.r }}</h3>
-            {% if thing.rpos %}<b>POS:<b> {{ thing.rpos }}<br>{% endif %}</td>
-          </tr>
-        </table>
-    </td>
-  </tr>
-  <tr>
-      <td colspan="2" bgcolor="#EFEFEF" align="left"><b>{% with sakes=thing.nyms|nymsake:"polynym" %}
-          {% if sakes %}{{ sakes }}<br>{% endif %}{% endwith %}
-          {% with qq=thing|quoted %}{% if qq %}{{ qq }}<br>{% endif %}{% endwith %}</b></td>
-  </tr>
-  <tr>
-      <td colspan="2" bgcolor="#EFEFEF" align="right"><b><a href="/queue/">Request a Quadranym</a></b></td>
-  </tr>
-</table>
+<div class="row g-0">
+    <div class="col p-3">{% include 'bits/common.html' with com='quadranym' %}</div>
+    <div class="col p-3"><h3>{% include 'bits/quad.html' with eros=True pos=True %}</h3></div>
+</div>
+
+<div class="row g-0 px-3">
+    <div class="col-4">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:queue' %}">Request a Quadranym</a>
+        {% if thing.names|nymsake:"polynym" or thing|quoted %}
+            <button class="btn btn-sm btn-outline-info ms-3" data-bs-toggle="collapse" data-bs-target="#show">Related &dtrif;</button>
+        {% endif %}
+    </div>
+    {% if thing.names|nymsake:"polynym" or thing|quoted %}
+        <div class="col-8">
+            <div id="show" class="collapse">
+                {% with sakes=thing.names|nymsake:"polynym"%}{% if sakes %}{{ sakes }}<br>{% endif %}{% endwith %}
+                {% with qq=thing|quoted %}{% if qq %}{{ qq }}<br>{% endif %}{% endwith %}
+            </div>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

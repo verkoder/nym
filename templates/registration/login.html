@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}Log In{% endblock %}
 
-{% block mid %}<h2>Please login!</h2>{% endblock %}
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Please log in</h3>
+</div>
+{% endblock %}
 
-{% block content %}
+{% block mid %}
 <form method="POST">{% csrf_token %}
-<table width="100%">
-    <tr>
-        <td width="40%"></td>
-        <td width="60%">
-          {{ form.as_p }}
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <input type="submit" value="LOG IN"></input>
-        <br>
-        <h3>New user? Signup <a href="/signup">HERE</a></h3>
-    </td>
-    </tr>
-</table>
+    <div class="container pt-3">
+        {{ form.as_p }}
+    </div>
+    <input class="btn btn-success m-2 py-1" type="submit" value="Log in"></input><br>
+    New user? <a class="btn btn-sm btn-outline-secondary text-end my-3 mx-3" href="{% url 'spin:signup' %}">Sign up</a>
 </form>
 {% endblock %}

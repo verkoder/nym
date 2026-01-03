@@ -1,86 +1,147 @@
 {% extends 'base.html' %}
 {% block title %}Plot Data{% endblock %}
 
-{% block script%}<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Plot Data</h3>
+    <div class="text-muted"><em>visualize distributions, patterns & relationships</em></div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 {% if typ == 'src_rng' or typ == 'area_rng' or typ == 'realm_rng' or typ == 'polar' %}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
 {% elif typ == 'wordcloud' %}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/wordcloud.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
 {% elif typ == 'sectionym' %}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/sankey.js"></script>
-<script src="https://code.highcharts.com/modules/dependency-wheel.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/sankey.js"></script>
+    <script src="https://code.highcharts.com/modules/dependency-wheel.js"></script>
 {% elif typ == 'sectionet' %}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/networkgraph.js"></script>
-<!--{% elif typ == 'tilemap' %}
-<script src="https://code.highcharts.com/maps/highmaps.js"></script>
-<script src="https://code.highcharts.com/modules/tilemap.js"></script>-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/networkgraph.js"></script>
 {% else %}
-<script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 {% endif %}
-<!--
-<script src="https://code.highcharts.com/modules/debugger.js"></script>-->
+<!-- <script src="https://code.highcharts.com/modules/debugger.js"></script>-->
 {% endblock %}
 
 {% block mid %}
-<h2 align="center">{% if err %}{{ err }}{% else %}Plotting Nymology Data{% endif %}</h2>
-<form action="/plot/" method="POST">{% csrf_token %}
+<form action="{% url 'spin:plot' %}" method="POST">{% csrf_token %}
+<div class="row g-0">
+    <div class="col">
+        <div class="btn-group-vertical p-3">
+            {% if typ == "area_dist" or typ == "src_dist" %}
+                <!--input class="btn-check" id="tale" type="radio" name="ob" value="tale"{% if ob == "tale" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="tale">Tale</label>
+
+                <input class="btn-check" id="fabl" type="radio" name="ob" value="fabl"{% if ob == "fabl" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="fabl">Tale Template</label>
+
+                <input class="btn-check" id="stor" type="radio" name="ob" value="stor"{% if ob == "stor" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="stor">Story</label>
+
+                <input class="btn-check" id="phra" type="radio" name="ob" value="phra"{% if ob == "phra" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="phra">Phrase</label-->
+
+                <input class="btn-check" id="quad" type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="quad">Quadranym</label>
+
+                <input class="btn-check" id="poly" type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="poly">Polynym</label>
+
+                <input class="btn-check" id="pmap" type="radio" name="ob" value="pmap"{% if ob == "pmap" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="pmap">Polymap</label>
+            {% elif typ == "wordcloud" %}
+                <input class="btn-check" id="quad" type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="quad">Quadranym</label>
+
+                <input class="btn-check" id="poly" type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="poly">Polynym</label>
+            {% elif typ == "sectionet" %}
+                <input class="btn-check" id="quad" type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="quad">Quadranym Intersections</label>
+
+                <input class="btn-check" id="poly" type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %} autocomplete="off">
+                <label class="btn btn-outline-light py-0" for="poly">Polynym Intersections</label>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col my-auto">
+        <input class="plot" type="submit" value="P L O T" />
+    </div>
+</div>
 {% endblock %}
 
 {% block right %}
+<div class="container p-3">
+    <div class="row g-0">
+        <div class="col-3 text-end pe-2">Distributions:</div>
+        {% if err %}{{ err }}<br>{% endif %}
+        <div class="col-9 btn-group text-start">
+            <input class="btn-check" type="radio" name="typ" id="area_dist" value="area_dist"{% if typ == "area_dist" %} checked{% endif %}>
+            <label for="area_dist" class="btn btn-outline-light py-0">Area</label>
 
-<b>Distributions:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="area_dist"{% if typ == "area_dist" %} checked{% endif %}>Area</label>
-<label style="white-space: nowrap;"><input type="radio" name="typ" value="src_dist"{% if typ == "src_dist" %} checked{% endif %}>Source</label>
-<label style="white-space: nowrap;"><input type="radio" name="typ" value="realm_dist"{% if typ == "realm_dist" %} checked{% endif %}>Realm</label>
-<label style="white-space: nowrap;"><input type="radio" name="typ" value="mode_dist"{% if typ == "mode_dist" %} checked{% endif %}>Mode</label><br>
-<b>Polynym Depths:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="area_rng"{% if typ == "area_rng" %} checked{% endif %}>Area</label>
-<label style="white-space: nowrap;"><input type="radio" name="typ" value="src_rng"{% if typ == "src_rng" %} checked{% endif %}>Source</label>
-<label style="white-space: nowrap;"><input type="radio" name="typ" value="mode_deps"{% if typ == "mode_deps" %} checked{% endif %}>Mode</label><br>
-<!--<b>Polynymic Table:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="tilemap"{% if typ == "tilemap" %} checked{% endif %}>Tile Map</label><br>-->
-<b>Sectionyms:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="sectionet"{% if typ == "sectionet" %} checked{% endif %}>Graph</label>
-<label style="white-space: nowrap;"><input type="radio" name="typ" value="sectionym"{% if typ == "sectionym" %} checked{% endif %}>Wheel</label><br>
-<b>Dimensions:</b> <label style="white-space: nowrap;"><input type="radio" name="typ" value="wordcloud"{% if typ == "wordcloud" %} checked{% endif %}>Word cloud</label>
-<label style="white-space: nowrap;"><input type="radio" name="typ" value="polar"{% if typ == "polar" %} checked{% endif %}>Polar</label><br>
+            <input class="btn-check" type="radio" name="typ" id="src_dist" value="src_dist"{% if typ == "src_dist" %} checked{% endif %}>
+            <label for="src_dist" class="btn btn-outline-light py-0">Source</label>
 
-Select chart and <input type="submit" value="P L O T" /><br><span class="lil">Move cursor over the chart to highlight</span>
+            <input class="btn-check" type="radio" name="typ" id="realm_dist" value="realm_dist"{% if typ == "realm_dist" %} checked{% endif %}>
+            <label for="realm_dist" class="btn btn-outline-light py-0">Realm</label>
 
+            <input class="btn-check" type="radio" name="typ" id="mode_dist" value="mode_dist"{% if typ == "mode_dist" %} checked{% endif %}>
+            <label for="mode_dist" class="btn btn-outline-light py-0">Mode</label>
+        </div>
+    </div>
+    <div class="row g-0 mt-2">
+        <div class="col-3 text-end pe-2">Polynym Depths:</div>
+        <div class="col-9 btn-group">
+            <input class="btn-check" type="radio" name="typ" id="area_rng" value="area_rng"{% if typ == "area_rng" %} checked{% endif %}>
+            <label for="area_rng" class="btn btn-outline-light py-0">Area</label>
 
+            <input class="btn-check" type="radio" name="typ" id="src_rng" value="src_rng"{% if typ == "src_rng" %} checked{% endif %}>
+            <label for="src_rng" class="btn btn-outline-light py-0">Source</label>
+
+            <input class="btn-check" type="radio" name="typ" id="mode_deps" value="mode_deps"{% if typ == "mode_deps" %} checked{% endif %}>
+            <label for="mode_deps" class="btn btn-outline-light py-0">Mode</label>
+        </div>
+    </div>
+    <div class="row g-0 mt-2">
+        <div class="col-3 text-end pe-2">Sectionyms:</div>
+        <div class="col-9 btn-group">
+            <input class="btn-check" type="radio" name="typ" id="sectionet" value="sectionet"{% if typ == "sectionet" %} checked{% endif %}>
+            <label for="sectionet" class="btn btn-outline-light py-0">Graph</label>
+
+            <input class="btn-check" type="radio" name="typ" id="sectionym" value="sectionym"{% if typ == "sectionym" %} checked{% endif %}>
+            <label for="sectionym" class="btn btn-outline-light py-0">Wheel</label>
+        </div>
+    </div>
+    <div class="row g-0 my-2">
+        <div class="col-3 text-end pe-2">Dimensions:</div>
+        <div class="col-9 btn-group">
+            <input class="btn-check" type="radio" name="typ" id="wordcloud" value="wordcloud"{% if typ == "wordcloud" %} checked{% endif %}>
+            <label for="wordcloud" class="btn btn-outline-light py-0}">Word cloud</label>
+
+            <input class="btn-check" type="radio" name="typ" id="polar" value="polar"{% if typ == "polar" %} checked{% endif %}><br>
+            <label for="polar" class="btn btn-outline-light py-0">Polar skew</label>
+        </div>
+    </div>
+</div>
+</form>
 {% endblock %}
 
 {% block content %}
-<table width="100%" align="center"><tr><td align="center">
-<figure class="highcharts-figure">
-<div id="container" data-url="{% url 'spin:plot_'|add:ob|add:'_'|add:typ %}"></div></figure>
+<div class="highcharts-figure" id="container" data-url="{% url 'spin:plot_'|add:ob|add:'_'|add:typ %}"></div>
+<div class="lil mt-1 mb-3 text-center">Roll over chart to highlight</div>
 <script>
-$.ajax({
-  url: $("#container").attr("data-url"),
-  dataType: 'json',
-  success: function (data) {
-    Highcharts.chart("container", data);
-  }
-});
+    $.ajax({
+      url: $("#container").attr("data-url"),
+      dataType: 'json',
+      success: function (data) {
+        Highcharts.chart("container", data);
+      }
+    });
 </script>
-</td><td align="left" valign="top" nowrap>
-{% if typ == "area_dist" or typ == "src_dist" %}
-<input type="radio" name="ob" value="tale"{% if ob == "tale" %} checked{% endif %}>Tale<br>
-<input type="radio" name="ob" value="fabl"{% if ob == "fabl" %} checked{% endif %}>Fable<br>
-<input type="radio" name="ob" value="stor"{% if ob == "stor" %} checked{% endif %}>Story<br>
-<input type="radio" name="ob" value="phra"{% if ob == "phra" %} checked{% endif %}>Phrase<br>
-<input type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %}>Quadranym<br>
-<input type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %}>Polynym<br>
-<input type="radio" name="ob" value="pmap"{% if ob == "pmap" %} checked{% endif %}>Polymap
-{% elif typ == "wordcloud" %}
-<input type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %}>Quadranym<br>
-<input type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %}>Polynym<br>
-<input type="radio" name="ob" value="phra"{% if ob == "phra" %} checked{% endif %}>Phrase<br>
-<input type="radio" name="ob" value="fabl"{% if ob == "fabl" %} checked{% endif %}>Fable
-{% elif typ == "sectionet" %}
-<input type="radio" name="ob" value="quad"{% if ob == "quad" %} checked{% endif %}>Quadra-Sectionyms<br>
-<input type="radio" name="ob" value="poly"{% if ob == "poly" %} checked{% endif %}>Poly-Sectionyms
-{% endif %}
-</td><td>&nbsp;</td></tr></table>
-</form>
 {% endblock %}

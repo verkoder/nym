@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Edit Tale{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Edit Tale</h3>
+</div>
+{% endblock %}
+
+{% block mid %}<h4>{% if msg %}{{ msg }}{% else %}Try a topic!{% endif %}</h4>{% endblock %}
+
+{% block right %}<h5 class="m-2">Tale Template:<br>{{ fabl.name }} <span class="text-muted">/ {{ fabl.length }} topics</span></h5>
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'spin:tale_menu' %}" method="POST">{% csrf_token %}
+<div class="row g-0 text-center">
+    <div class="col-6 m-2 p-3 bg-light text-dark text-start book">{% load motags %}
+        <h4 class="text-center">{{ request.user|title}}'s New Tale</h4>
+        {% autoescape off %}{% if spun %}{{ spun }}{% else %}{{ fabl.qode }}{% endif %}{% endautoescape %}
+    </div>
+    <div class="col-3 col-sm-3 ms-2">
+        <SELECT NAME="quad_id" SIZE="12">
+        {% for q in quads %}
+            <option VALUE="{{ q.id }}"{% if q.id == quad_id %} selected{% endif %} />{{ q.name }}
+        {% endfor %}
+        </SELECT>
+    </div>
+    <div class="col-3 col-sm-2">
+        <input class="btn btn-outline-secondary me-3" type="submit" value="TRY" name="_try" />
+        <input class="btn btn-outline-primary" type="submit" value="ADD" name="_add" /><br>
+        <a class="btn btn-outline-warning mt-3" href="{% url 'spin:tale_create' %}">Restart</a>
+        <div class="mt-3">
+            <b>Added Topics:</b><br>
+            {% if tops %}
+                {% for top in tops %} &nbsp; {{ top }}<br>{% endfor %}
+            {% else %}<span class="text-muted">-none-</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<input name="quad_ids" type="hidden" value="{{ quad_ids }}">
+<input name="fabl_id" type="hidden" value="{{ fabl.id }}">
+</form>
+
+{% include 'bits/show_tale.html' with thing=fabl things=tale_quads %}
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Flip Quotes{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Flip Quotes</h3>
+    <div class="text-muted"><em>remake sayings<br>with a new topic</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}{% if msg %}{{ msg }}<br>{% endif %}
+<form action="{% url 'spin:flip_quote' %}" method="POST">{% csrf_token %}
+<div class="row g-0">
+    <div class="col">
+        <input class="flip" type="submit" value="F L I P" />
+    </div>
+    <div class="col">
+        <div class="btn-group-vertical mb-1">
+            <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:flip_quote' %}">Random Flip</a>
+            <a class="btn btn-secondary" href="{% url 'spin:quote' quot.id %}">Source Quote</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="row g-0">
+	<div class="col p-0">
+    	<SELECT NAME="quot_id" MULTIPLE SIZE="7">
+          {% for qo in quots %}
+              <OPTION VALUE="{{ qo.id }}"{% if qo.id == quot.id %} selected{% endif %}/>
+              {{ qo.width }} | {{ qo.subs }} | {{ qo.src|truncatechars:25 }}
+          {% endfor %}
+        </SELECT>
+    </div>
+    <div class="col p-0">
+        <SELECT NAME="quad_id" MULTIPLE SIZE="7">
+    	    {% for q in quads %}
+    		    <OPTION VALUE="{{ q.id }}"{% if q.id == quad.id %} selected{% endif %}/>
+                {{ q.name }}{% if q.src %} | {{ q.src|truncatechars:25 }}{% endif %}
+    	    {% endfor %}
+    	</SELECT>
+    </div>
+</div>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="row g-0">
+    {% if quot.quadranym.pk != quad.id %}
+        <div class="col-12 text-muted px-3">Flipped Quote:</div>
+    {% else %}
+        <div class="col-12 text-muted px-3 mb-5">Source Quote:</div>
+    {% endif %}
+    <div class="col-8 offset-1">
+        {% autoescape off %}
+        {% if quot.quadranym.pk != quad.id %}
+            {% with "The "|add:quot.src|add:" "|add:quad.name|title|add:"</em>" as byline %}
+                {% with spun|add:"<br><br><em>&mdash; "|add:byline as spun %}
+                    {% include 'bits/book.html' with qode=quot.qode %}
+                {% endwith %}
+            {% endwith %}
+        {% else %}
+            {% with spun|add:"<br><br><em>&mdash; "|add:quot.src as spun %}
+                <div class="bg-light text-dark text-start book p-3">{{ spun }}</div>
+            {% endwith %}
+        {% endif %}
+        {% endautoescape %}
+    </div>
+</div>
+
+<div class="lil text-muted p-3">Quotes via <b><a href="https://www.quotes.net" target="_blank">Quotes.net</a></b></div>
+<div class="row g-0 px-3 mb-2">
+    <div class="col">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Trace &dtrif;</button>
+    </div>
+</div>
+<div id="show" class="collapse">
+    <div class="row g-0 p-3">
+        <div class="col-4">{% include 'bits/infocard.html' with thing=quot %}</div>
+        <div class="col-4">
+            <div class="text-center text-muted">Source &rarr;</div>
+            {% include 'bits/infocard.html' with thing=quot.quadranym %}
+            {% include 'bits/quad.html' with thing=quot.quadranym %}
+        </div>
+        <div class="col-4 ps-2">
+            <div class="text-center text-muted">&rarr; Target</div>
+            {% include 'bits/infocard.html' with thing=quad %}
+            {% include 'bits/quad.html' with thing=quad %}
+        </div>
+    </div>
+</div>
+{% endblock %}

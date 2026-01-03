@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Quadranym Math{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Quadranym Math</h3>
+    <div class="text-muted"><em>comparison between two quadranyms or polynyms</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}{% if msg %}{{ msg }}<br>{% endif %}
+<h4 class="text-center">
+{{ thing1.whois|title|slice:4 }}{{ thing2.whois|title|slice:4 }}:<br>
+{{ thing1.whois|title|slice:1 }}<sub>{{ thing1.name }}</sub>&nbsp;&bot;&nbsp;
+{{ thing2.whois|title|slice:1 }}<sub>{{ thing2.name }}</sub></h4>
+{% endblock %}
+
+{% block right %}
+<form action="{% url 'spin:quadramath' %}" method="POST">{% csrf_token %}
+<div class="row g-0">
+    <div class="col my-auto">
+        <div class="btn-group-vertical">
+            <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:quadramath' %}">Random Picks</a>
+            <input class="btn btn-primary" type="submit" value="View Selected" />
+        </div>
+    </div>
+    <div class="col text-start">
+        <div class="btn-group mt-2">
+            <input class="btn-check" type="radio" name="compare1" id="polynym1" value="polynym"{% if compare1 == "polynym" %} checked{% endif %}>
+            <label for="polynym1" class="btn btn-outline-light">Polynym</label>
+
+            <input class="btn-check" type="radio" name="compare1" id="quadranym1" value="quadranym"{% if compare1 == "quadranym" %} checked{% endif %}>
+            <label for="quadranym1" class="btn btn-outline-light %}">Quadranym</label>
+        </div>
+        <SELECT NAME="pk1" class="my-2">
+    	    {% for t1 in thing1s %}
+                <OPTION value="{{ t1.id }}" {% if t1.id == thing1.id %}SELECTED{% endif %}/>{% if t1.depth %}{{ t1.depth }} | {% endif %}{{ t1.name }}
+            {% endfor %}
+    	</SELECT>
+
+        <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
+            <input class="btn-check" type="radio" name="compare2" id="polynym2" value="polynym"{% if compare2 == "polynym" %} checked{% endif %}>
+            <label for="polynym2" class="btn btn-outline-light">Polynym</label>
+
+            <input class="btn-check" type="radio" name="compare2" id="quadranym2" value="quadranym"{% if compare2 == "quadranym" %} checked{% endif %}>
+            <label for="quadranym2" class="btn btn-outline-light %}">Quadranym</label>
+        </div>
+        <SELECT NAME="pk2" class="my-2">
+    	    {% for t2 in thing2s %}
+                <OPTION value="{{ t2.id }}" {% if t2.id == thing2.id %}SELECTED{% endif %}/>{% if t2.depth %}{{ t2.depth }} | {% endif %}{{ t2.name }}
+            {% endfor %}
+    	</SELECT>
+    </div>
+</div>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="row g-0 p-3 justify-content-center">
+    <div class="col-auto p-3">
+        {% if thing1.depth %}
+            {% include 'bits/poly_icon.html' with thing=thing1 %}
+        {% else %}
+            {% include 'bits/infocard.html' with thing=thing1 %}
+            {% include 'bits/quad.html' with thing=thing1 %}
+        {% endif %}
+    </div>
+    <div class="col-auto huge p-3">&bot;</div>
+    <div class="col-auto p-3">
+        {% if thing2.depth %}
+            {% include 'bits/poly_icon.html' with thing=thing2 %}
+        {% else %}
+            {% include 'bits/infocard.html' with thing=thing2 %}
+            {% include 'bits/quad.html' with thing=thing2 %}
+        {% endif %}
+    </div>
+</div>
+
+<div class="row g-0 px-3 mb-3">
+    <div class="col-auto p-3 text-left">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Comparison &dtrif;</button>
+    </div>
+    <div class="col-auto p-3">
+        <div id="show" class="collapse">
+            {% include 'bits/compare.html' with a=thing1 b=thing2 %}
+        </div>
+    </div>
+</div>
+{% endblock %}

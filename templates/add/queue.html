@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Quadranym Queue{% endblock %}
 
-{% block mid %}<h2>Request a Quadranym</h2><b>suggestion list when adding Quadranyms</b>
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Requests</h3>
+    <div class="text-muted"><em>suggested as users add data</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}<h2>Request a Quadranym</h2><b></b>
 {% endblock %}
 
 {% block content %}
 <form method="POST">{% csrf_token %}
-<table align="center">
-    <tr>
-        <td align="center">
-            {{ form.as_p }}
-        </td>
-        <td>
-            <input type="submit" value="R E Q U E S T"></input>
-        </td>
-    </tr>
-</table>
+<div class="row g-0">
+    <div class="col-12 text-center">
+        <label for="id_name">Word or phrase:</label> <input type="text" name="name" maxlength="128" required id="id_name"><br>
+        <input class="btn btn-success m-3 px-3" type="submit" value="REQUEST"></input>
+    </div>
+</div>
 </form>
 {% endblock %}

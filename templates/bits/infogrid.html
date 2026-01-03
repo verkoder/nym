@@ -1,0 +1,21 @@
+<div class="row g-0">
+    {% for thing in things %}
+        {% if thing.name != '-' %}
+            <div class="col m-2">
+                {% if useq == 'both' %}
+                    {% include 'bits/infocard.html' %}
+                    {% include 'bits/quad.html' %}<br>
+                {% elif useq %}
+                    {% include 'bits/quad.html' %}<br>
+                {% elif text == 'qode' %}
+                    {% include 'bits/infocard.html' with text=thing.qode %}
+                {% else %}
+                    {% include 'bits/infocard.html' %}
+                {% endif %}
+            </div>
+            {% if plus and not forloop.last %}
+                <div class="col text-center my-auto huge">+</div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>

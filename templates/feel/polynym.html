@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Feel Polynym{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Feel Polynym</h3>
+    <div class="text-muted"><em>relate polynym<br>dimensions to any text</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<h3>{% if emos.0.1 %}{{ emos.0.0|title }}{% else %}no feelings{% endif %}</h3>
+<hr class="bg-secondary mx-auto w-50">
+<div class="text-muted">{{ poly.depth }} &times; {{ poly.name }}</div>
+<form action="{% url 'spin:feel_polynym' %}" method="POST">{% csrf_token %}
+{% endblock %}
+
+{% block right %}
+<div class="row g-0">
+    <div class="col my-auto text-center">
+        <input class="feel" type="submit" value="F E E L" />
+    </div>
+    <div class="col">
+        <SELECT NAME="pk" MULTIPLE SIZE="7">
+            {% for p in polys %}
+                <option VALUE="{{ p.id }}" {% if p.id == poly.id %}selected{% endif %}/>
+                    {{ p.depth }} | {{ p.name|truncatechars:25 }}{% if p.area %} | {{ p.area|truncatechars:25 }}{% endif %}
+                    {% if p.src %} | {{ p.src|truncatechars:25 }}{% endif %}
+            {% endfor %}
+        </SELECT>
+    </div>
+</div>
+<div class="text-start p-3">
+    <div class="text-muted"><b>Word or phrase:</b></div>
+    <input name="word" value="{{ word }}" size=48>
+</div>
+</form>
+{% endblock %}
+
+{% block content %}{% load motags %}
+<div class="row g-0 text-center p-2">
+    <div class="col-md-5 offset-xl-2 offset-lg-1 my-auto p-2">
+        <table class="table table-sm table-borderless text-light">
+            {% for mo,perc,siz,colr in emos %}
+                <tr>
+                    <td><div class="text-start nym">{{ mo }}</div></td>
+                    <td><code>{{ perc|floatformat:1 }}%</code></td>
+                    <td><div style="height: 18px; width: {{ siz }}em; background-color: {{ colr }};"></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<div class="lil text-muted p-3"><b>Feel via <a href="http://conceptnet.io" target="_blank">ConceptNet</a> relatedness</b></div>
+{% include 'bits/show.html' with thing=poly %}
+{% endblock %}

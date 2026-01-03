@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Flip Text{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Flip Text</h3>
+    <div class="text-muted"><em>remake any text<br>with new topics</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<form action="{% url 'spin:flip_text' %}" method="POST">{% csrf_token %}
+<div class="container p-3 text-center">
+    Pick an equal number of topics from each list<br>
+    <input class="flip" type="submit" value="F L I P" />
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="text-muted">&swarr; SOURCES are flipped to TARGETS &searr;<br>
+<div class="row g-0">
+    <div class="col">
+        <SELECT NAME="q1_id" MULTIPLE SIZE="7">
+    	{% for q in quads %}
+            <option VALUE="{{ q.id }}"{% if q.id in q1_ids %} selected{% endif %}>{{ q.name }}
+    	{% endfor %}
+    	</SELECT>
+    </div>
+    <div class="col">
+        <SELECT NAME="q2_id" MULTIPLE SIZE="7">
+    	{% for q in quads %}
+            <option VALUE="{{ q.id }}"{% if q.id in q2_ids %} selected{% endif %}>{{ q.name }}
+    	{% endfor %}
+    	</SELECT>
+    </div>
+</div>
+<span class="lil">&nwarr; Use Ctrl- or Cmd-click to pick multiple topics &nearr;</span>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-3">
+    <div class="text-muted">Enter text containing elements of SOURCES:</div>
+    <textarea name="txt" class="w-100" rows=7>{% if txt %}{{ txt|striptags }}{% endif %}</textarea>
+</div>
+</form>
+{% endblock %}

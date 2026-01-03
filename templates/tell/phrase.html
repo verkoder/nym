@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Tell Phrases{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Tell Phrases</h3>
+    <div class="text-muted"><em>spin narrative from<br>phrase/topic choices</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<form action="{% url 'spin:tell_phrase' %}" method="POST">{% csrf_token %}
+<div class="row h-100 m-0">
+    <div class="col my-auto text-start offset-2">
+        <input class="tell" type="submit" value="T E L L"/>
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="row g-0 h-100">
+    <h3 class="col-5 my-auto px-1 text-center">
+        {{ phra.name }}<br>&times;<br>{{ quad.name }} =
+    </h3>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row g-0 p-3 text-center">
+    <div class="col-5">
+        <div class="row g-0">
+            <div class="col-5 mt-2">
+                <div class="btn-group-vertical">
+                    {% for ph in phras %}
+                        <input type="radio" class="btn-check" name="phra_id" id="ph{{ forloop.counter }}" value="{{ ph.id }}" autocomplete="off"/>
+                        <label class="btn btn-outline-light py-0" for="ph{{ forloop.counter }}">{{ ph.name }}</label>
+                		{% if not forloop.last %}<br>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-1 huge my-auto">&times;</div>
+            <div class="col-5 mt-2">
+                <div class="btn-group-vertical">
+                    {% for q in quads %}
+                        <input type="radio" class="btn-check" name="quad_id" id="q{{ forloop.counter }}" value="{{ q.id }}" autocomplete="off"/>
+                        <label class="btn btn-outline-light py-0" for="q{{ forloop.counter }}">{{ q.name }}</label>
+            		    {% if not forloop.last %}<br>{% endif %}
+            	    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-1 huge">&rarr;</div>
+    <div class="col-5">
+        {% include 'bits/book.html' with qode=phra.qode %}
+    </div>
+</div>
+</form>
+
+<div class="row g-0 p-3">
+    <div class="col">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Trace &dtrif;</button>
+    </div>
+</div>
+<div id="show" class="collapse">
+    <div class="row g-0 p-3">
+        <div class="col-4 ps-2">
+            {% include 'bits/infocard.html' with thing=phra %}
+        </div>
+        <div class="col-1 p-1 text-center my-auto huge">&times;</div>
+        <div class="col-4 ps-2">
+            {% include 'bits/infocard.html' with thing=quad %}
+            {% include 'bits/quad.html' with thing=quad %}
+        </div>
+    </div>
+</div>
+{% endblock %}

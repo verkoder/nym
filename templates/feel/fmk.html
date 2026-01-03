@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Fun/Marry/Kill{% endblock %}
+
+{% block left %}{% load static %}
+<div class="row g-0 w-100">
+    <div class="col-12">
+        <img src="{% static 'spin' %}/img/fmk.png" class="img-fluid p-1" style="background-color:Crimson;" data-bs-toggle="tooltip"
+                data-bs-placement="bottom" title="Makes a great drinking game!">
+    </div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<h3>Ask the AI!</h3>
+<form action="{% url 'spin:feel_fmk' %}" method="POST">{% csrf_token %}
+<input class="feel" type="submit" value="F E E L" data-bs-toggle="tooltip" data-bs-placement="bottom"
+        title="Click to relate"/>
+{% endblock %}
+
+{% block right %}
+<div class="container">
+    <div class="col text-start mt-2">
+        <h4>Enter three of anything:</h4>
+        <input type="text" name="word1" value="" size="28"><br>
+        <input type="text" name="word2" value="" size="28"><br>
+        <input type="text" name="word3" value="" size="28">
+        <div class="text-muted ms-2"><b>words or phrases &uarr;</b></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}{% load motags %}
+<div class="row g-0">
+    <div class="col offset-xl-2 offset-lg-1 my-auto">
+        <table cellpadding="12">
+            <tr><td><h2>Fun&hellip;</h2></td></tr>
+            <tr><td><h2>Marry&hellip;</h2></td></tr>
+            <tr><td><h2>Kill&hellip;</h2></td></tr>
+        </table>
+    </div>
+    <div class="col my-auto text-start">
+        {% if emos %}
+        <table cellpadding="12" class="text-start">
+        {% for mo,perc,siz,colr in emos %}
+            <tr><td><h2>{{ mo }}</h2></td>
+                <td><b>{{ perc|floatformat:1 }}%</b></td>
+                <td><div style="height: 18px; width: {{ siz }}px; background-color: {{ colr }};"></td>
+        {% endfor %}
+        </table>
+        {% else %}<h3 align="center">&mdash;no kinship&mdash;</h3>
+        {% endif %}
+    </div>
+    <div class="col">
+        <table cellpadding="4"><tr>
+            <td bgcolor="{{ emos.0.3 }}"><img src="{% static 'spin/img/fmk_fun.png' %}" alt="Fun"></td>
+        </tr>
+        <tr>
+            <td bgcolor="{{ emos.1.3 }}"><img src="{% static 'spin/img/fmk_marry.png' %}" alt="Marry"></td>
+        </tr>
+        <tr>
+            <td bgcolor="{{ emos.2.3 }}"><img src="{% static 'spin/img/fmk_kill.png' %}" alt="Kill"></td>
+        </tr>
+        </table>
+    </div>
+</div>
+<div class="lil text-muted p-3"><b>Feel via <a href="http://conceptnet.io" target="_blank">ConceptNet</a> relatedness</b></div>
+</form>
+{% endblock %}

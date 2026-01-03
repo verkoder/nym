@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Edit Polymap{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Can you relate?</h3>
+    <div class="text-muted">map this pair or choose</div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<h4>
+    {{ p1.depth }} {% if p1.mode %}{{ p1.mode }}{% else %}part{% endif %}s of {{ p1.name }}
+    <div class="text-muted my-1">&</div>
+    {{ p2.depth }} {% if p2.mode %}{{ p2.mode }}{% else %}part{% endif %}s of {{ p2.name }}
+</h4>
+{% endblock%}
+
+{% block right %}
+<form action="{% url 'spin:polymap_make' %}" method="POST">{% csrf_token %}
+<div class="row g-0 p-3">
+    <div class="col-lg-3 col-sm-4 my-auto">
+        <div class="btn-group-vertical">
+            <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:polymap_create' %}">Random picks</a>
+            <input class="btn btn-success" type="submit" value="MAP"/>
+        </div>
+    </div>
+    <div class="col-lg-9 col-sm-12">
+        <SELECT NAME="p1_id" class="my-2">
+            {% for p in polys %}
+                <OPTION value="{{ p.id }}" {% if p.id == p1.id %}SELECTED{% endif %}/>{{ p.depth }} | {{ p.name }}
+            {% endfor %}
+        </SELECT>
+        <SELECT NAME="p2_id" class="mt-2">
+            {% for p in polys %}
+                <OPTION value="{{ p.id }}" {% if p.id == p2.id %}SELECTED{% endif %}/>{{ p.depth }} | {{ p.name }}
+            {% endfor %}
+        </SELECT>
+        <div class="text-muted small">matching depths not required</div>
+    </div>
+</div>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row g-0">
+        {% include 'bits/compare.html' with a=p1 b=p2 %}
+    </div>
+</div>
+{% endblock %}

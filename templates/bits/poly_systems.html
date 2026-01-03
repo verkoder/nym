@@ -1,21 +1,16 @@
-<table border="0" cellspacing="0" cellpadding="4" align="center">
-    <tr bgcolor="#6F6F6F">
-    {% for col in ttl %}
-        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ col }}</span></td>
-    {% endfor %}
-    </tr>
-    <tr bgcolor="{% cycle '#EFEFEF' '#DFDFDF'%}">
-    {% for polys in poly_dict %}
-        <td valign="top"><b>
-            {% for poly in polys %}
-                <a href="/polynym/{{ poly.pk }}">{{ poly.name }}</a><br>
-            {% endfor %}</b>
-        </td>
-    {% endfor %}
+<table class="table table-sm text-light table-borderless text-center">
+    <tr>
+        {% for header in ttl %}
+            <td><h5>{{ header }}</h5></td>
+        {% endfor %}
     </tr>
     <tr>
-    {% for col in ttl %}
-        <td><span class="navbar" width="7%"><font size="+1" color="#FFFFFF">{{ col }}</span></td>
-    {% endfor %}
+        {% for col in data %}
+            <td>
+                {% for poly in col %}
+                    <a class="btn btn-outline-secondary rounded-0 p-1 m-0 w-100" href="{% url 'spin:polynym_detail' poly.pk %}">{{ poly.name }}</a><br>
+                {% endfor %}
+            </td>
+        {% endfor %}
     </tr>
 </table>

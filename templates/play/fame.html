@@ -1,54 +1,74 @@
 {% extends 'base.html' %}
 {% block title %}{{ app }} Winners{% endblock %}
 
-{% block mid %}
-<h1 align="center">Legends of {{ app }}</h1>
+{% block left %}{% load static %}
+<div class="container p-0">
+    <a href="/{{ app|lower }}">
+        <img src="{% static 'spin' %}/img/{{ app }}.png" class="img-fluid p-1" style="background-color: {{ color }};">
+        <div class="overlil">NEW GAME</div>
+    </a>
+</div>
 {% endblock %}
 
-{% block right %}<h2>
-{% if msg %}{{ msg }}{% else %}
-Hit your browser's back button to continue or<br>&rarr; <a href="/{{ app.lower }}">START A NEW GAME</a>&rarr;
-{% endif %}</h2>
+{% block mid %}
+<h3 class="text-center">{% if msg %}{{ msg }}{% else %}Players to Beat{% endif %}</h3>
+{% endblock %}
+
+{% block right %}
+<h5 class="text-start text-muted p-3"><b>{{ hi.0.1 }}</b> is {{ app }} champ at {{ hi.0.0 }} points!</h5>
 {% endblock %}
 
 {% block content %}
-<table align="center" cellpadding="12">
-<tr>
-  <td valign="top">
-    <h2 align="center">HIGH SCORES</h2>
-    <table align="center" cellspacing="0" cellpadding="8">
-      <tr>
-        <th bgcolor="#CFCFCF"><span class="code">Rank</span></th>
-        <th bgcolor="#CFCFCF"><span class="code">Score</span></th>
-        <th bgcolor="#CFCFCF"><span class="code">Player</span></th>
-      </tr>
-      {% for x,win in hi %}
-      <tr>
-          <td bgcolor="#EDEDED"><span class="code">{{ forloop.counter }}</span></td>
-          <td bgcolor="#EDEDED"><span class="code">{{ x }}</span></td>
-          <td bgcolor="#EDEDED"><span class="code"><a href="/user/{{ win }}">{{ win }}</a></span></td>
-      </tr>
-      {% endfor %}
-    </table>
-  </td>
-  <td valign="top">
-    <h2 align="center">BADASSES</h2>
-    <table align="center" cellspacing="0" cellpadding="8">
-      <tr>
-        <th bgcolor="#CFCFCF"><span class="code">Rank</span></th>
-        <th bgcolor="#CFCFCF"><span class="code">Badassness*</span></th>
-        <th bgcolor="#CFCFCF"><span class="code">Player</span></th>
-      </tr>
-      {% for x,win in fx %}
-      <tr>
-          <td bgcolor="#EDEDED"><span class="code">{{ forloop.counter }}</span></td>
-          <td bgcolor="#EDEDED"><span class="code">{{ x }}</span></td>
-          <td bgcolor="#EDEDED"><span class="code"><a href="/user/{{ win }}">{{ win }}</a></span></td>
-      </tr>
-      {% endfor %}
-    </table>
-    <br><span class="lil">*Badassness = points / round</span>
-  </td>
-</tr>
-</table>
+<div class="row g-0">
+<div class="col-lg-2 col-md-4 text-center text-muted p-3 pt-5">
+        <small>More high scores:</small>
+        {% for game,hue in games %}
+            {% if game != app %}
+                <div class="container p-0">
+                    <a href="{% url 'spin:fame' game %}">
+                        <img src="{% static 'spin' %}/img/{{ game }}.png" class="p-1 w-100" style="background-color: {{ hue }};">
+                        <div class="overlil">HIGH SCORES</div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <h2 class="text-center">HIGH SCORES</h2>
+        <table align="center" cellspacing="0" cellpadding="8">
+            <tr>
+                <th class="bg-secondary"><span class="code">Rank</span></th>
+                <th class="bg-secondary"><span class="code">Score</span></th>
+                <th class="bg-secondary"><span class="code">Player</span></th>
+            </tr>
+            {% for x,win in hi %}
+            <tr>
+                <td class="bg-dark"><span class="code">{{ forloop.counter }}</span></td>
+                <td class="bg-dark"><span class="code">{{ x }}</span></td>
+                <td class="bg-dark"><span class="code"><a href="{% url 'spin:user_detail' win %}">{{ win }}</a></span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <h2 class="text-center">LEGENDS</h2>
+        <table align="center" cellspacing="0" cellpadding="8">
+            <tr>
+                <th class="bg-secondary"><span class="code">Rank</span></th>
+                <th class="bg-secondary"><span class="code">Mythos*</span></th>
+                <th class="bg-secondary"><span class="code">Player</span></th>
+            </tr>
+            {% for x,win in fx %}
+            <tr>
+                <td class="bg-dark"><span class="code">{{ forloop.counter }}</span></td>
+                <td class="bg-dark"><span class="code">{{ x }}</span></td>
+                <td class="bg-dark"><span class="code"><a href="{% url 'spin:user_detail' win %}">{{ win }}</a></span></td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3"><small class="text-muted">*Mythos = points / round</small></td>
+            </tr>
+        </table>
+    </div>
+</div>
 {% endblock %}

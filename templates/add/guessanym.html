@@ -1,0 +1,33 @@
+{% extends 'add/common.html' %}
+
+{% block addy %}
+<div class="row g-0 w-100">
+    <div class="col-8 text-center">
+        <h3>Each dimension is a</h3>
+        {{ form.mode }}
+        <h3 class="m-3">of {{ form.name }}</h3>
+    </div>
+    <div class="col-4 text-end pe-3">
+        1. {{ form.p1 }}<br>
+        2. {{ form.p2 }}<br>
+        {% if form.initial.depth >= 3 %} 3. {{ form.p3 }}<br>{% endif %}
+        {% if form.initial.depth >= 4 %} 4. {{ form.p4 }}<br>{% endif %}
+        {% if form.initial.depth >= 5 %} 5. {{ form.p5 }}<br>{% endif %}
+        {% if form.initial.depth >= 6 %} 6. {{ form.p6 }}<br>{% endif %}
+        {% if form.initial.depth >= 7 %} 7. {{ form.p7 }}<br>{% endif %}
+        {% if form.initial.depth >= 8 %} 8. {{ form.p8 }}<br>{% endif %}
+        {% if form.initial.depth >= 9 %} 9. {{ form.p9 }}<br>{% endif %}
+        {% if form.initial.depth >= 10 %} 10. {{ form.p10 }}<br>{% endif %}
+        {% if form.initial.depth >= 11 %} 11. {{ form.p11 }}<br>{% endif %}
+        {% if form.initial.depth == 12 %} 12. {{ form.p12 }}<br>{% endif %}
+    </div>
+</div>
+    
+<div class="pt-1"><b>Keyword:</b>&nbsp; {{ form.initial.word }}</div>
+<div class="pt-3"><b>Context:</b>&nbsp; {{ form.initial.sentence }}</div>
+<div class="text-muted small pt-3"><b>Full context:</b>&nbsp; {{ form.initial.paragraph }}</div>
+{% endblock %}
+
+{% block trace %}
+{% include 'bits/shows.html' with things=form.initial.traces %}
+{% endblock %}

@@ -1,17 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Polymap{% endblock %}
+{% block title %}Polynym Map{% endblock %}
 
-{% block mid %}<h2>{% if msg %}{{ msg }}{% else %}Polymap:<br />{{ thing.name }}{% endif %}</h2>
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1">Polynym Map</h3>
+    <div class="text-muted"><em>dimensional relationships<br>between two polynyms</em></div>
+</div>
 {% endblock %}
 
+{% block mid %}{% if msg %}{{ msg }}<br>{% endif %}
+<h4 class="text-center">{{ thing.name }}
+{% endblock%}
+
 {% block right %}
-<form action="/polymap/" method="POST">{% csrf_token %}
-<table width="100%">
-    <tr>
-        <td align="center">
-            <b>Choose and <input type="submit" value="S E E" /></b></td>
-        <td>
-            <SELECT NAME="pk" MULTIPLE SIZE="12">
+<form action="{% url 'spin:polymap_detail' %}" method="POST">{% csrf_token %}
+<div class="container p-0">
+    <div class="row g-0">
+        <div class="col-6 my-auto">
+            <div class="btn-group-vertical">
+                <a class="btn btn-sm btn-dark text-muted" href="{% url 'spin:polymap_detail' %}">Random Pick</a>
+                <input class="btn btn-primary" type="submit" value="View Selected" />
+            </div>
+        </div>
+        <div class="col-6">
+            <SELECT NAME="pk" MULTIPLE SIZE="7" class="w-100">
             {% for m in things %}
               <option VALUE="{{ m.id }}" {% ifequal m.id thing.id %}selected{% endifequal %}/>
               {% if m.name %}{{ m.name|truncatechars:25 }} | {% endif %}
@@ -19,66 +31,53 @@
               {% if m.area %} | {{ m.area|truncatechars:25 }}{% endif %}{% if m.src %} | {{ m.src|truncatechars:25 }}{% endif %}
             {% endfor %}
             </SELECT>
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+</div>
 </form>
 {% endblock %}
 
 {% block content %}{% load motags %}
-<table width="100%" align="center" cellpadding="6" cellspacing="0">
-  <tr>
-	<td bgcolor="#EFEFEF" align="left" valign="top" width="20%">
+<div class="row g-0 text-center px-3">
+    <div class="col-lg-4 col-sm-12">
         {% include 'bits/common.html' %}
-    </td>
-	<td bgcolor="#BBBBBB" align="left" valign="middle" width="80%">
-
-        <table align="center" bgcolor="#EFEFEF" cellpadding="4" cellspacing="0">
-          <tr>
-        	<td><h2 align="right">{% if thing.pa.src %}{{ thing.pa.src }}
-        						{% else %}Anonymous{% endif %}</h2></td>
-        	<td width="20" bgcolor="#DEDEDE"><h2 align="center">vs.</h2></td>
-        	<td><h2 align="left">{% if thing.pb.src %}{{ thing.pb.src }}
-        						{% else %}Anonymous{% endif %}</h2></td>
-          </tr>
-          <tr>
-        	<td align="right">
-                <b>{{ thing.pa.depth }} {% if thing.pa.mode %}{{ thing.pa.mode }}{% else %}part{% endif %}s of {{ thing.pa.name }}</b>
-            </td>
-        	<td width="20" bgcolor="#BBBBBB" align="center"><b>:idea:</b></td>
-        	<td align="left">
-                <b>{{ thing.pb.depth }} {% if thing.pb.mode %}{{ thing.pb.mode }}{% else %}part{% endif %}s of {{ thing.pb.name }}</b>
-            </td>
-          </tr>
-    {% for rel in thing.rels %}
-        {% if rel %}
-          <tr>
-            {% for r in rel %}
-              <td {% if forloop.first %}align="right" {% elif forloop.last %}align="left" {% else %}align="center" bgcolor="DEDEDE" {% endif %} valign="middle">{{ r }}</td>
+    </div>
+	<div class="col-lg-8 col-sm-12 text-start align-middle">
+        <table class="text-center" cellpadding="4" cellspacing="0">
+            <tr>
+        	    <td align="left">
+                    {% include 'bits/infocard.html' with thing=thing.pa  %}
+                </td>
+        	    <td width="20" class="bg-dark">
+                    <h2 align="center"><br><br>vs.</h2>
+                </td>
+        	    <td align="left">
+                    {% include 'bits/infocard.html' with thing=thing.pb %}
+                </td>
+            </tr>
+            <tr>
+        	    <td align="right">
+                    <b>{{ thing.pa.depth }} {% if thing.pa.mode %}{{ thing.pa.mode }}{% else %}part{% endif %}s of {{ thing.pa.name }}</b>
+                </td>
+        	    <td width="20" class="text-center bg-dark">
+                    <h3>&bot;</h3>
+                </td>
+        	    <td align="left">
+                    <b>{{ thing.pb.depth }} {% if thing.pb.mode %}{{ thing.pb.mode }}{% else %}part{% endif %}s of {{ thing.pb.name }}</b>
+                </td>
+            </tr>
+            {% for rel in thing.rels %}
+                {% if rel %}
+                    <tr>
+                        {% for r in rel %}
+                            <td class="text-{% if forloop.first %}right{% elif forloop.last %}left{% else %}center bg-dark{% endif %} align-middle">
+                                {{ r }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
             {% endfor %}
-          </tr>
-        {% endif %}
-    {% endfor %}
-          <tr>
-          	<td><h3 align="right">{{ thing.pa.area }}</h3></td>
-        	<td bgcolor="#BBBBBB"><h4 align="center">:area:</h4></td>
-        	<td><h3 align="left">{{ thing.pb.area }}</h3></td>
-          </tr>
-          <tr>
-        	<td><h3 align="right">{{ thing.pa.user.username }}</h3></td>
-        	<td bgcolor="#DEDEDE"><h4 align="center">:by:</h4></td>
-        	<td><h3 align="left">{{ thing.pb.user.username }}</h3></td>
-          </tr>
-          <tr>
-            <td align="right"><a href="{{ pmap.pa.wiki }}" target="_blank">{{ thing.pa.wiki|wikurl }}</a></td>
-            <td bgcolor="#BBBBBB"><h4 align="center">:info:</h4></td>
-            <td><a href="{{ thing.pb.wiki }}" target="_blank">{{ thing.pb.wiki|wikurl }}</a></td>
-          </tr>
         </table>
-    </td>
-  </tr>
-   <tr>
-       <td bgcolor="#EFEFEF" colspan="2"><br></td>
-   </tr>
-</table>
+    </div>
+</div>
 {% endblock %}

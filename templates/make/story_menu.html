@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Edit Story{% endblock %}
+
+{% block left %}
+<div class="col-12">
+    <h3 class="m-1 pb-1">Edit Story</h3>
+    <div class="btn-group px-1">
+        <a class="btn btn-sm btn-outline-secondary disabled" href="#">Menu</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_pair' %}">Pair</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_list' %}">Dual List</a>
+    </div>
+    <br><small class="text-muted">select storybuilder</small>
+</div>
+{% endblock %}
+
+{% block flair %}
+{% endblock %}
+
+{% block mid %}
+<h3>Menu Storybuilder</h3>
+<div class="text-muted">add topic-phrase pairs to build your story</div>
+{% endblock %}
+
+{% block right %}
+<form action="{% url 'spin:story_create' %}" method="POST">{% csrf_token %}
+<div class="btn-group mb-1">
+    <input class="btn btn-sm btn-outline-secondary" type="submit" value="Try" name="_try" />
+    <input class="btn btn-sm btn-outline-secondary" type="submit" value="Add" name="_add" />
+{% if spun %}
+    <input class="btn btn-sm btn-outline-secondary" type="submit" value="New &para;" name="_line" />
+    <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_create' %}">Restart</a>
+    <input class="btn btn-sm btn-outline-success px-3" type="submit" value="SAVE" name="_save" />
+{% endif %}
+    <a class="btn btn-sm btn-outline-secondary" href="{% url 'spin:story_detail' %}">CANCEL</a>
+</div>
+<br><small class="text-muted">Story length: {% if length %}{{ length }} pair{{ length|pluralize }}{% else %}-{% endif %}</small>
+{% endblock %}
+
+{% block content %}
+<div class="row g-0 p-3 text-center">
+    <div class="col-lg-6 col-sm-12">
+	    {% include 'bits/book.html' %}
+    </div>
+    <div class="col-lg-3 col-sm-6 px-2">
+        <SELECT class="h-100 w-100" NAME="quad_id" SIZE="14">
+            {% for q in quads %}
+                <option VALUE="{{ q.id }}"{% if q.id == quad_id %} selected{% endif %} />{{ q.name }}
+            {% endfor %}
+        </SELECT>
+    </div>
+    <div class="col-lg-3 col-sm-6 px-2">
+        <SELECT class="h-100 w-100" NAME="phra_id" SIZE="14">
+            {% for ph in phras %}
+                <option VALUE="{{ ph.id }}"{% if ph.id == phra_id %} selected{% endif %} />{{ ph.name }}
+            {% endfor %}
+        </SELECT>
+    </div>
+</div>
+
+<input name="quad_ids" type="hidden" value="{{ quad_ids }}">
+<input name="phra_ids" type="hidden" value="{{ phra_ids }}">
+</form>
+{% include 'bits/show_pairs.html' %}
+{% endblock %}

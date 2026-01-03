@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Flip Fortunes{% endblock %}
+
+{% block left %}
+<div class="col-12">
+	<h3 class="m-1">Flip Fortunes</h3>
+	<div class="text-muted"><em>remake sayings<br>with new topics</em></div>
+</div>
+{% endblock %}
+
+{% block mid %}
+<form action="{% url 'spin:flip_fortune' %}" method="POST">{% csrf_token %}
+<div class="container p-2">
+	<div class="row g-0">
+		<div class="col">
+			<input class="flip" type="submit" value="F L I P" />
+			{% if msg %}<div class="text-warning">{{ msg }}</div>{% endif %}
+		</div>
+		<div class="col">
+	        <div class="btn-group-vertical mb-1">
+	            <a class="btn btn-sm btn-dark text-muted mb-1" href="{% url 'spin:flip_fortune' %}">Random Flip</a>
+	            <!--a class="btn btn-secondary" href="{% url 'spin:flip_fortune'  %}">fort.id<<-- Source Quote</a-->
+	        </div><br>
+		    <input type="checkbox" name="rev"{% if rev == "on" %} checked{% endif %}> Reverse
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="row g-0">
+	<div class="col p-0">
+		<SELECT NAME="fort_id" MULTIPLE SIZE="7">
+	    {% for f in forts %}
+	        <OPTION VALUE="{{ f.id }}"{% if f.id == fort.id %}selected {% endif %}/>
+	        {{ f.body|truncatechars:12 }} | Pick {{ f.depth }} Topic{% if f.depth != 1 %}s{% endif %}&rarr;
+	        {% endfor %}
+	    </SELECT>
+	</div>
+	<div class="col">
+	    <SELECT NAME="quad_id" MULTIPLE SIZE="7">
+		{% for q in quads %}
+			<OPTION VALUE="{{ q.id }}"{% if q.id in quad_ids %} selected{% endif %}/>{{ q.name }}
+		{% endfor %}
+		</SELECT>
+		<div class="text-muted lil mt-1 me-3">&uarr; Ctrl- or Cmd-click to pick multiple &uarr;</div>
+	</div>
+</div>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	{% include 'bits/book.html' with qode=fort.qode %}
+</div>
+
+<div class="lil text-muted p-3">Quotes via <b><a href="https://www.quotes.net" target="_blank">Quotes.net</a></b></div>
+<div class="row g-0 px-3 mb-2">
+    <div class="col">
+        <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#show">Trace &dtrif;</button>
+    </div>
+</div>
+<div id="show" class="collapse">
+    <div class="row g-0 p-3">
+        <div class="col-4 p-2">{% include 'bits/infocard.html' with thing=fort %}</div>
+        <div class="col-6 p-2">
+            <div class="text-center text-muted mt-2">Source &rarr;</div>
+            {% include 'bits/infogrid.html' with things=sources useq='both' %}
+        </div>
+        <div class="col-6 p-2">
+            <div class="text-center text-muted mt-2">&rarr; Target</div>
+            {% include 'bits/infogrid.html' with things=targets useq='both' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

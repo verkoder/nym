@@ -5,24 +5,25 @@ settings.py -- Nymology Django settings
 '''
 import os
 import spacy
-from .keys import DJANGO_SECRET#, NYMBASE_PASSWORD
+from .keys import DJANGO_SECRET, NYMBASE_PASSWORD
 
 DOC = spacy.tokens.doc.Doc
 ENGLISH = spacy.load('en_core_web_sm') # SMALL WORD-VECTORBASE
 #ENGLISH = spacy.load('en_core_web_lg') # LARGE WORD-VECTORBASE
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = DJANGO_SECRET
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['quadranym.com','db.polynyms.com','127.0.0.1','nymology.org']
-
-# Application definition
+ALLOWED_HOSTS = ['nymology.org', 'quadranym.com', '127.0.0.1']
+INTERNAL_IPS = ['127.0.0.1',]
+#SITE_URL = 'http://127.0.0.1:8000'
+STATIC_ROOT = '/Users/scotty/Documents/nym/spin/static/spin/' # LOCAL
+#STATIC_ROOT = '/home/scotty/apps/statnym' # SERVER
+STATIC_URL = '/static/'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
+}
 INSTALLED_APPS = [
     'spin.apps.SpinConfig',
     'django.contrib.admin',
@@ -32,10 +33,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_tables2',
+    'rest_framework',
     'formtools',
-    'vote'
+    'vote',
+    #'debug_toolbar' # <<-- dEBUG TOOLBAR
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -44,14 +46,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware' # <<-- dEBUG TOOLBAR
 ]
-
 ROOT_URLCONF = 'nym.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/scotty/Documents/nym/templates/'],
+        'DIRS': ['/Users/scotty/Documents/nym/templates/'], # LOCAL
+        #'DIRS': ['/home/scotty/apps/poly/nym/templates/'], # SERVER
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,37 +65,31 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'nym.wsgi.application'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # LOCAL
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#       'ENGINE': 'django.db.backends.postgresql_psycopg2', # SERVER
+#       'ENGINE': 'django.db.backends.postgresql', # SERVER
 #       'NAME': 'nymbase',
-#       'USER': 'nym',
+#       'USER': 'nymbase',
 #       'PASSWORD': NYMBASE_PASSWORD,
-#       'HOST': '127.0.0.1',
-#       'PORT': '5432'
+#       'HOST': '',
+#       'PORT': ''
     }
 }
-
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap4.html'
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'EST'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
-
-STATIC_ROOT = '/Users/scotty/Documents/nymdox/static/spin/' # SERVER
-STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 #EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
