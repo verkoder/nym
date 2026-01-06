@@ -50,7 +50,7 @@ def user_stats(username):
     votes = {}
     nyms = {}
     for com, thing in COMMON.items():
-        votes[com] = [x.name for x in thing.votes.all(usr.pk)]
+        #votes[com] = [x.name for x in thing.votes.all(usr.pk)]
         nyms[com] = [x.name for x in thing.objects.filter(user=usr)]
     total_votes = sum([len(x) for x in votes.values()])
     total_nyms = sum([len(x) for x in nyms.values()])

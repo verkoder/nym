@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'rest_framework',
     'formtools',
-    'vote',
+    #'vote',
     #'debug_toolbar' # <<-- dEBUG TOOLBAR
 ]
 MIDDLEWARE = [

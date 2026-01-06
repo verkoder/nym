@@ -6,6 +6,7 @@ ingestor.py -- Nymology API data ingestor
 import json
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db import IntegrityError
+from django.db.utils import OperationalError
 from .models import COMMON, UNCOMMON, get_user_model, Guessanym, Polynym
 
 INGEST_ORDER = ( # {model: API endpoint}
@@ -74,8 +75,9 @@ def dump_nodes():
     json.dump(nodes, open('./data/polynodes.json', 'w'))
 
 def make_guessanyms():
-    'STEP 3: load scraped data, create Guessanyms [STEP 4: human cycles on /guessanyms]'
-    guess = json.load(open('./data/polyguess.json'))
+    'STEP 3: load scraped data, create Guessanyms [STEP 4: human cycles on /guessanyms] UPLOAD JSON TO SERVER!'
+    guess = json.load(open('./data/polyguess.json')) # LOCAL
+    #guess = json.load(open('../data/polyguess.json')) # SERVER
     for g in guess:
         try:
             gnym = Guessanym(
@@ -101,6 +103,8 @@ def make_guessanyms():
             gnym.save()
         except IntegrityError: # non unique
             pass
+        except OperationalError as e:
+            print(e)
 
 def add_users():
     'add original users'

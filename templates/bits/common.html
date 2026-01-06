@@ -5,10 +5,10 @@
     </div>
 {% if thing.whois %}
         <div class="col text-center">
-            <div class="code mb-1">{% liked request.user.pk thing %}<br>
-                <a class="btn p-0 m-0" href="/{{ thing.whois }}/{{ thing.pk }}/vote/{% voted_on request.user.pk thing %}.png"></a>
-                <br>{{ thing.votes.count }}
-            </div>
+            <!--div class="code mb-1">{ liked request.user.pk thing }<br>
+                <a class="btn p-0 m-0" href="/{{ thing.whois }}/{{ thing.pk }}/vote/{ voted_on request.user.pk thing }.png"></a>
+                <br>{ thing.votes.count }
+            </div-->
             <a class="btn btn-outline-success p-0 mb-1" style="width: 66px;" href="/{{ thing.whois }}/add/">
                 <small>Create</small></a><br>
             {% if thing.whois in 'polynym,quadranym,quadraset,polyset,phrase,fable' %}

@@ -63,10 +63,10 @@
             {% if li %}<b>{{ obj|title }} adds:</b><br>{{ li|join:', ' }}<br><br>{% endif %}
         {% endfor %}
     </div>
-    <div class="col-lg-3 col-sm-6 align-top p-3"><h3>Votes Cast: <code>{{ total_votes }}</code></h3>
-        {% for obj,li in votes %}
-            {% if li %}<b>{{ obj|title }} votes:</b><br>{{ li|join:', ' }}<br><br>{% endif %}
-        {% endfor %}
-    </div>
+    <!--div class="col-lg-3 col-sm-6 align-top p-3"><h3>Votes Cast: <code>{ total_votes }</code></h3>
+        { for obj,li in votes }
+            { if li }<b>{ obj|title } votes:</b><br>{ li|join:', ' }<br><br>{ endif }
+        { endfor }
+    </div-->
 </div>
 {% endblock %}

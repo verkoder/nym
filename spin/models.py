@@ -7,7 +7,7 @@ from itertools import combinations
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from vote.models import VoteModel
+#from vote.models import VoteModel
 
 from .cached import QN, shade
 from .concept import guess_mood
@@ -18,8 +18,9 @@ from .methods import deqodes, quad_spin
 
 
 ### COMMON ABSTRACT CLASS
-class Common(VoteModel, models.Model):
+class Common(models.Model):
     'Nymology base class'
+    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=128)
     user = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING, blank=True, null=True)
     src = models.CharField(max_length=128, blank=True, verbose_name='source')
@@ -109,20 +110,20 @@ class Guessanym(Common):
     depth = models.PositiveSmallIntegerField()
     seen = models.BooleanField(default=False)
     word = models.CharField(max_length=128)
-    sentence = models.CharField(max_length=2048)
-    paragraph = models.CharField(max_length=2048)
-    p1 = models.CharField(max_length=128)
-    p2 = models.CharField(max_length=128)
-    p3 = models.CharField(max_length=128, blank=True)
-    p4 = models.CharField(max_length=128, blank=True)
-    p5 = models.CharField(max_length=128, blank=True)
-    p6 = models.CharField(max_length=128, blank=True)
-    p7 = models.CharField(max_length=128, blank=True)
-    p8 = models.CharField(max_length=128, blank=True)
-    p9 = models.CharField(max_length=128, blank=True)
-    p10 = models.CharField(max_length=108, blank=True)
-    p11 = models.CharField(max_length=128, blank=True)
-    p12 = models.CharField(max_length=128, blank=True)
+    sentence = models.TextField()
+    paragraph = models.TextField()
+    p1 = models.TextField()
+    p2 = models.TextField()
+    p3 = models.TextField(blank=True)
+    p4 = models.TextField(blank=True)
+    p5 = models.TextField(blank=True)
+    p6 = models.TextField(blank=True)
+    p7 = models.TextField(blank=True)
+    p8 = models.TextField(blank=True)
+    p9 = models.TextField(blank=True)
+    p10 = models.TextField(blank=True)
+    p11 = models.TextField(blank=True)
+    p12 = models.TextField(blank=True)
 
     objects = models.Manager()
     data = PolynymData()
@@ -398,6 +399,7 @@ class Story(Common):
 
 class Storyline(models.Model):
     'Story plot line'
+    id = models.BigAutoField(primary_key=True)
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
     rank = models.PositiveSmallIntegerField()
     phrase = models.ForeignKey(Phrase, on_delete=models.CASCADE)
@@ -424,6 +426,7 @@ class Tale(Common):
 
 class Taleline(models.Model):
     'Tale plot line'
+    id = models.BigAutoField(primary_key=True)
     tale = models.ForeignKey(Tale, on_delete=models.CASCADE)
     rank = models.PositiveSmallIntegerField()
     quadranym = models.ForeignKey(Quadranym, on_delete=models.CASCADE)
@@ -473,6 +476,7 @@ class Vectornym(Common):
 ## UNCOMMON MODELS
 class Fortune(models.Model):
     'Fortune class: enqoded quotes and sayings: NOT USER-ADDED'
+    id = models.BigAutoField(primary_key=True)
     body = models.CharField(max_length=2048)
     qode = models.CharField(max_length=2048, blank=True)
     q1 = models.ManyToManyField(Quadranym)
@@ -528,6 +532,7 @@ class Fortune(models.Model):
 
 class Queue(models.Model):
     'Quadranyms to-do list'
+    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=128, unique=True)
 
     objects = models.Manager()
@@ -538,6 +543,7 @@ class Queue(models.Model):
 
 class Quote(models.Model):
     'enqoded Quote: NOT USER-ADDED'
+    id = models.BigAutoField(primary_key=True)
     body = models.CharField(max_length=2048)
     qode = models.CharField(max_length=2048, blank=True)
     quadranym = models.ForeignKey(Quadranym, on_delete=models.CASCADE)
@@ -561,6 +567,7 @@ class Quote(models.Model):
 
 class Winner(models.Model):
     'Winner class: game player: NOT DIRECTLY USER-ADDED'
+    id = models.BigAutoField(primary_key=True)
     by = models.CharField(max_length=32) # remove
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, blank=True, null=True)
     app = models.CharField(max_length=32)
