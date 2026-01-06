@@ -1,4 +1,7 @@
-
+_etc/*.*
+spin/migrations/*.py
+nym/keys.py
+keys.py
 *.DS_Store
 *.sqlite3
 *.json
